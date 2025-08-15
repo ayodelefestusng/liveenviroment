@@ -1,0 +1,20 @@
+{% load crispy_forms_tags %}
+
+
+{% if customer %}
+  <ul style="text-align: left;">
+    <li>Customer Name: <strong>{{ customer.name }}</strong></li>
+    <li>Customer Phone: <strong>{{ customer.phone }}</strong></li>
+    <li>Account Balance: <strong>₦{{ customer.account_bal|floatformat:2 }}</strong></li>
+  </ul>
+
+  <p class="text-muted">Transaction fee: <strong>1.5%</strong> will be applied to the amount.</p>
+
+<form method="post" action="{% url 'transaction_with_account' %}">
+  {% csrf_token %}
+  {% crispy form %}
+</form>
+
+{% else %}
+  <!-- <p>No customer found. Please start from the lookup page.</p> -->
+{% endif %}

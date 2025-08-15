@@ -1,0 +1,18 @@
+{% load crispy_forms_tags %}
+
+{% if customer %}
+  <ul style="text-align: left;">
+     <li>Customer Name: <strong>{{ customer.name }}</strong></li>
+    <li>Customer Phone: <strong>{{ customer.phone }}</strong></li>
+
+</ul>
+
+
+
+    <form method="post" action="{% url 'transaction_with_account' %}">
+        {% csrf_token %}
+         {% crispy form %}
+
+        <button type="submit" class="btn btn-primary py-2">Submits</button>
+    </form>
+{% endif %}
