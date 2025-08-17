@@ -5,7 +5,10 @@ from langchain_mcp_adapters.client import MultiServerMCPClient
 # from langchain_groq import ChatGroq
 import os
 from langchain_google_genai import ChatGoogleGenerativeAI
-GOOGLE_API_KEY="AIzaSyBszV0VjdcGFrHlkgfIw6Z0q8zTzIVlUXU"
+from dotenv import load_dotenv
+load_dotenv()
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+
 os.environ["GOOGLE_API_KEY"]=GOOGLE_API_KEY
 
 from dotenv import load_dotenv
