@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'myapp',
     "users",
     'crossborder',
+    "ai",
     
 
     'django_otp',

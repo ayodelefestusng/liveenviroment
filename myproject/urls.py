@@ -25,6 +25,8 @@ urlpatterns = [
    
     path("", include("users.urls")),
     path("payments/", include("crossborder.urls")),
+     path("ai/", include("ai.urls")),
+
     
    
 ]

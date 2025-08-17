@@ -1,0 +1,26 @@
+From the root of myproject, run:
+
+python mcp_server.py
+
+
+Or for production:
+fastmcp run mcp_server.py
+
+For DOcker
+
+# Dockerfile
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY . .
+
+RUN pip install -r requirements.txt
+
+CMD ["fastmcp", "run", "mcp_server.py"]
+
+
+Then build and run:
+docker build -t myproject-mcp .
+docker run -d -p 8080:8080 myproject-mcp
