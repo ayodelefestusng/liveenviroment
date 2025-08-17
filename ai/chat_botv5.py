@@ -96,6 +96,8 @@ os.environ["TAVILY_API_KEY"] = TAVILY_API_KEY if TAVILY_API_KEY else ""
 os.environ["GROQ_API_KEY"] = GROQ_API_KEY if GROQ_API_KEY else ""
 
 
+tavily_search = TavilySearch(max_results=2)
+
 # Configure Google Generative AI
 # genai.configure(api_key=GOOGLE_API_KEY)
 # safety_settings = {
@@ -118,10 +120,9 @@ def safe_json(data):
 # py = Prompt7.objects.get(pk=1)  # Get the existing record
 # google_model = py.google_model
 
-tavily_search = TavilySearch(max_results=2)
+
 # chatbot_model =py.chatbot_model
 google_model="gemini-2.0-flash"
-# google_model = "gemini-2.5-flash",
 chatbot_model="gemini"
 
 
@@ -141,8 +142,7 @@ elif chatbot_model == "groq":
 
 
 # llms= ChatGroq( model="deepseek-r1-distill-llama-70b",temperature=0, max_tokens=None,timeout=None, max_retries=2,)
-# llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0,google_api_key=GOOGLE_API_KEY)
-llm = ChatGoogleGenerativeAI(model=google_model, temperature=0,google_api_key=GOOGLE_API_KEY)
+llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0,google_api_key=GOOGLE_API_KEY)
 # llm = ChatDeepSeek( model="deepseek-chat",  temperature=0, max_tokens=None, timeout=None,max_retries=2,)
 # llm = ChatOpenAI(model="gpt-4o-mini", temperature=0, openai_api_key=OPENAI_API_KEY)
 
@@ -176,9 +176,21 @@ llm = ChatGoogleGenerativeAI(model=google_model, temperature=0,google_api_key=GO
 
 
 
+
+tavily_search = TavilySearch(max_results=2)
+
 model = llm # Consistent naming
 
 # Initialize Embeddings and Vector Store
+
+
+def get_time_based_greeting():
+    """Return an appropriate greeting based on the current time."""
+    current_hour = datetime.now().hour
+    if 5 <= current_hour < 12: return "Good morning"
+    if 12 <= current_hour < 17: return "Good afternoon"
+    return "Good evening"
+
 embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", transport="rest")
 global_vector_store = None
 
@@ -195,7 +207,7 @@ def initialize_vector_store():
         # For local testing without Django settings, you might hardcode or derive it:
         # file_path = r"C:\Users\Pro\Desktop\Ayodele\25062025\myproject\media\pdfs\ATB Bank Nigeria Groq v2.pdf"
 
-        if file_path and os.path.exists(file_path):
+        if os.path.exists(file_path):
             try:
                 loader = PyPDFLoader(file_path)
                 docs = loader.load()
@@ -213,8 +225,9 @@ initialize_vector_store()
 
 # Initialize SQLDatabase with the specified file path
 # DB_FILE_PATH = r"C:\Users\Pro\Desktop\Ayodele\25062025\myproject\db.sqlite3"
-DB_FILE_PATH = r"C:\Users\Pro\Desktop\PROJECT\Live\myproject\db.sqlite3"
-DB_URI = f"sqlite:///{DB_FILE_PATH}" 
+# DB_FILE_PATH = r"C:\Users\Pro\Desktop\PROJECT\Live\myproject\db.sqlite3"
+# DB_URI = f"sqlite:///{DB_FILE_PATH}" 
+DB_URI = f"sqlite:///{settings.DATABASES['default']['NAME']}"
 # DB_URI = os.getenv("DB_URI")
 db = None
 try:
@@ -233,28 +246,13 @@ except Exception as e:
 #     ticketA: list[str] = Field(..., description='A list of specific transaction or service channels...')
 #     sourceA: list[str] = Field(..., description='A list of specific sources...')
 
-# kd begin 
-
-
-
-
-
-# Assume 'llm', 'db', 'global_vector_store', 'model', etc. are initialized elsewhere
-# For example:
-# llm = ChatOpenAI(model="gpt-4o", temperature=0)
-# db = SQLDatabase.from_uri("sqlite:///db.sqlite3")
-tavily_search = TavilySearch(max_results=2)
-
-# ==========================
-# 📊 Pydantic Schemas (Revised for Clarity)
-# ==========================
-
 class Answer(BaseModel):
     """The final, structured answer for the user."""
     answer: str = Field(description="Polite, empathetic, and direct response to the user's query.")
     sentiment: int = Field(description="User's sentiment score from -2 (very negative) to +2 (very positive).")
     ticket: List[str] = Field(description="Relevant service channels for unresolved issues (e.g., 'POS', 'ATM').")
     source: List[str] = Field(description="Sources used to generate the answer (e.g., 'PDF Content', 'Web Search').")
+    chart_base64: Optional[str] = Field(default=None, description="A base64 encoded PNG image of the generated chart, if any.")
 
 class Summary(BaseModel):
     """Conversation summary schema."""
@@ -279,14 +277,19 @@ class SQLQueryInput(BaseModel):
 # 📊 State Management (Simplified and Centralized)
 # ==========================
 
+
+class VisualizationInput(BaseModel):
+    """Input schema for the generate_visualization_tool."""
+    query: str = Field(description="The user's natural language request for a chart or visualization, e.g., 'Plot the total sales by region'.")
+
 class State(MessagesState):
     """Manages the conversation state. Uses Pydantic models for structured data."""
     # Tool outputs
     pdf_content: Optional[str] = None
     web_content: Optional[str] = None
     sql_result: Optional[str] = None
+    visualization_result: Optional[Dict[str, Any]] = None # <-- NEW
     attached_content: Optional[str] = None
-    last_tool_name: Optional[str] = Field(default=None)
 
     # Final structured outputs
     final_answer: Optional[Answer] = None
@@ -299,11 +302,19 @@ class State(MessagesState):
 # 🛠️ Tools
 # ==========================
 
-def retrieve_from_pdf(query: str) -> str:
+
+def get_time_based_greeting():
+    """Return an appropriate greeting based on the current time."""
+    current_hour = datetime.now().hour
+    if 5 <= current_hour < 12: return "Good morning"
+    if 12 <= current_hour < 17: return "Good afternoon"
+    return "Good evening"
+
+
+def retrieve_from_pdf(query: str) -> dict:
     """Performs a document query using the initialized vector store."""
     if global_vector_store:
         results = global_vector_store.similarity_search(query, k=3)
-        print ("Yelo",results )
         content = "\n\n".join([doc.page_content for doc in results])
         return {"pdf_content": content}
     return {"pdf_content": "Error: Document knowledge base not initialized."}
@@ -315,12 +326,7 @@ pdf_retrieval_tool = Tool(
     args_schema=PDFRetrievalInput,
 )
 
-
-
-
-
-
-def search_web_func(query: str) -> str:
+def search_web_func(query: str) -> dict:
     """Performs web search and returns structured tool output."""
     try:
         search_docs = tavily_search.invoke(query)
@@ -360,7 +366,7 @@ if db:
     except Exception as e:
         print(f"Error initializing SQL Agent: {e}. SQL query tool will not be available.")
 
-def execute_sql_query_func(query: str) -> str:
+def execute_sql_query_func(query: str) -> dict:
     """Executes a SQL query using the pre-initialized SQL agent and returns the result."""
     if not SQL_AGENT:
         return {"sql_result": "Error: SQL Agent not initialized."}
@@ -387,53 +393,103 @@ sql_query_tool = Tool(
     args_schema=SQLQueryInput,
 )
 
+
+
+
+
+# --- NEW VISUALIZATION TOOL ---
+def generate_visualization_func(query: str) -> dict:
+    """
+    Generates a data visualization based on a natural language query.
+    1. Converts the query to SQL.
+    2. Executes the SQL to get data.
+    3. Generates a textual analysis of the data.
+    4. Creates a plot and returns it as a base64 string.
+    """
+    print(f"--- Generating Visualization for query: '{query}' ---")
+    try:
+        # Step 1: Generate SQL from the natural language query
+        sql_generation_prompt = f"""Given the user's question, create a syntactically correct SQLite query to retrieve the data needed for a chart.
+        Tables available: {db.get_table_info()}
+        User question: "{query}"
+        """
+        sql_query = llm.invoke(sql_generation_prompt).content.strip().replace("```sql", "").replace("```", "")
+        print(f"Generated SQL: {sql_query}")
+
+        # Step 2: Execute the query with Pandas
+        engine = create_engine(DB_URI)
+        df = pd.read_sql_query(sql_query, con=engine)
+        if df.empty:
+            return {"visualization_result": {"analysis": "I found no data to visualize for your request.", "image_base64": None}}
+
+        # Step 3: Get textual analysis from the LLM
+        data_str = df.to_csv(index=False)
+        analysis_prompt = f"Analyze this data and provide a brief, insightful summary based on the user's original request: '{query}'.\n\nData:\n{data_str}"
+        analysis_text = llm.invoke(analysis_prompt).content
+
+        # Step 4: Generate the plot
+        plt.style.use('seaborn-v0_8-whitegrid')
+        fig, ax = plt.subplots(figsize=(10, 6))
+        
+        # Simple logic to determine plot type (can be improved)
+        if len(df.columns) == 2:
+            x_col, y_col = df.columns[0], df.columns[1]
+            if pd.api.types.is_numeric_dtype(df[y_col]):
+                df.plot(kind='bar', x=x_col, y=y_col, ax=ax, legend=False)
+                ax.set_ylabel(y_col.replace('_', ' ').title())
+                ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'))
+            else: # Fallback for non-numeric y
+                df[x_col].value_counts().plot(kind='pie', ax=ax, autopct='%1.1f%%')
+
+            ax.set_title(query.title())
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            plt.xticks(rotation=45, ha='right')
+        else:
+            # Fallback for other data shapes
+            df.plot(ax=ax)
+            ax.set_title(query.title())
+        
+        plt.tight_layout()
+        
+        # Step 5: Convert plot to base64
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png', bbox_inches='tight')
+        buffer.seek(0)
+        image_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+        plt.close(fig)
+
+        return {
+            "visualization_result": {
+                "analysis": analysis_text,
+                "image_base64": image_base64
+            }
+        }
+    except Exception as e:
+        print(f"Error in visualization tool: {e}")
+        return {"visualization_result": {"analysis": f"Sorry, I encountered an error while creating the visualization: {e}", "image_base64": None}}
+
+generate_visualization_tool = Tool(
+    name="generate_visualization_tool",
+    description="Use this tool to create charts, graphs, plots, or any data visualizations. This is the best tool when the user asks to 'plot', 'chart', 'visualize', or 'draw' data.",
+    func=generate_visualization_func,
+    args_schema=VisualizationInput,
+)
+
+
+
+tools = [pdf_retrieval_tool, tavily_search_tool, sql_query_tool, generate_visualization_tool]
+
+
 # Combine all tools (Corrected logic)
-tools = [pdf_retrieval_tool, tavily_search_tool]
+# tools = [pdf_retrieval_tool, tavily_search_tool,sql_query_tool]
 if SQL_AGENT:
     tools.append(sql_query_tool)
 
-
-
-
-
-
-def update_state_after_tool_call(state: State) -> dict:
-    """
-    Updates the specific state field (e.g., pdf_content) with the
-    output from the last tool call.
-    """
-    print("--- UPDATING STATE FROM TOOL OUTPUT ---")
-    last_message = state["messages"][-1]
-    
-    # Ensure the last message is a ToolMessage
-    if not isinstance(last_message, ToolMessage):
-        return {}
-
-    tool_name = state.get("last_tool_name")
-    tool_output = last_message.content
-    
-    print(f"Tool '{tool_name}' returned: {tool_output[:200]}...") # Print snippet of output
-
-    if tool_name == "pdf_retrieval_tool":
-        return {"pdf_content": tool_output}
-    elif tool_name == "tavily_search_tool":
-        return {"web_content": tool_output}
-    elif tool_name == "sql_query_tool":
-        return {"sql_result": tool_output}
-    
-    return {}
 # ==========================
 # 🧠 Graph Nodes
 # ==========================
 
-def get_time_based_greeting():
-    """Return an appropriate greeting based on the current time."""
-    current_hour = datetime.now().hour
-    if 5 <= current_hour < 12: return "Good morning"
-    if 12 <= current_hour < 17: return "Good afternoon"
-    return "Good evening"
-
-def agent_node1(state: State):
+def agent_node(state: State):
     """
     The Router Node: Decides whether to call a tool or generate a final answer.
     This node's prompt is focused on routing, not on generating the final answer.
@@ -464,60 +520,27 @@ def agent_node1(state: State):
     
     return {"messages": [response]}
 
-
-
-
-
-def agent_node(state: State):
-    """
-    The Router Node: Decides whether to call a tool or generate a final answer.
-    """
-    print("--- AGENT NODE (ROUTER) ---")
-    messages = state["messages"]
-    
-    # Handle the very first message with a greeting
-    if len(messages) == 1:
-        return {"messages": [AIMessage(content=f"{get_time_based_greeting()}! I am Damilola... How can I help?")]}
-    
-    # A more focused system prompt for routing
-    system_prompt = SystemMessage(
-        content=f"""You are a helpful AI assistant for ATB Bank. Your task is to analyze the user's request and decide if a tool is needed to answer it.
-        
-        You have access to the following tools:
-        - `pdf_retrieval_tool`: For questions about bank policies, products, or internal knowledge.
-        - `tavily_search_tool`: For general knowledge or up-to-date information.
-        - `sql_query_tool`: For questions about specific data, like user counts.
-        
-        Based on the conversation history, either call the most appropriate tool to gather information or, if you have enough information already, prepare to answer the user directly.
-        """
-    )
-    
-    llm_with_tools = llm.bind_tools(tools)
-    response = llm_with_tools.invoke([system_prompt] + messages)
-    
-    ### MODIFIED ###
-    # If a tool is called, we store its name in the state to use later.
-    last_tool_name = None
-    if response.tool_calls:
-        last_tool_name = response.tool_calls[0]['name']
-        print(f"LLM decided to call tool: {last_tool_name}")
-        
-    return {"messages": [response], "last_tool_name": last_tool_name}
-   
-
 def generate_final_answer_node(state: State):
     """
     The Generator Node: Creates the final structured answer after gathering all necessary context from tools.
     """
     print("--- GENERATE FINAL ANSWER NODE ---")
     user_query = state["messages"][-1].content
-    print ("Lemu",state.get("pdf_content"))
-
     
     context_parts = []
     if state.get("pdf_content"): context_parts.append(f"PDF Content:\n{state['pdf_content']}")
-    # if state.get("web_content"): context_parts.append(f"Web Content:\n{state['web_content']}")
+    if state.get("web_content"): context_parts.append(f"Web Content:\n{state['web_content']}")
     if state.get("sql_result"): context_parts.append(f"SQL Database Result:\n{state['sql_result']}")
+
+    # NEW: Handle visualization result
+    viz_result = state.get("visualization_result")
+    chart_base64 = None
+    if viz_result:
+        analysis = viz_result.get('analysis', 'Chart analysis is not available.')
+        chart_base64 = viz_result.get('image_base64')
+        context_parts.append(f"Visualization Analysis:\n{analysis}")
+
+
     if state.get("attached_content"): context_parts.append(f"Attached Content:\n{state['attached_content']}")
     context = "\n\n".join(context_parts) if context_parts else "No additional context was retrieved."
 
@@ -534,20 +557,31 @@ def generate_final_answer_node(state: State):
     
     Based on all the information above, generate a structured response. You MUST format your response as a JSON object that strictly follows the schema below.
 
+    
+        Generate a structured JSON response. 
+    - The 'answer' field should summarize the findings. If a chart was generated, describe what the chart shows.
+    - If a chart was generated (indicated by 'Visualization Analysis' in the context), copy the provided chart data into the 'chart_base64' field. Otherwise, leave it as null.
+    
     Schema:
     {{
       "answer": "str: A clear, concise, empathetic, and polite response directly addressing the user's question. Use straightforward language.",
       "sentiment": "int: An integer rating of the user's sentiment, from -2 (very negative) to +2 (very positive).",
       "ticket": "List[str]: A list of service channels relevant to any unresolved issue. Possible values: ['POS', 'ATM', 'Web', 'Mobile App', 'Branch', 'Call Center', 'Other']. Leave empty if not applicable.",
       "source": "List[str]: A list of sources used. Possible values: ['PDF Content', 'Web Search', 'SQL Database', 'User Provided Context', 'Internal Knowledge']. Leave empty if no specific source was used."
+      "chart_base64": "Optional[str]: A base64 encoded PNG image of the chart, or null."
     }}
     """
     
     structured_llm = llm.with_structured_output(Answer)
     final_answer_obj = structured_llm.invoke(prompt)
+    if chart_base64:
+        final_answer_obj.chart_base64 = chart_base64
+        final_answer_obj.source.append("Data Visualization")
+
     
     # Append the human-readable part of the answer to the message history
     new_messages = state["messages"] + [AIMessage(content=final_answer_obj.answer)]
+    print ("Ajaiye",final_answer_obj)
     
     return {
         "final_answer": final_answer_obj,
@@ -555,8 +589,32 @@ def generate_final_answer_node(state: State):
     }
 
 def summarize_conversation(state: State):
-    """Generates a final summary of the conversation."""
+    """
+    Generates a final summary of the conversation after the answer has been provided.
+
+    This node:
+    1. Takes the complete message history from the state.
+    2. Uses an LLM with structured output to generate a Summary object.
+    3. Compiles a comprehensive 'metadatas' dictionary for logging, combining
+       information from the final answer and the new summary.
+    4. Updates the state with the 'conversation_summary' and 'metadatas'.
+    """
+      
     print("--- SUMMARIZE CONVERSATION NODE ---")
+    messages = state.get("messages", [])
+ 
+    
+    # 1. Prepare the conversation history for the LLM
+    # Using .get() provides a default empty list if 'messages' is not in the state
+     
+    if not messages:
+        # If there are no messages, we can't summarize. Return an empty update.
+        return {
+            "conversation_summary": None,
+            "metadatas": {"error": "No messages to summarize."}
+        }
+
+
     conversation_history = "\n".join([f"{msg.type}: {msg.content}" for msg in state["messages"]])
     
     summarize_prompt = f"""Please provide a structured summary of the following conversation.
@@ -578,12 +636,17 @@ def summarize_conversation(state: State):
     
     # Create the final metadata dictionary for logging
     final_answer = state.get("final_answer")
+    last_user_question = ""
+    if len(messages) > 1:
+        # The last message is the AI's answer, the one before is the user's prompt for that turn
+        last_user_question = messages[-2].content
     metadata_dict = {
         "question": state["messages"][-2].content if len(state["messages"]) > 1 else "",
         "answer": final_answer.answer if final_answer else "N/A",
         "sentiment": final_answer.sentiment if final_answer else 0,
         "ticket": final_answer.ticket if final_answer else [],
         "source": final_answer.source if final_answer else [],
+        "chart_base64": final_answer.chart_base64 if final_answer else None,
         "summary": summary_obj.summary,
         "summary_sentiment": summary_obj.sentiment,
         "summary_unresolved_tickets": summary_obj.unresolved_tickets,
@@ -612,21 +675,16 @@ def build_graph():
     
     workflow.add_node("agent_node", agent_node)
     workflow.add_node("tools", ToolNode(tools=tools))
-    workflow.add_node("update_state", update_state_after_tool_call)
-
     workflow.add_node("generate_final_answer", generate_final_answer_node)
     workflow.add_node("summarize", summarize_conversation)
 
+
+
+
+
     workflow.set_entry_point("agent_node")
-
-    workflow.add_conditional_edges("agent_node", tools_condition, {"tools": "tools",END: "generate_final_answer",})
-    
-
-
-    # workflow.add_conditional_edges("agent_node", should_continue)
-    workflow.add_edge("tools", "update_state")
-    workflow.add_edge("update_state", "agent_node")
-    # workflow.add_edge("tools", "agent_node")
+    workflow.add_conditional_edges("agent_node", should_continue)
+    workflow.add_edge("tools", "agent_node")
     workflow.add_edge("generate_final_answer", "summarize")
     workflow.add_edge("summarize", END)
     
@@ -638,26 +696,28 @@ def build_graph():
         memory = SqliteSaver(conn=conn)
         print("SQLite checkpointing connected successfully.")
     except Exception as e:
-        # from langgraph.checkpoint.memory import InMemorySaver
+        
         print(f"Error connecting to SQLite for checkpointing: {e}. Using in-memory saver.")
-        # memory = InMemorySaver()
+        memory = InMemorySaver()
 
     return workflow.compile(checkpointer=memory)
 
+   
 # Main processing function
 def process_message(message_content: str, session_id: str, file_path: Optional[str] = None):
     """Main function to process user messages using the LangGraph agent."""
     graph = build_graph()
     config = {"configurable": {"thread_id": session_id}}
-    
+
     attached_content = None # Simplified for this example
     # Image processing logic can be added here as in the original code
+       # Only process image if file_path is provided
+    # if file_path and os.path.exists(file_path):
     if file_path:
         try:
             image = Image.open(file_path)
             image.thumbnail([512, 512]) # Resize for efficiency
-            # prompt = "Describe the content of the picture in detail."
-            prompt = "Generate the message in the content of the picture."
+            prompt = "Describe the content of the picture in detail."
             configure(api_key=GOOGLE_API_KEY)
             # genai.configure(api_key=GOOGLE_API_KEY)  # Configure the API key
             # modelT = genai.GenerativeModel('gemini-pro-vision') # Specify the vision model
@@ -671,7 +731,6 @@ def process_message(message_content: str, session_id: str, file_path: Optional[s
     elif file_path:
         print(f"Warning: Attached file not found at {file_path}. Skipping image processing.")
     
-    
     initial_state = {"messages": [HumanMessage(content=message_content)], "attached_content": attached_content}
     
     output = graph.invoke(initial_state, config)
@@ -680,22 +739,21 @@ def process_message(message_content: str, session_id: str, file_path: Optional[s
     # Extract final answer from the structured Pydantic object
     final_answer_obj = output.get('final_answer')
     final_answer_content = final_answer_obj.answer if final_answer_obj else "No final answer was generated."
+    print("--- LangGraph Akule ---",final_answer_content)
+    if final_answer_obj:
+        return {
+            "answer": final_answer_content,
+            "chart": final_answer_obj.chart_base64, # <-- Pass chart data to the view
+            "metadata": output.get("metadatas", {})
+        }
+    else:
+        return {
+            "answer": "I'm sorry, I could not generate a response.",
+            "chart": None,
+            "metadata": {}
+        }
 
-    return {
-        "answer": final_answer_content,
-        "metadata": output.get("metadatas", {})
-    }
 
-
-
-
-
-
-
-
-
-
-# kd ed 
 # # ==========================
 # # ▶️ Main Execution
 # # ==========================
