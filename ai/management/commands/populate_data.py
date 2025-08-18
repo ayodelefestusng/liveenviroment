@@ -1,4 +1,6 @@
 import random
+import uuid
+
 import datetime
 from django.core.management.base import BaseCommand
 from ai.models import NigerianName, Branch, Customer, Transaction, LoanReport, ComplianceRecord, BranchPerformance, Employee
@@ -23,14 +25,14 @@ class Command(BaseCommand):
     help = "Populate database with sample data"
 
     def handle(self, *args, **kwargs):
-        self.populate_nigerian_names()
-        self.populate_branches()
-        self.populate_customers()
+        # self.populate_nigerian_names()
+        # self.populate_branches()
+        # self.populate_customers()
         self.populate_transactions()
-        self.populate_loans()
-        self.populate_compliance_records()
-        self.populate_branch_performance()
-        self.populate_employees()
+        # self.populate_loans()
+        # self.populate_compliance_records()
+        # self.populate_branch_performance()
+        # self.populate_employees()
 
         self.stdout.write(self.style.SUCCESS("Database populated successfully!"))
 
@@ -58,6 +60,12 @@ class Command(BaseCommand):
         while Customer.objects.filter(customer_id=customer_id).exists():
             customer_id = f"CUST-{random.randint(100000, 999999)}"
         return customer_id
+    
+
+    def generate_unique_compliance_record_id(self):
+        # A simple method to generate a unique ID
+        # Here we use a UUID (Universally Unique Identifier) which is guaranteed to be unique
+        return f"CR-{uuid.uuid4().hex[:12].upper()}"
 
 
     def generate_unique_phone(self):
@@ -103,6 +111,37 @@ class Command(BaseCommand):
         return transaction_id
     
     def populate_customers(self):
+
+
+        genders = ["male", "female"]
+        nigerian_cities = [
+            "Lagos", "Kano", "Ibadan", "Kaduna", "Port Harcourt", "Benin City",
+            "Maiduguri", "Zaria", "Aba", "Jos", "Ilorin", "Oyo", "Enugu",
+            "Abeokuta", "Sokoto", "Onitsha", "Warri", "Calabar", "Uyo",
+            "Oshogbo", "Akure", "Ado Ekiti", "Makurdi", "Minna", "Bauchi",
+            "Gombe", "Yola", "Jalingo", "Birnin Kebbi", "Gusau", "Katsina",
+            "Damaturu", "Dutse", "Lafia", "Abuja", "Lokoja", "Owerri",
+            "Umuahia", "Awka", "Yenagoa", "Asaba", "Epe", "Badagry", "Ikorodu"
+        ]
+        nigerian_states = [
+            "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue",
+            "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu",
+            "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi",
+            "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo",
+            "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara", "Federal Capital Territory"
+        ]
+        occupations = [
+            "Software Engineer", "Doctor", "Teacher", "Nurse", "Accountant",
+            "Entrepreneur", "Civil Servant", "Student", "Farmer", "Lawyer",
+            "Banker", "Trader", "Journalist", "Architect", "Artist",
+            "Consultant", "Mechanic", "Electrician", "Fashion Designer",
+            "Photographer", "Pilot", "Chef", "Lecturer", "Data Analyst",
+            "Marketer", "Plumber", "Veterinarian", "Pharmacist", "Engineer",
+            "Real Estate Agent"
+        ]
+
+
+
         for _ in range(2000):
             Customer.objects.create(
                 customer_id=self.generate_unique_customer_id(),  # Ensure uniqueness
@@ -112,11 +151,19 @@ class Command(BaseCommand):
                 phone_number=self.generate_unique_phone(),
                 account_number=self.generate_unique_account(),
                 branch=Branch.objects.order_by("?").first(),
-                date_of_birth=random_date(start_year=1970)
-            )
-            
-            
+                date_of_birth=random_date(start_year=1970),
+                # date_of_birth=self.random_date(start_year=1970, end_year=2005),
+
+                gender=random.choice(genders),
+                city_of_residence=random.choice(nigerian_cities),
+                state_of_residence=random.choice(nigerian_states),
+                nationality="Nigeria",  # Default to Nigeria as per your model
+                occupation=random.choice(occupations),
+            )   
+        self.stdout.write(self.style.SUCCESS('Successfully populated 2000 customers.'))
         
+     
+
         
         
         
@@ -149,14 +196,23 @@ class Command(BaseCommand):
                 transaction_channel=random.choice(TRANSACTION_CHANNELS),
                 timestamp=random_date()
             )
+    def generate_loan_account(self):
+        """Generate a unique 10-digit account number."""
+        loan_account_number = str(random.randint(1000000000, 9999999999))  # Ensure 10 digits
 
+        # Ensure uniqueness before returning
+        while LoanReport.objects.filter(loan_account_number=loan_account_number).exists():
+            loan_account_number = str(random.randint(1000000000, 9999999999))
+
+        return loan_account_number   
 
 
     def populate_loans(self):
         for _ in range(600):
             LoanReport.objects.create(
                 customer=Customer.objects.order_by("?").first(),
-                loan_account_number=f"LN-{random.randint(100000, 999999)}",
+                # loan_account_number=f"LN-{random.randint(100000, 999999)}",
+                loan_account_number=f"LN-{self.generate_loan_account()}",
                 amount_collected=random.uniform(50000, 5000000),
                 date_loan_booked=random_date(),
                 last_repayment_date=random_date(),
@@ -196,6 +252,19 @@ class Command(BaseCommand):
             email = f"employee{random.randint(1000, 99999)}@bank.com"
 
         return email
+    
+    def generate_unique_employee_id(self):
+        """Generate a unique employee email."""
+        employee_id22 = random.randint(1000, 9999)
+        employee_id=f"EMP-{employee_id22}"
+
+        while Employee.objects.filter(employee_id=employee_id).exists():
+            employee_id22 = random.randint(1000, 9999)
+
+        return employee_id22
+    
+
+       
 
     def populate_employees(self):
         DEPARTMENTS = ["HR", "Finance", "Operations", "Compliance", "IT", "Customer Service"]
@@ -203,7 +272,7 @@ class Command(BaseCommand):
 
         for _ in range(800):
             Employee.objects.create(
-                employee_id=f"EMP-{random.randint(1000, 9999)}",
+                employee_id=f"EMP-{self.generate_unique_employee_id()}",
                 full_name=f"{random.choice(NIGERIAN_FIRST_NAMES)} {random.choice(NIGERIAN_LAST_NAMES)}",
                 email=self.generate_unique_employee_email(),  # Fix: Ensure uniqueness
                 department=random.choice(DEPARTMENTS),

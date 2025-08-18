@@ -302,7 +302,146 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 # @csrf_exempt # User requested not to use async or csrf_exempt
 @csrf_exempt
+
+
 def send_message(request):
+    """
+    Handles incoming user messages, processes them with an LLM,
+    sends an immediate response to the user, and then saves
+    the bot's message and any associated metadata in a background thread.
+    """
+    try:
+        user_message, attachment = '', None
+
+        # 📍 Ensure session key is created for conversation tracking
+        if not request.session.session_key:
+            request.session.create()
+        session_key = request.session.session_key
+
+        # 📨 Handle input from JSON payload or form-data
+        if 'application/json' in request.content_type:
+            try:
+                if request.body:
+                    data = json.loads(request.body)
+                    user_message = data.get('message', '').strip()
+            except json.JSONDecodeError:
+                return JsonResponse({'status': 'error', 'response': 'Invalid JSON format'}, status=400)
+        else:
+            user_message = request.POST.get('message', '').strip()
+            attachment = request.FILES.get('attachment')
+
+        # 🚫 Validate input: either a message or an attachment must be present
+        if not user_message and not attachment:
+            return JsonResponse({'status': 'error', 'response': 'Message or attachment is required'}, status=400)
+
+        # 🗃️ Get or create the conversation for the current session
+        conversation, _ = Conversation.objects.get_or_create(session_id=session_key, is_active=True)
+
+        # Create and save the user's message immediately
+        user_msg_obj = Message.objects.create(
+            conversation=conversation,
+            text=user_message,
+            is_user=True
+        )
+
+        # 📎 Handle attachment upload (if any)
+        file_path = ""
+        if attachment and hasattr(attachment, 'read'):
+            user_msg_obj.attachment = attachment
+            user_msg_obj.save()
+            try:
+                file_path = user_msg_obj.attachment.path
+            except Exception as e:
+                logging.warning(f"Could not resolve attachment path: {e}")
+                file_path = ""
+
+        # 🧠 Process the user's message with the Language Model (LLM)
+        bot_response_data = {}
+        bot_text = ""
+
+        try:
+            # ✅ Always call process_message and let it determine the best response
+            bot_response_data = process_message(user_message, session_key, file_path)
+            
+            # ✅ Check if the response includes a chart
+            chart_data = bot_response_data.get('chart')
+            print (f"Akuleia View: {chart_data}")
+            if chart_data:
+                # Construct the HTML response with the chart image
+                bot_text = f"""
+                <div class="chart-response">
+                    <div class="analysis-text">{bot_response_data.get('answer', '')}</div>
+                    <div class="chart-image">
+                        <img src="data:image/png;base64,{chart_data}" 
+                             alt="Generated Chart" 
+                             class="img-fluid" 
+                             style="max-width: 100%; height: auto;">
+                    </div>
+                </div>
+                """
+            else:
+                # If no chart, use the text answer directly
+                bot_text = bot_response_data.get('answer', '')
+
+            if not bot_text:
+                bot_text = "I'm sorry, I couldn't process your request."
+
+        except Exception as e:
+            # Handle errors during LLM processing
+            bot_text = f"Error processing message: {str(e)}"
+            logging.error(f"process_message failed: {e}", exc_info=True)
+
+        # ✅ Create and save the bot's response message
+        # We save only the text part, not the HTML, to keep the database clean
+        Message.objects.create(
+            conversation=conversation,
+            text=bot_response_data.get('answer', 'I\'m sorry, there was an error.'),
+            is_user=False
+        )
+
+        # ✅ Prepare the JSON response payload to send back to the user
+        response_payload = {
+            'status': 'success',
+            'response': bot_text,
+            'attachment_url': user_msg_obj.attachment.url if attachment else None
+        }
+        
+        # 🧵 Define a function for background saving of metadata
+        def save_metadata_async(bot_response_data_for_thread, current_session_key):
+            """Saves bot response metadata in a separate thread."""
+            try:
+                metadata = bot_response_data_for_thread.get('metadata', {})
+                if metadata:
+                    insight_obj = Insight.objects.filter(session_id=current_session_key).order_by('-updated_at').first()
+                    if not insight_obj:
+                        insight_obj = Insight(session_id=current_session_key)
+
+                    insight_obj.question = metadata.get('question', '')
+                    insight_obj.answer = metadata.get('answer', '')
+                    insight_obj.sentiment = metadata.get('sentiment', 0)
+                    insight_obj.ticket = safe_json(metadata.get('ticket', {}))
+                    insight_obj.source = safe_json(metadata.get('source', {}))
+                    insight_obj.summary = metadata.get('summary', '')
+                    insight_obj.sum_sentiment = safe_json(metadata.get('sum_sentiment', 0))
+                    insight_obj.sum_ticket = safe_json(metadata.get('sum_ticket', {}))
+                    insight_obj.sum_source = safe_json(metadata.get('sum_source', {}))
+                    insight_obj.save()
+            except Exception as e:
+                logging.error(f"Background DB save failed: {e}", exc_info=True)
+
+        # 🚀 Launch the background thread to save metadata
+        threading.Thread(target=save_metadata_async, args=(bot_response_data, session_key,)).start()
+
+        # Return the JSON response to the user immediately
+        return JsonResponse(response_payload)
+
+    except Exception as e:
+        logging.error(f"Fatal server error: {e}", exc_info=True)
+        return JsonResponse({'status': 'error', 'response': f"Server error: {str(e)}"}, status=500)
+
+
+
+def send_messagetoday(request):
     """
     Handles incoming user messages, processes them with an LLM,
     sends an immediate response to the user, and then saves
@@ -398,7 +537,7 @@ def send_message(request):
         # This ensures the bot's reply is recorded quickly, separate from metadata.
         Message.objects.create(
             conversation=conversation,
-            text=bot_text,
+            text=bot_response_data.get('answer', ''),
             is_user=False
         )
 

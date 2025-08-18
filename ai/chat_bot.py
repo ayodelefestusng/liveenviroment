@@ -14,10 +14,14 @@ from datetime import datetime
 import sqlite3
 # # ==========================
 import pandas as pd
+from io import BytesIO
+import base64
 
 
 from pydantic import BaseModel, Field
 from typing import List
+import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
 
 
 # # ==========================
@@ -67,10 +71,41 @@ from django.conf import settings
 # from langgraph.checkpoint.postgres import PostgresSaver
 # # --- Project-Specific Imports ---
 # # AJADI-2
-
+import re
 
 # Load .env file
 load_dotenv()
+import matplotlib
+matplotlib.use('Agg') # This prevents Matplotlib from trying to open a GUI window
+
+import matplotlib
+# This must be done BEFORE importing pyplot
+matplotlib.use('Agg')
+
+from matplotlib.ticker import FuncFormatter
+import matplotlib.pyplot as plt
+import pandas as pd
+from sqlalchemy import create_engine
+import base64
+from io import BytesIO
+
+import logging
+import io
+import re
+import base64
+from io import BytesIO
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
+from sqlalchemy import create_engine
+
+
+import logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
 
 # ==========================
 # ⚙️ Configuration & Initialization
@@ -94,8 +129,7 @@ os.environ["LANGSMITH_ENDPOINT"] = LANGSMITH_ENDPOINT if LANGSMITH_ENDPOINT else
 os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY if GOOGLE_API_KEY else ""
 os.environ["TAVILY_API_KEY"] = TAVILY_API_KEY if TAVILY_API_KEY else ""
 os.environ["GROQ_API_KEY"] = GROQ_API_KEY if GROQ_API_KEY else ""
-
-
+tavily_search = TavilySearch(max_results=2)
 # Configure Google Generative AI
 # genai.configure(api_key=GOOGLE_API_KEY)
 # safety_settings = {
@@ -103,6 +137,7 @@ os.environ["GROQ_API_KEY"] = GROQ_API_KEY if GROQ_API_KEY else ""
 #     "threshold": HarmBlockThreshold.BLOCK_ONLY_HIGH
 # }
 
+from sqlalchemy import create_engine
 
 def safe_json(data):
     """Ensures safe JSON serialization to prevent errors."""
@@ -118,9 +153,11 @@ def safe_json(data):
 # py = Prompt7.objects.get(pk=1)  # Get the existing record
 # google_model = py.google_model
 
-tavily_search = TavilySearch(max_results=2)
+
 # chatbot_model =py.chatbot_model
 google_model="gemini-2.0-flash"
+# google_model="gemini-2.5-pro"
+
 # google_model = "gemini-2.5-flash",
 chatbot_model="gemini"
 
@@ -215,6 +252,9 @@ initialize_vector_store()
 # DB_FILE_PATH = r"C:\Users\Pro\Desktop\Ayodele\25062025\myproject\db.sqlite3"
 DB_FILE_PATH = r"C:\Users\Pro\Desktop\PROJECT\Live\myproject\db.sqlite3"
 DB_URI = f"sqlite:///{DB_FILE_PATH}" 
+# DB_URI = f"sqlite:///{settings.DATABASES['default']['NAME']}"
+
+
 # DB_URI = os.getenv("DB_URI")
 db = None
 try:
@@ -255,6 +295,7 @@ class Answer(BaseModel):
     sentiment: int = Field(description="User's sentiment score from -2 (very negative) to +2 (very positive).")
     ticket: List[str] = Field(description="Relevant service channels for unresolved issues (e.g., 'POS', 'ATM').")
     source: List[str] = Field(description="Sources used to generate the answer (e.g., 'PDF Content', 'Web Search').")
+    chart_base64: Optional[str] = Field(default=None, description="A base64 encoded PNG image of the generated chart, if any.")
 
 class Summary(BaseModel):
     """Conversation summary schema."""
@@ -278,6 +319,9 @@ class SQLQueryInput(BaseModel):
 # ==========================
 # 📊 State Management (Simplified and Centralized)
 # ==========================
+class VisualizationInput(BaseModel):
+    """Input schema for the generate_visualization_tool."""
+    query: str = Field(description="The user's natural language request for a chart or visualization, e.g., 'Plot the total sales by region'.")
 
 class State(MessagesState):
     """Manages the conversation state. Uses Pydantic models for structured data."""
@@ -285,6 +329,8 @@ class State(MessagesState):
     pdf_content: Optional[str] = None
     web_content: Optional[str] = None
     sql_result: Optional[str] = None
+    visualization_result: Optional[Dict[str, Any]] = None # <-- NEW
+
     attached_content: Optional[str] = None
     last_tool_name: Optional[str] = Field(default=None)
 
@@ -299,6 +345,12 @@ class State(MessagesState):
 # 🛠️ Tools
 # ==========================
 
+def get_time_based_greeting():
+    """Return an appropriate greeting based on the current time."""
+    current_hour = datetime.now().hour
+    if 5 <= current_hour < 12: return "Good morning"
+    if 12 <= current_hour < 17: return "Good afternoon"
+    return "Good evening"
 def retrieve_from_pdf(query: str) -> str:
     """Performs a document query using the initialized vector store."""
     if global_vector_store:
@@ -314,11 +366,6 @@ pdf_retrieval_tool = Tool(
     func=retrieve_from_pdf,
     args_schema=PDFRetrievalInput,
 )
-
-
-
-
-
 
 def search_web_func(query: str) -> str:
     """Performs web search and returns structured tool output."""
@@ -387,8 +434,378 @@ sql_query_tool = Tool(
     args_schema=SQLQueryInput,
 )
 
+
+
+
+
+def get_column_types(df: pd.DataFrame):
+    """Helper function to identify column types for plotting."""
+    numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
+    categorical_cols = df.select_dtypes(include=['object', 'category']).columns.tolist()
+    date_cols = df.select_dtypes(include=['datetime', 'datetimetz']).columns.tolist()
+    return numeric_cols, categorical_cols, date_cols
+
+
+
+
+# --- FULLY ENHANCED VISUALIZATION TOOL ---
+def generate_visualization_func(query: str) -> dict:
+    """
+    Generates a data visualization based on a natural language query.
+    """
+    logging.info(f"--- Generating Visualization for query: '{query}' ---")
+    analysis_text = "" # Initialize in case of early failure
+    try:
+        # Step 1: Generate SQL from the natural language query (with few-shot prompt)
+        sql_generation_prompt = f"""Given the user's question, create a single, syntactically correct SQL query to retrieve the data needed for a chart.
+Do not include any other text or explanation, just the SQL query itself.
+
+Tables available: {db.get_table_info()}
+
+### Example ###
+User question: "Show me the total transaction value for each month this year."
+SQL Query:
+```sql
+SELECT
+  STRFTIME('%Y-%m', timestamp) AS month,
+  SUM(amount) AS total_value
+FROM
+  ai_transaction
+WHERE
+  STRFTIME('%Y', timestamp) = STRFTIME('%Y', 'now')
+GROUP BY
+  month
+ORDER BY
+  month;
+```
+### End Example ###
+
+User question: "{query}"
+SQL Query:
+"""
+        raw_sql_query = llm.invoke(sql_generation_prompt).content.strip()
+
+        match = re.search(r"```(?:sql)?\s*(.*?)\s*```", raw_sql_query, re.DOTALL)
+        if match:
+            sql_query = match.group(1).strip()
+        else:
+            sql_query = raw_sql_query
+        
+        logging.info(f"Generated SQL: {sql_query}")
+
+        # Step 2: Execute the query with Pandas
+        engine = create_engine(DB_URI)
+        df = pd.read_sql_query(sql_query, con=engine)
+        
+        if df.empty:
+            logging.warning("Query returned no data.")
+            return {"visualization_result": {"analysis": "I found no data to visualize for your request.", "image_base64": None}}
+
+        # --- ENHANCED LOGGING: Log DataFrame details ---
+        buffer = io.StringIO()
+        df.info(buf=buffer)
+        df_info_str = buffer.getvalue()
+        logging.info(f"--- DataFrame Details ---\nHead:\n{df.head().to_string()}\nInfo:\n{df_info_str}")
+
+        # Step 3: Determine the best chart type
+        df_info_for_prompt = f"Data Columns: {df.columns.tolist()}\nData Head:\n{df.head().to_string()}"
+        chart_selection_prompt = f"""
+        Given the user's original query '{query}' and the following data summary, what is the best chart type to use?
+        Your answer must be a single word from this list: 'bar', 'line', 'scatter', 'pie'.
+
+        Data Summary:\n{df_info_for_prompt}
+        """
+        chart_type = llm.invoke(chart_selection_prompt).content.strip().lower()
+        logging.info(f"LLM chose chart type: '{chart_type}'")
+
+        # Step 4: Get textual analysis from the LLM
+        analysis_prompt = f"Analyze this data and provide a brief, insightful summary based on the user's original request: '{query}'.\n\nData:\n{df.to_csv(index=False)}"        
+        analysis_text = llm.invoke(analysis_prompt).content
+        logging.info(f"Generated Analysis: {analysis_text[:200]}...") # Log a snippet
+
+        # Step 5: Generate the plot using intelligent chart selection
+        plt.style.use('seaborn-v0_8-whitegrid')
+        fig, ax = plt.subplots(figsize=(10, 6))
+        numeric, categorical, dates = get_column_types(df)
+        
+        if chart_type == 'bar' and categorical and numeric:
+            x_col = categorical[0]
+            if len(numeric) > 1: # Handle multi-series bar charts
+                df.set_index(x_col)[numeric].plot(kind='bar', ax=ax, figsize=(12, 7))
+                ax.set_ylabel("Values")
+                ax.legend(title='Metrics')
+            else: # Handle single-series bar charts
+                y_col = numeric[0]
+                df.plot(kind='bar', x=x_col, y=y_col, ax=ax, legend=False)
+                ax.set_ylabel(y_col.replace('_', ' ').title())
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            plt.xticks(rotation=45, ha='right')
+
+        elif chart_type == 'line' and (dates or numeric):
+            x_col = dates[0] if dates else numeric[0]
+            y_cols = [c for c in numeric if c != x_col]
+            if not y_cols: y_cols = numeric # Fallback if x is also the only numeric
+            df.plot(kind='line', x=x_col, y=y_cols, ax=ax, marker='o')
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            ax.set_ylabel("Value")
+            plt.xticks(rotation=45, ha='right')
+
+        elif chart_type == 'scatter' and len(numeric) >= 2:
+            x_col, y_col = numeric[0], numeric[1]
+            df.plot(kind='scatter', x=x_col, y=y_col, ax=ax)
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            ax.set_ylabel(y_col.replace('_', ' ').title())
+
+        elif chart_type == 'pie' and categorical and numeric:
+            df.set_index(categorical[0])[numeric[0]].plot(
+                kind='pie', ax=ax, autopct='%1.1f%%', startangle=90
+            )
+            ax.set_ylabel('')
+        
+        else: # Fallback
+            logging.warning(f"Could not find a perfect chart match for type '{chart_type}'. Using generic plot.")
+            df.plot(ax=ax)
+       
+        # Formatting common to all charts
+        ax.set_title(query.title())
+        ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{x:,.0f}'))
+        plt.tight_layout()
+        
+        # Step 6: Convert plot to base64
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png', bbox_inches='tight')
+        buffer.seek(0)
+        image_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+        plt.close(fig)
+        logging.info(f"Successfully generated plot image (Base64 length: {len(image_base64)}).")
+
+        return {
+            "visualization_result": {
+                "analysis": analysis_text,
+                "image_base64": image_base64
+            }
+        }
+    
+    except Exception as e:
+        # --- ENHANCED LOGGING: Log the full exception traceback ---
+        logging.error("Error in visualization tool", exc_info=True)
+        analysis_text_on_error = analysis_text if analysis_text else f"Sorry, I encountered an unrecoverable error: {e}"
+        return {"visualization_result": {"analysis": analysis_text_on_error, "image_base64": None}}
+
+
+
+
+
+def get_column_types1(df: pd.DataFrame):
+    """Helper function to identify column types for plotting."""
+    numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
+    categorical_cols = df.select_dtypes(include=['object', 'category']).columns.tolist()
+    date_cols = df.select_dtypes(include=['datetime', 'datetimetz']).columns.tolist()
+    return numeric_cols, categorical_cols, date_cols
+# --- NEW VISUALIZATION TOOL ---
+def generate_visualization_func1(query: str) -> dict:
+    """
+    Generates a data visualization based on a natural language query.
+    1. Converts the query to SQL.
+    2. Executes the SQL to get data.
+    3. Generates a textual analysis of the data.
+    4. Creates a plot and returns it as a base64 string.
+    """
+    print(f"--- Generating Visualization for query: '{query}' ---")
+    try:
+        # Step 1: Generate SQL from the natural language query
+        # sql_generation_prompt = f"""Given the user's question, create a syntactically correct SQL query to retrieve the data needed for a chart.
+        # Tables available: {db.get_table_info()}
+        # User question: "{query}"
+        # """
+        # sql_query = llm.invoke(sql_generation_prompt).content.strip().replace("```sql", "").replace("```", "")
+#         sql_generation_prompt2 = f"""Given the user's question, create a single, syntactically correct SQL query to retrieve the data needed for a chart.
+# Do not include any other text or explanation, just the SQL query itself.
+# Tables available: {db.get_table_info()}
+# User question: "{query}"
+
+# """
+        # # sql_query = llm.invoke(sql_generation_prompt).content.strip() # Remove the .replace() calls
+        # sql_generation_prompt = f"""Given the user's question, create a single, syntactically correct SQL query to retrieve the data needed for a chart.
+        # Do not include any other text or explanation, just the SQL query itself.
+        # Tables available: {db.get_table_info()}
+        # User question: "{query}"
+        # """
+        
+
+        # raw_sql_query = llm.invoke(sql_generation_prompt).content.strip()
+
+        # # More robustly find a SQL block
+        # match = re.search(r"```(?:sql)?\s*(.*?)\s*```", raw_sql_query, re.DOTALL)
+        # if match:
+        #     sql_query = match.group(1).strip()
+        # else:
+        #     # If no markdown block is found, assume the whole output is the query
+        #     sql_query = raw_sql_query
+
+
+     # Step 1: Generate SQL from the natural language query
+        sql_generation_prompt = f"""Given the user's question, create a single, syntactically correct SQL query to retrieve the data needed for a chart.
+        Do not include any other text or explanation, just the SQL query itself.
+        Tables available: {db.get_table_info()}
+        User question: "{query}"
+        """
+        raw_sql_query = llm.invoke(sql_generation_prompt).content.strip()
+
+        # AMENDED: Use robust regex to find the SQL block
+        match = re.search(r"```(?:sql)?\s*(.*?)\s*```", raw_sql_query, re.DOTALL)
+        if match:
+            sql_query = match.group(1).strip()
+        else:
+            sql_query = raw_sql_query
+
+
+         # --- FIX: Clean the query by removing markdown syntax ---
+        # sql_query = raw_sql_query.replace("```sql", "").replace("```", "").strip()
+        
+        print(f"Generated SQL: {sql_query}")
+        # print(f"Generated SQL: {sql_query}")
+
+        # Step 2: Execute the query with Pandas
+        # engine = create_engine(DB_URI)
+        # df = pd.read_sql_query(sql_query, con=engine)
+        # print ("AYEM")
+        # if df.empty:
+        #     return {"visualization_result": {"analysis": "I found no data to visualize for your request.", "image_base64": None}}
+
+
+           # Step 2: Execute the query with Pandas
+        engine = create_engine(DB_URI)
+        df = pd.read_sql_query(sql_query, con=engine)
+        print("AYEM")
+        if df.empty:
+            return {"visualization_result": {"analysis": "I found no data to visualize for your request.", "image_base64": None}}
+
+ # --- NEW: Step 3.5: Determine the best chart type ---
+        df_info = f"""
+        Data Columns: {df.columns.tolist()}
+        Data Types: {df.dtypes.to_dict()}
+        Data Head:
+        {df.head().to_string()}
+        """
+
+        chart_selection_prompt = f"""
+        Given the user's original query '{query}' and the following data summary, what is the best chart type to use?
+        Your answer must be a single word from this list: 'bar', 'line', 'scatter', 'pie'.
+
+        Data Summary:
+        {df_info}
+        """
+        chart_type = llm.invoke(chart_selection_prompt).content.strip().lower()
+        print(f"--- LLM chose chart type: '{chart_type}' ---")
+
+
+       # Step 4: Get textual analysis from the LLM
+        data_str = df.to_csv(index=False)
+        analysis_prompt = f"Analyze this data and provide a brief, insightful summary based on the user's original request: '{query}'.\n\nData:\n{data_str}"        
+        analysis_text = llm.invoke(analysis_prompt).content
+
+        # --- AMENDED: Step 5: Generate the plot using intelligent chart selection ---
+        plt.style.use('seaborn-v0_8-whitegrid')
+        fig, ax = plt.subplots(figsize=(10, 6))
+        numeric, categorical, dates = get_column_types(df)
+        
+        # Simple logic to determine plot type (can be improved)
+        # if len(df.columns) == 2:
+        #     x_col, y_col = df.columns[0], df.columns[1]
+        #     if pd.api.types.is_numeric_dtype(df[y_col]):
+        #         df.plot(kind='bar', x=x_col, y=y_col, ax=ax, legend=False)
+        #         ax.set_ylabel(y_col.replace('_', ' ').title())
+        #         ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'))
+        #     else: # Fallback for non-numeric y
+        #         df[x_col].value_counts().plot(kind='pie', ax=ax, autopct='%1.1f%%')
+        if chart_type == 'bar' and categorical and numeric:
+
+            x_col, y_col = categorical[0], numeric[0]
+            df.plot(kind='bar', x=x_col, y=y_col, ax=ax, legend=False)
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            ax.set_ylabel(y_col.replace('_', ' ').title())
+            plt.xticks(rotation=45, ha='right')     
+            ax.set_title(query.title())
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            plt.xticks(rotation=45, ha='right')
+        
+
+        elif chart_type == 'line' and (dates or numeric):
+            x_col = dates[0] if dates else numeric[0]
+            y_cols = [c for c in numeric if c != x_col]
+            df.plot(kind='line', x=x_col, y=y_cols, ax=ax)
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            ax.set_ylabel("Value")
+            plt.xticks(rotation=45, ha='right')
+
+        elif chart_type == 'scatter' and len(numeric) >= 2:
+            x_col, y_col = numeric[0], numeric[1]
+            df.plot(kind='scatter', x=x_col, y=y_col, ax=ax)
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            ax.set_ylabel(y_col.replace('_', ' ').title())
+
+        elif chart_type == 'pie' and categorical and numeric:
+            # Pie chart works best with a single categorical and numeric series
+            df.set_index(categorical[0])[numeric[0]].plot(
+                kind='pie', ax=ax, autopct='%1.1f%%', startangle=90
+            )
+            ax.set_ylabel('') # Hide y-label for pie charts
+        
+        else:
+            # Fallback for other data shapes
+            df.plot(ax=ax)
+       
+            # ax.set_title(query.title())
+         # Formatting common to all charts
+
+        ax.set_title(query.title())
+        ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{x:,.0f}'))
+        plt.tight_layout()
+        # plt.tight_layout()
+        
+        # Step 5: Convert plot to base64
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png', bbox_inches='tight')
+        buffer.seek(0)
+        image_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+        plt.close(fig)
+
+
+        return {
+            "visualization_result": {
+                "analysis": analysis_text,
+                "image_base64": image_base64
+            }
+        }
+    
+    
+    
+    # except Exception as e:
+    #     print(f"Error in visualization tool: {e}")
+    #     return {"visualization_result": {"analysis": f"Sorry, I encountered an error while creating the visualization: {e}", "image_base64": None}}
+
+    except Exception as e:
+            print(f"Error in visualization tool: {e}")
+            # Return the analysis if it was generated before the error
+            analysis_text_on_error = analysis_text if 'analysis_text' in locals() else f"Sorry, I encountered an error: {e}"
+            return {"visualization_result": {"analysis": analysis_text_on_error, "image_base64": None}}
+
+
+
+
+generate_visualization_tool = Tool(
+    name="generate_visualization_tool",
+    description="Use this tool to create charts, graphs, plots, or any data visualizations. This is the best tool when the user asks to 'plot', 'chart', 'visualize', or 'draw' data.",
+    func=generate_visualization_func,
+    args_schema=VisualizationInput,
+)
+
+# tools = [pdf_retrieval_tool, tavily_search_tool, sql_query_tool, generate_visualization_tool]
+
+
 # Combine all tools (Corrected logic)
-tools = [pdf_retrieval_tool, tavily_search_tool]
+tools = [pdf_retrieval_tool, tavily_search_tool,generate_visualization_tool]
 if SQL_AGENT:
     tools.append(sql_query_tool)
 
@@ -397,10 +814,10 @@ if SQL_AGENT:
 
 
 
+# Updated `update_state_after_tool_call` function
 def update_state_after_tool_call(state: State) -> dict:
     """
-    Updates the specific state field (e.g., pdf_content) with the
-    output from the last tool call.
+    Updates the specific state field with the output from the last tool call.
     """
     print("--- UPDATING STATE FROM TOOL OUTPUT ---")
     last_message = state["messages"][-1]
@@ -412,7 +829,7 @@ def update_state_after_tool_call(state: State) -> dict:
     tool_name = state.get("last_tool_name")
     tool_output = last_message.content
     
-    print(f"Tool '{tool_name}' returned: {tool_output[:200]}...") # Print snippet of output
+    print(f"Tool '{tool_name}' returned: {tool_output[:200]}...")
 
     if tool_name == "pdf_retrieval_tool":
         return {"pdf_content": tool_output}
@@ -420,55 +837,107 @@ def update_state_after_tool_call(state: State) -> dict:
         return {"web_content": tool_output}
     elif tool_name == "sql_query_tool":
         return {"sql_result": tool_output}
+    elif tool_name == "generate_visualization_tool":
+        # The tool's output is a stringified JSON. We need to parse it.
+
+        try:
+            # Find the start and end of the JSON object in the raw output
+            start_index = tool_output.find('{')
+            end_index = tool_output.rfind('}') + 1
+            if start_index != -1 and end_index != -1:
+                json_string = tool_output[start_index:end_index]
+                parsed_output = json.loads(json_string)
+                viz_data = parsed_output.get("visualization_result")
+                if viz_data:
+                    return {"visualization_result": viz_data}
+            return {} # Return empty dict if no valid JSON is found
+        except json.JSONDecodeError as e:
+            print(f"Error parsing visualization tool output: {e}")
+            return {}
+        # try:
+        #     parsed_output = json.loads(tool_output)
+        #     # The tool returns a dictionary with one key: "visualization_result"
+        #     viz_data = parsed_output.get("visualization_result")
+        #     if viz_data:
+        #         return {"visualization_result": viz_data}
+        # except json.JSONDecodeError as e:
+        #     print(f"Error parsing visualization tool output: {e}")
+        #     return {}
     
     return {}
-# ==========================
-# 🧠 Graph Nodes
-# ==========================
 
-def get_time_based_greeting():
-    """Return an appropriate greeting based on the current time."""
-    current_hour = datetime.now().hour
-    if 5 <= current_hour < 12: return "Good morning"
-    if 12 <= current_hour < 17: return "Good afternoon"
-    return "Good evening"
 
-def agent_node1(state: State):
+
+
+# def agent_node1(state: State):
+#     """
+#     The Router Node: Decides whether to call a tool or generate a final answer.
+#     This node's prompt is focused on routing, not on generating the final answer.
+#     """
+#     print("--- AGENT NODE (ROUTER) ---")
+#     messages = state["messages"]
+    
+#     # Handle the very first message with a greeting
+#     if len(messages) == 1:
+#         return {"messages": [AIMessage(content=f"{get_time_based_greeting()}! I am Damilola, your AI-powered virtual assistant. Welcome to ATB Bank. How can I help you today?")]}
+    
+#     system_prompt = SystemMessage(
+#         content=f"""You are Damilola, a helpful AI assistant for ATB Bank. Your role is to decide the next step in the conversation.
+        
+#         You have access to the following tools: {', '.join([t.name for t in tools])}.
+        
+#         1. Review the user's latest message in the context of the conversation history.
+#         2. If the user's question can be answered using one of your tools, call the most appropriate tool with the correct input.
+#         3. If you have already used a tool and have enough information to answer the user's question, respond directly.
+#         4. Do not generate the final answer here. Your job is to either call a tool or indicate that you're ready to answer.
+        
+#         Current Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+#         """
+#     )
+    
+#     llm_with_tools = llm.bind_tools(tools)
+#     response = llm_with_tools.invoke([system_prompt] + messages)
+    
+#     return {"messages": [response]}
+def agent_node(state: State):
     """
     The Router Node: Decides whether to call a tool or generate a final answer.
-    This node's prompt is focused on routing, not on generating the final answer.
     """
     print("--- AGENT NODE (ROUTER) ---")
     messages = state["messages"]
     
     # Handle the very first message with a greeting
     if len(messages) == 1:
-        return {"messages": [AIMessage(content=f"{get_time_based_greeting()}! I am Damilola, your AI-powered virtual assistant. Welcome to ATB Bank. How can I help you today?")]}
+        return {"messages": [AIMessage(content=f"{get_time_based_greeting()}! I am Damilola... How can I help?")]}
     
+    # REVISED PROMPT: More specific on tool usage
     system_prompt = SystemMessage(
-        content=f"""You are Damilola, a helpful AI assistant for ATB Bank. Your role is to decide the next step in the conversation.
+        content=f"""You are a helpful AI assistant for ATB Bank. Your task is to analyze the user's request and decide if a tool is needed to answer it.
         
-        You have access to the following tools: {', '.join([t.name for t in tools])}.
+        You have access to the following tools:
+        - `pdf_retrieval_tool`: For questions about bank policies, products, or internal knowledge.
+        - `tavily_search_tool`: For general knowledge or up-to-date information.
+        - `sql_query_tool`: For questions about specific data, like user counts or transaction volumes.
+        - **`generate_visualization_tool`**: **Use this tool ONLY when the user explicitly asks to 'plot', 'chart', 'graph', or 'visualize' data. This is your primary tool for creating visual representations from database data.**
         
-        1. Review the user's latest message in the context of the conversation history.
-        2. If the user's question can be answered using one of your tools, call the most appropriate tool with the correct input.
-        3. If you have already used a tool and have enough information to answer the user's question, respond directly.
-        4. Do not generate the final answer here. Your job is to either call a tool or indicate that you're ready to answer.
-        
-        Current Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+        Based on the conversation history, either call the most appropriate tool to gather information or, if you have enough information already, prepare to answer the user directly.
         """
     )
     
     llm_with_tools = llm.bind_tools(tools)
     response = llm_with_tools.invoke([system_prompt] + messages)
     
-    return {"messages": [response]}
+    last_tool_name = None
+    if response.tool_calls:
+        last_tool_name = response.tool_calls[0]['name']
+        print(f"LLM decided to call tool: {last_tool_name}")
+        
+    return {"messages": [response], "last_tool_name": last_tool_name}
 
 
 
 
-
-def agent_node(state: State):
+def agent_node2(state: State):
     """
     The Router Node: Decides whether to call a tool or generate a final answer.
     """
@@ -516,12 +985,64 @@ def generate_final_answer_node(state: State):
     
     context_parts = []
     if state.get("pdf_content"): context_parts.append(f"PDF Content:\n{state['pdf_content']}")
-    # if state.get("web_content"): context_parts.append(f"Web Content:\n{state['web_content']}")
+    if state.get("web_content"): context_parts.append(f"Web Content:\n{state['web_content']}")
     if state.get("sql_result"): context_parts.append(f"SQL Database Result:\n{state['sql_result']}")
+
+
+
+
+    # # NEW: Handle visualization result
+    # viz_result = state.get("visualization_result")
+    # chart_base64 = None
+    # if viz_result:
+    #     analysis = viz_result.get('analysis', 'Chart analysis is not available.')   
+    #     chart_base64 = viz_result.get('image_base64')
+    #     context_parts.append(f"Visualization Analysis:\n{analysis}")
+
+    # --- THE FIX: PART 1 ---
+    # Store the chart data in a variable, but only put the TEXT analysis in the LLM context.
+    viz_result = state.get("visualization_result")
+    chart_base64_data = None # Initialize
+    if viz_result:
+        analysis = viz_result.get('analysis', 'Chart analysis is not available.')   
+        chart_base64_data = viz_result.get('image_base64') # Store the data here
+        context_parts.append(f"Visualization Analysis:\n{analysis}") # Add ONLY analysis to context
+
+
+    # if state.get("attached_content"): context_parts.append(f"Attached Content:\n{state['attached_content']}")
+    # context = "\n\n".join(context_parts) if context_parts else "No additional context was retrieved."
+
     if state.get("attached_content"): context_parts.append(f"Attached Content:\n{state['attached_content']}")
     context = "\n\n".join(context_parts) if context_parts else "No additional context was retrieved."
 
     # Prompt designed to generate a structured JSON output based on the Answer schema
+    # prompt = f"""You are Damilola, the AI-powered virtual assistant for ATB Bank.
+    # Your goal is to provide a final, comprehensive, and empathetic answer based on the user's question and the context gathered from your tools.
+    
+    # User Question: "{user_query}"
+    
+    # Available Context:
+    # ---
+    # {context}
+    # ---
+    
+    # Based on all the information above, generate a structured response. You MUST format your response as a JSON object that strictly follows the schema below.
+    
+    #     Generate a structured JSON response. 
+    # - The 'answer' field should summarize the findings. If a chart was generated, describe what the chart shows.
+    # - If a chart was generated (indicated by 'Visualization Analysis' in the context), copy the provided chart data into the 'chart_base64' field. Otherwise, leave it as null.
+    #     Schema:
+    # {{
+    #   "answer": "str: A clear, concise, empathetic, and polite response directly addressing the user's question. Use straightforward language.",
+    #   "sentiment": "int: An integer rating of the user's sentiment, from -2 (very negative) to +2 (very positive).",
+    #   "ticket": "List[str]: A list of service channels relevant to any unresolved issue. Possible values: ['POS', 'ATM', 'Web', 'Mobile App', 'Branch', 'Call Center', 'Other']. Leave empty if not applicable.",
+    #   "source": "List[str]: A list of sources used. Possible values: ['PDF Content', 'Web Search', 'SQL Database', 'User Provided Context', 'Internal Knowledge']. Leave empty if no specific source was used."
+    # }}
+    # """
+    
+
+ # --- THE FIX: PART 2 ---
+    # Simplify the prompt. The LLM should NOT handle the chart_base64 data.
     prompt = f"""You are Damilola, the AI-powered virtual assistant for ATB Bank.
     Your goal is to provide a final, comprehensive, and empathetic answer based on the user's question and the context gathered from your tools.
     
@@ -532,31 +1053,66 @@ def generate_final_answer_node(state: State):
     {context}
     ---
     
-    Based on all the information above, generate a structured response. You MUST format your response as a JSON object that strictly follows the schema below.
-
+    Based on all the information above, generate a structured response. If the context includes 'Visualization Analysis', your answer should describe what the chart shows.
+    You MUST format your response as a JSON object that strictly follows this schema, omitting the 'chart_base64' field as it will be handled separately.
+    
     Schema:
     {{
-      "answer": "str: A clear, concise, empathetic, and polite response directly addressing the user's question. Use straightforward language.",
-      "sentiment": "int: An integer rating of the user's sentiment, from -2 (very negative) to +2 (very positive).",
-      "ticket": "List[str]: A list of service channels relevant to any unresolved issue. Possible values: ['POS', 'ATM', 'Web', 'Mobile App', 'Branch', 'Call Center', 'Other']. Leave empty if not applicable.",
-      "source": "List[str]: A list of sources used. Possible values: ['PDF Content', 'Web Search', 'SQL Database', 'User Provided Context', 'Internal Knowledge']. Leave empty if no specific source was used."
+      "answer": "str: Your clear, concise, and polite response.",
+      "sentiment": "int: An integer rating of the user's sentiment (-2 to +2).",
+      "ticket": "List[str]: Relevant service channels. Empty list if not applicable.",
+      "source": "List[str]: Sources used. Empty list if not applicable."
     }}
     """
-    
+
     structured_llm = llm.with_structured_output(Answer)
     final_answer_obj = structured_llm.invoke(prompt)
+    if chart_base64_data:
+        final_answer_obj.chart_base64 = chart_base64_data
     
     # Append the human-readable part of the answer to the message history
     new_messages = state["messages"] + [AIMessage(content=final_answer_obj.answer)]
-    
     return {
         "final_answer": final_answer_obj,
         "messages": new_messages
     }
 
+
+    
+    # return {
+    #     "final_answer": final_answer_obj,
+    #     "messages": new_messages
+    # }
+
 def summarize_conversation(state: State):
-    """Generates a final summary of the conversation."""
+    """Generates a final summary of the conversation.
+     
+    Generates a final summary of the conversation after the answer has been provided.
+
+    This node:
+    1. Takes the complete message history from the state.
+    2. Uses an LLM with structured output to generate a Summary object.
+    3. Compiles a comprehensive 'metadatas' dictionary for logging, combining
+       information from the final answer and the new summary.
+    4. Updates the state with the 'conversation_summary' and 'metadatas'.
+    """
     print("--- SUMMARIZE CONVERSATION NODE ---")
+    
+    messages = state.get("messages", [])
+ 
+    
+    # 1. Prepare the conversation history for the LLM
+    # Using .get() provides a default empty list if 'messages' is not in the state
+     
+    if not messages:
+        # If there are no messages, we can't summarize. Return an empty update.
+        return {
+            "conversation_summary": None,
+            "metadatas": {"error": "No messages to summarize."}
+        }
+
+
+
     conversation_history = "\n".join([f"{msg.type}: {msg.content}" for msg in state["messages"]])
     
     summarize_prompt = f"""Please provide a structured summary of the following conversation.
@@ -578,12 +1134,18 @@ def summarize_conversation(state: State):
     
     # Create the final metadata dictionary for logging
     final_answer = state.get("final_answer")
+    last_user_question = ""
+    if len(messages) > 1:
+        # The last message is the AI's answer, the one before is the user's prompt for that turn
+        last_user_question = messages[-2].content
+
     metadata_dict = {
         "question": state["messages"][-2].content if len(state["messages"]) > 1 else "",
         "answer": final_answer.answer if final_answer else "N/A",
         "sentiment": final_answer.sentiment if final_answer else 0,
         "ticket": final_answer.ticket if final_answer else [],
         "source": final_answer.source if final_answer else [],
+        "chart_base64": final_answer.chart_base64 if final_answer else None,
         "summary": summary_obj.summary,
         "summary_sentiment": summary_obj.sentiment,
         "summary_unresolved_tickets": summary_obj.unresolved_tickets,
@@ -641,7 +1203,6 @@ def build_graph():
         # from langgraph.checkpoint.memory import InMemorySaver
         print(f"Error connecting to SQLite for checkpointing: {e}. Using in-memory saver.")
         # memory = InMemorySaver()
-
     return workflow.compile(checkpointer=memory)
 
 # Main processing function
@@ -671,20 +1232,30 @@ def process_message(message_content: str, session_id: str, file_path: Optional[s
     elif file_path:
         print(f"Warning: Attached file not found at {file_path}. Skipping image processing.")
     
-    
     initial_state = {"messages": [HumanMessage(content=message_content)], "attached_content": attached_content}
-    
     output = graph.invoke(initial_state, config)
     print("--- LangGraph workflow completed ---")
     
     # Extract final answer from the structured Pydantic object
     final_answer_obj = output.get('final_answer')
     final_answer_content = final_answer_obj.answer if final_answer_obj else "No final answer was generated."
+    if final_answer_obj:
+        return {
+            "answer": final_answer_content,
+            "chart": final_answer_obj.chart_base64, # <-- Pass chart data to the view
+            "metadata": output.get("metadatas", {})
+        }
+    # return {
+    #     "answer": final_answer_content,
+    #     "metadata": output.get("metadatas", {})
+    # }
+    else:
+        return {
+            "answer": "I'm sorry, I could not generate a response.",
+            "chart": None,
+            "metadata": {}
+        }
 
-    return {
-        "answer": final_answer_content,
-        "metadata": output.get("metadatas", {})
-    }
 
 
 
@@ -1217,4 +1788,3 @@ def get_payslips_from_json(json_file_path,desired_columns):
 # # Pass the JSON string to your function
 # yemo = atb(initial_json,treated_json)
 # print(yemo)
-
