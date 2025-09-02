@@ -8,12 +8,20 @@
 # # 📦 Standard Library
 # # ==========================
 import os
-# import json
+import json
 from datetime import datetime
 # from pprint import pprint
 import sqlite3
 # # ==========================
-# import pandas as pd
+import pandas as pd
+from io import BytesIO
+import base64
+
+
+from pydantic import BaseModel, Field
+from typing import List
+import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
 
 
 # # ==========================
@@ -27,8 +35,8 @@ from typing import Any, Dict, List, Optional, Literal
 # # ==========================
 # # 🧠 Google Generative AI
 # # ==========================
-# import google.generativeai as genai
-# # from google.generativeai import GenerativeModel, configure
+import google.generativeai as genai
+from google.generativeai import GenerativeModel, configure
 # from google.generativeai.types import HarmCategory, HarmBlockThreshold
 
 # # # ==========================
@@ -38,15 +46,17 @@ from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, Tool
 # from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.vectorstores import InMemoryVectorStore
 from langchain_core.tools import Tool # Explicitly import Tool
-# from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.utilities import SQLDatabase
-# from langchain_text_splitters import RecursiveCharacterTextSplitter
-# from langchain_tavily import TavilySearch
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_tavily import TavilySearch
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
-# from langchain_community.agent_toolkits import SQLDatabaseToolkit
-# from langchain_groq import ChatGroq # For Groq LLM
-# from langchain_deepseek import ChatDeepSeek # Import ChatDeepSeek for DeepSeek LLM
-# from langchain_openai import ChatOpenAI
+from langchain_community.agent_toolkits import SQLDatabaseToolkit
+from langchain_groq import ChatGroq # For Groq LLM
+from langchain_deepseek import ChatDeepSeek # Import ChatDeepSeek for DeepSeek LLM
+from langchain_openai import ChatOpenAI
+from langchain_ollama import OllamaLLM
+from langchain_core.language_models.chat_models import BaseChatModel
 
 # # # ==========================
 # # # 🔁 LangGraph Imports
@@ -55,16 +65,54 @@ from langgraph.graph import StateGraph, START, END, MessagesState
 
 from langgraph.prebuilt import ToolNode, tools_condition, create_react_agent
 from langgraph.checkpoint.sqlite import SqliteSaver # Using SqliteSaver as preferred
+from langchain_community.tools.sql_database.tool import QuerySQLDatabaseTool
+from langgraph.checkpoint.memory import InMemorySaver
 
-
+from langchain_ollama.llms import OllamaLLM
 from django.conf import settings
 # from langgraph.checkpoint.postgres import PostgresSaver
 # # --- Project-Specific Imports ---
 # # AJADI-2
+import re
+
+from langchain_community.chat_models import ChatOllama
+from langchain.agents import Tool, initialize_agent
+from langchain.agents.agent_types import AgentType
 
 
 # Load .env file
 load_dotenv()
+import matplotlib
+matplotlib.use('Agg') # This prevents Matplotlib from trying to open a GUI window
+
+import matplotlib
+# This must be done BEFORE importing pyplot
+matplotlib.use('Agg')
+
+from matplotlib.ticker import FuncFormatter
+import matplotlib.pyplot as plt
+import pandas as pd
+from sqlalchemy import create_engine
+import base64
+from io import BytesIO
+
+import logging
+import io
+import re
+import base64
+from io import BytesIO
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
+from sqlalchemy import create_engine
+
+
+import logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
 
 # ==========================
 # ⚙️ Configuration & Initialization
@@ -88,8 +136,7 @@ os.environ["LANGSMITH_ENDPOINT"] = LANGSMITH_ENDPOINT if LANGSMITH_ENDPOINT else
 os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY if GOOGLE_API_KEY else ""
 os.environ["TAVILY_API_KEY"] = TAVILY_API_KEY if TAVILY_API_KEY else ""
 os.environ["GROQ_API_KEY"] = GROQ_API_KEY if GROQ_API_KEY else ""
-
-
+tavily_search = TavilySearch(max_results=2)
 # Configure Google Generative AI
 # genai.configure(api_key=GOOGLE_API_KEY)
 # safety_settings = {
@@ -97,6 +144,7 @@ os.environ["GROQ_API_KEY"] = GROQ_API_KEY if GROQ_API_KEY else ""
 #     "threshold": HarmBlockThreshold.BLOCK_ONLY_HIGH
 # }
 
+from sqlalchemy import create_engine
 
 def safe_json(data):
     """Ensures safe JSON serialization to prevent errors."""
@@ -114,8 +162,11 @@ def safe_json(data):
 
 
 # chatbot_model =py.chatbot_model
-google_model=""
-chatbot_model=""
+google_model="gemini-2.0-flash"
+# google_model="gemini-2.5-pro"
+
+# google_model = "gemini-2.5-flash",
+chatbot_model="gemini"
 
 
 
@@ -134,7 +185,9 @@ elif chatbot_model == "groq":
 
 
 # llms= ChatGroq( model="deepseek-r1-distill-llama-70b",temperature=0, max_tokens=None,timeout=None, max_retries=2,)
-llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0,google_api_key=GOOGLE_API_KEY)
+# llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0,google_api_key=GOOGLE_API_KEY)
+# llm = ChatGoogleGenerativeAI(model=google_model, temperature=0,google_api_key=GOOGLE_API_KEY)
+# llm = OllamaLLM(model="gpt-oss:20b")
 # llm = ChatDeepSeek( model="deepseek-chat",  temperature=0, max_tokens=None, timeout=None,max_retries=2,)
 # llm = ChatOpenAI(model="gpt-4o-mini", temperature=0, openai_api_key=OPENAI_API_KEY)
 
@@ -167,7 +220,21 @@ llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0,google_api_
 # )
 
 
+from langchain_ollama.llms import OllamaLLM
+from langchain_community.chat_models import ChatOllama
+from langchain.agents import Tool
 
+
+
+# https://ollama.com/library/gpt-oss:20b
+
+# Explicitly set base_url to avoid WinError 10049
+# model = OllamaLLM(model="llama3", base_url="http://127.0.0.1:11434")
+# llm = OllamaLLM(model="gpt-oss:20b", base_url="http://127.0.0.1:11434")
+
+# llm = ChatOllama(model="gpt-oss:20b") 
+
+# llm = OllamaLLM(model="gpt-oss:20b", base_url="http://)
 model = llm # Consistent naming
 
 # Initialize Embeddings and Vector Store
@@ -207,6 +274,9 @@ initialize_vector_store()
 # DB_FILE_PATH = r"C:\Users\Pro\Desktop\Ayodele\25062025\myproject\db.sqlite3"
 DB_FILE_PATH = r"C:\Users\Pro\Desktop\PROJECT\Live\myproject\db.sqlite3"
 DB_URI = f"sqlite:///{DB_FILE_PATH}" 
+# DB_URI = f"sqlite:///{settings.DATABASES['default']['NAME']}"
+
+
 # DB_URI = os.getenv("DB_URI")
 db = None
 try:
@@ -225,73 +295,96 @@ except Exception as e:
 #     ticketA: list[str] = Field(..., description='A list of specific transaction or service channels...')
 #     sourceA: list[str] = Field(..., description='A list of specific sources...')
 
+# kd begin 
 
 
-from pydantic import BaseModel, Field
-from typing import List
+
+
+
+# Assume 'llm', 'db', 'global_vector_store', 'model', etc. are initialized elsewhere
+# For example:
+# llm = ChatOpenAI(model="gpt-4o", temperature=0)
+# db = SQLDatabase.from_uri("sqlite:///db.sqlite3")
+tavily_search = TavilySearch(max_results=2)
+
+# ==========================
+# 📊 Pydantic Schemas (Revised for Clarity)
+# ==========================
 
 class Answer(BaseModel):
-    answerA: str = Field(description="Polite, empathetic response to the user")
-    sentimentA: int = Field(description="Sentiment score from -2 to +2")
-    ticketA: List[str] = Field(description="Relevant service channels")
-    sourceA: List[str] = Field(description="Sources used to generate the answer")
-    
+    """The final, structured answer for the user."""
+    answer: str = Field(description="Polite, empathetic, and direct response to the user's query.")
+    sentiment: int = Field(description="User's sentiment score from -2 (very negative) to +2 (very positive).")
+    ticket: List[str] = Field(description="Relevant service channels for unresolved issues (e.g., 'POS', 'ATM').")
+    source: List[str] = Field(description="Sources used to generate the answer (e.g., 'PDF Content', 'Web Search').")
+    chart_base64: Optional[str] = Field(default=None, description="A base64 encoded PNG image of the generated chart, if any.")
+
 class Summary(BaseModel):
-    """Conversation summary schema"""
-    summaryS: str = Field(description="Summary of the entire conversation")
-    sum_sentimentS: int = Field(description="Sentiment analysis of entire conversation")
-    sum_ticketS: List[str] = Field(description="Channels with unresolved issues")
-    sum_sourceS: List[str] = Field(description="All sources referenced in conversation")
+    """Conversation summary schema."""
+    summary: str = Field(description="A concise summary of the entire conversation.")
+    sentiment: int = Field(description="Overall sentiment of the conversation from -2 to +2.")
+    unresolved_tickets: List[str] = Field(description="A list of channels with unresolved issues.")
+    all_sources: List[str] = Field(description="All unique sources referenced throughout the conversation.")
 
 class PDFRetrievalInput(BaseModel):
     """Input schema for the pdf_retrieval_tool."""
     query: str = Field(description="The user's query to search for within the PDF document.")
 
+class WebSearchInput(BaseModel):
+    """Input schema for the tavily_search_tool."""
+    query: str = Field(description="A concise search query for the web.")
+
 class SQLQueryInput(BaseModel):
     """Input schema for the sql_query_tool."""
-    query: str = Field(description="The natural language question to be converted into a SQL query and executed.")
+    query: str = Field(description="The natural language question to be converted into a SQL query.")
 
 # ==========================
-# 📊 State Management
+# 📊 State Management (Simplified and Centralized)
 # ==========================
+class VisualizationInput(BaseModel):
+    """Input schema for the generate_visualization_tool."""
+    query: str = Field(description="The user's natural language request for a chart or visualization, e.g., 'Plot the total sales by region'.")
+
 class State(MessagesState):
-    """State management for conversation flow"""
-    question: Optional[str] = None
-    pdf_content: Optional[str] = None # Changed to Optional[str]
+    """Manages the conversation state. Uses Pydantic models for structured data."""
+    # Tool outputs
+    pdf_content: Optional[str] = None
     web_content: Optional[str] = None
-    query_answerT: Optional[str] = None
-    answer: Optional[str] = None
-    sentiment: Optional[int] = None
-    ticket: Optional[List[str]] = None
-    source: Optional[List[str]] = None
-    attached_content: Optional[str] = None
-    summary: Optional[str] = None
-    sum_sentiment: Optional[int] = None
-    sum_ticket: Optional[List[str]] = None
-    sum_source: Optional[List[str]] = None
-    answerY: Optional[Answer] = None
-    metadatas: Optional[Dict[str, Any]] = None
-    summaryY: Optional[Summary] = None
+    sql_result: Optional[str] = None
+    visualization_result: Optional[Dict[str, Any]] = None # <-- NEW
 
+    attached_content: Optional[str] = None
+    last_tool_name: Optional[str] = Field(default=None)
+
+    # Final structured outputs
+    final_answer: Optional[Answer] = None
+    conversation_summary: Optional[Summary] = None
+
+    # For final logging
+    metadatas: Optional[Dict[str, Any]] = None
 
 # ==========================
 # 🛠️ Tools
 # ==========================
-def retrieve_from_pdf(query: str):
+
+def get_time_based_greeting():
+    """Return an appropriate greeting based on the current time."""
+    current_hour = datetime.now().hour
+    if 5 <= current_hour < 12: return "Good morning"
+    if 12 <= current_hour < 17: return "Good afternoon"
+    return "Good evening"
+def retrieve_from_pdf(query: str) -> str:
     """Performs a document query using the initialized vector store."""
     if global_vector_store:
         results = global_vector_store.similarity_search(query, k=3)
-        # Return content as a single string
-        return {"pdf_content": "\n\n".join([doc.page_content for doc in results])}
+        print ("Yelo",results )
+        content = "\n\n".join([doc.page_content for doc in results])
+        return {"pdf_content": content}
     return {"pdf_content": "Error: Document knowledge base not initialized."}
-
 
 pdf_retrieval_tool = Tool(
     name="pdf_retrieval_tool",
-    description=(
-        "Useful for answering questions based on the bank's internal knowledge base documents. "
-        "The input to this tool should be a specific question or a key phrase from the user's query."
-    ),
+    description="Useful for answering questions from the bank's internal knowledge base (PDFs). Input should be a specific question.",
     func=retrieve_from_pdf,
     args_schema=PDFRetrievalInput,
 )
@@ -299,542 +392,1026 @@ pdf_retrieval_tool = Tool(
 def search_web_func(query: str) -> str:
     """Performs web search and returns structured tool output."""
     try:
-        tavily_search = TavilySearch(max_results=2)
         search_docs = tavily_search.invoke(query)
-
-        if any(error in str(search_docs) for error in ["ConnectionError", "HTTPSConnectionPool"]):
-            return "Web search connection error."
-            
         formatted_docs = "\n\n---\n\n".join(
             f'<Document href="{doc["url"]}">\n{doc["content"]}\n</Document>'
             for doc in search_docs.get("results", [])
         )
-        return formatted_docs
+        return {"web_content": formatted_docs or "No results found from web search."}
     except Exception as e:
         print(f"Web search error: {e}")
-        return f"Error during web search: {e}"
+        return {"web_content": f"Error during web search: {e}"}
 
 tavily_search_tool = Tool(
     name="tavily_search_tool",
-    description=(
-        "Useful for answering general questions or questions requiring up-to-date information "
-        "from the web. The input should be a concise search query."
-    ),
+    description="Useful for general questions or questions requiring up-to-date information from the web. Input should be a concise search query.",
     func=search_web_func,
-    args_schema=SQLQueryInput, # Re-using SQLQueryInput schema for simplicity, but a dedicated WebSearchInput could be better
+    args_schema=WebSearchInput,
 )
 
-
-# Initialize SQL Toolkit and Agent globally if db is available
-SQL_TOOLKIT = None
+# Initialize SQL Agent (Primary Method)
 SQL_AGENT = None
 if db:
     try:
         SQL_TOOLKIT = SQLDatabaseToolkit(db=db, llm=llm)
-        sql_tools_list = SQL_TOOLKIT.get_tools() # Get tools specific to the SQL database
-
-        SQL_SYSTEM_PROMPT = """
-You are an agent designed to interact with a SQL database.
-Given an input question, create a syntactically correct {dialect} query to run,
-then look at the results of the query and return the answer. Unless the user
-specifies a specific number of examples they wish to obtain, always limit your
-query to at most {top_k} results.
-
-You can order the results by a relevant column to return the most interesting
-examples in the database. Never query for all the columns from a specific table,
-only ask for the relevant columns given the question.
-
-You MUST double check your query before executing it. If you get an error while
-executing a query, rewrite the query and try again.
-
-DO NOT make any DML statements (INSERT, UPDATE, DELETE, DROP etc.) to the
-database.
-
-To start you should ALWAYS look at the tables in the database to see what you
-can query. Do NOT skip this step.
-
-Then you should query the schema of the most relevant tables.
-""".format(
-            dialect=db.dialect,
-            top_k=5,
-        )
-
+        SQL_SYSTEM_PROMPT = """You are an agent designed to interact with a SQL database. Given an input question, create a syntactically correct {dialect} query, execute it, and return the answer.
+        - You must query only the necessary columns.
+        - You must double-check your query before execution.
+        - DO NOT make any DML statements (INSERT, UPDATE, DELETE, DROP).
+        - ALWAYS look at the tables first to understand the schema."""
+        
         SQL_AGENT = create_react_agent(
             llm,
-            sql_tools_list, # Use the tools from the SQL toolkit
-            prompt=SQL_SYSTEM_PROMPT,
+            SQL_TOOLKIT.get_tools(),
+            prompt=SQL_SYSTEM_PROMPT.format(dialect=db.dialect),
         )
         print("SQL Agent initialized successfully.")
     except Exception as e:
         print(f"Error initializing SQL Agent: {e}. SQL query tool will not be available.")
-        SQL_TOOLKIT = None
-        SQL_AGENT = None
-
-
-class QueryOutput(BaseModel):
-    query: str = Field(description="SQL query to run")
-def get_current_datetime():
-    """Returns the current date and time in YYYY-MM-DD HH:MM:SS format."""
-    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-
-def get_time_based_greeting():
-    """Return an appropriate greeting based on the current time."""
-    current_hour = datetime.now().hour
-    
-    if 5 <= current_hour < 12:
-        return "Good morning"
-    elif 12 <= current_hour < 17:
-        return "Good afternoon"
-    elif 17 <= current_hour < 22:
-        return "Good evening"
-    else:
-        return "Good night"
-
-
-# DB_URI = os.getenv("DB_URI")
-# DB_URI = "db.sqlite3"
-# DB_URI = "sqlite:///db.sqlite3"
-# DB_URI = os.getenv("DB_URI")
-db = SQLDatabase.from_uri(DB_URI)
-
- # Ensure 'db' is properly initialized and accessible
-    # Assuming 'db' is an instance of SQLDatabase from langchain_community.utilities
-
-dialect = db.dialect # Corrected from tuple
-top_k = 10
-table_info = db.get_table_info()
-current_time = get_current_datetime()
-greetings = get_time_based_greeting() # Get greeting based on current time
-
-sql_prompt = f"""
-Given an input question, create a syntactically correct {dialect} query to
-run to help find the answer. Unless the user specifies in his question a
-specific number of examples they wish to obtain, always limit your query to
-at most {top_k} results. You can order the results by a relevant column to
-return the most interesting examples in the database.
-
-Kindly note the current time: {current_time},
-Never query for all the columns from a specific table, only ask for a the
-few relevant columns given the question.
-
-Pay attention to use only the column names that you can see in the schema
-description. Be careful to not query for columns that do not exist. Also,
-pay attention to which column is in which table.
-
-Only use the following tables:
-{table_info}
-"""
-sys_msg = SystemMessage(content=sql_prompt)
-model_with_structure1 = llm.with_structured_output(QueryOutput) # Use llm here
-
-from langchain_community.tools.sql_database.tool import QuerySQLDatabaseTool
-def execute_sql_query_func2(query: str) -> str:
-    """Executes a SQL query using the pre-initialized SQL agent and returns the result."""
-    result = model_with_structure1.invoke([sys_msg] + [HumanMessage(content=query)])
-    execute_query_tool = QuerySQLDatabaseTool(db=db)
-    resultT = execute_query_tool.invoke(result.query) # Access .query attribute
-    prompt = (
-        "Given the following user question, corresponding SQL query, "
-        "and SQL result, answer the user question.\n\n"
-        f'Question: {query}\n'
-        f'SQL Query: {result.query}\n' # Access .query attribute
-        f'SQL Result: {resultT}'
-    )
-
-    try:
-        responseY = llm.invoke(prompt)  # Use llm here
-        # print("\n--- Raw LLM Response Object (from write_query) ---",responseY.content) # Debug print
-            # This should be a string or similar object
-        return{ responseY.content}  # Return as a dictionary
-    
-    except Exception as e:
-        return{"SQL Agent not initialized. Cannot execute query."}
-   
 
 def execute_sql_query_func(query: str) -> str:
     """Executes a SQL query using the pre-initialized SQL agent and returns the result."""
-    if SQL_AGENT:
-        try:
-            response_generator = SQL_AGENT.stream(
-                {"messages": [HumanMessage(content=query)]},
-                stream_mode="values",
-            )
-            
-            full_response_content = []
-            for chunk in response_generator:
-                if 'messages' in chunk and chunk['messages']:
-                    last_message = chunk['messages'][-1]
-                    if hasattr(last_message, 'content') and last_message.content:
-                        full_response_content.append(last_message.content)
-            
-            return "\n".join(full_response_content) if full_response_content else "No response from SQL agent."
-        except Exception as e:
-            return f"Error executing SQL query: {e}"
-    return "SQL Agent not initialized. Cannot execute query."
+    if not SQL_AGENT:
+        return {"sql_result": "Error: SQL Agent not initialized."}
+    try:
+        response_generator = SQL_AGENT.stream(
+            {"messages": [HumanMessage(content=query)]}, stream_mode="values"
+        )
+        full_response_content = []
+        for chunk in response_generator:
+            if 'messages' in chunk and chunk['messages']:
+                content = chunk['messages'][-1].content
+                if content:
+                    full_response_content.append(content)
+        
+        result = "\n".join(full_response_content) if full_response_content else "No response from SQL agent."
+        return {"sql_result": result}
+    except Exception as e:
+        return {"sql_result": f"Error executing SQL query: {e}"}
 
 sql_query_tool = Tool(
     name="sql_query_tool",
-    description=(
-        "Useful for answering questions that require querying a SQL database. "
-        "The input to this tool should be a natural language question about the database content, "
-        "e.g., 'How many users are there?', 'List all products and their prices'. "
-        "Use this tool ONLY if the question is clearly about structured data that would reside in a database."
-    ),
-    func=execute_sql_query_func2,
+    description="Useful for answering questions requiring data from a SQL database (e.g., 'How many users are there?'). Input should be a natural language question.",
+    func=execute_sql_query_func,
     args_schema=SQLQueryInput,
 )
 
-# Combine all tools
-# tools = [tavily_search_tool, pdf_retrieval_tool,sql_query_tool]
-tools = [pdf_retrieval_tool,sql_query_tool]
-if SQL_AGENT: # Only add SQL tool if it was initialized successfully
-    tools.append(sql_query_tool)
-
-# ==========================
-# 🧠 Graph Nodesayu
 
 
-# ==========================
-# This node will decide which tool to use or if to generate a final answer
-def agent_node(state: State):
-    print ("--- Inside agent_node ---")
+
+
+def get_column_types(df: pd.DataFrame):
+    """Helper function to identify column types for plotting."""
+    numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
+    categorical_cols = df.select_dtypes(include=['object', 'category']).columns.tolist()
+    date_cols = df.select_dtypes(include=['datetime', 'datetimetz']).columns.tolist()
+    return numeric_cols, categorical_cols, date_cols
+
+
+def generate_visualization_func(query: str) -> dict:
     """
-    The agent node decides whether to call a tool or generate a final answer.
-    It binds tools to the LLM and invokes it with the current message history.
+    Generates a data visualization based on a natural language query.
     """
-    llm_with_tools = llm.bind_tools(tools)
-    messages = state.get("messages", [])
+    logging.info(f"--- Generating Visualization for query: '{query}' ---")
+    analysis_text = "" # Initialize in case of early failure
+    try:
+        # Step 1: Generate SQL from the natural language query (with few-shot prompt)
+        sql_generation_prompt = f"""Given the user's question, create a single, syntactically correct SQL query to retrieve the data needed for a chart.
+Do not include any other text or explanation, just the SQL query itself.
+
+Tables available: {db.get_table_info()}
+
+### Example ###
+User question: "Show me the total transaction value for each month this year."
+SQL Query:
+```sql
+SELECT
+  STRFTIME('%Y-%m', timestamp) AS month,
+  SUM(amount) AS total_value
+FROM
+  ai_transaction
+WHERE
+  STRFTIME('%Y', timestamp) = STRFTIME('%Y', 'now')
+GROUP BY
+  month
+ORDER BY
+  month;
+```
+### End Example ###
+
+User question: "{query}"
+SQL Query:
+"""
+        raw_sql_query = llm.invoke(sql_generation_prompt).content.strip()
+
+        match = re.search(r"```(?:sql)?\s*(.*?)\s*```", raw_sql_query, re.DOTALL)
+        if match:
+            sql_query = match.group(1).strip()
+        else:
+            sql_query = raw_sql_query
+        
+        logging.info(f"Generated SQL: {sql_query}")
+
+        # Step 2: Execute the query with Pandas
+        engine = create_engine(DB_URI)
+        df = pd.read_sql_query(sql_query, con=engine)
+        
+        if df.empty:
+            logging.warning("Query returned no data.")
+            return {"visualization_result": {"analysis": "I found no data to visualize for your request.", "image_base64": None}}
+
+        # Log DataFrame details
+        buffer = io.StringIO()
+        df.info(buf=buffer)
+        df_info_str = buffer.getvalue()
+        logging.info(f"--- DataFrame Details ---\nHead:\n{df.head().to_string()}\nInfo:\n{df_info_str}")
+
+        # Step 3: Determine the best chart type
+        df_info_for_prompt = f"Data Columns: {df.columns.tolist()}\nData Head:\n{df.head().to_string()}"
+        chart_selection_prompt = f"""
+        Given the user's original query '{query}' and the following data summary, what is the best chart type to use?
+        Your answer must be a single word from this list: 'bar', 'line', 'scatter', 'pie'.
+
+        Data Summary:\n{df_info_for_prompt}
+        """
+        chart_type = llm.invoke(chart_selection_prompt).content.strip().lower()
+        logging.info(f"LLM chose chart type: '{chart_type}'")
+
+        # Step 4: Get textual analysis from the LLM
+        analysis_prompt = f"Analyze this data and provide a brief, insightful summary based on the user's original request: '{query}'.\n\nData:\n{df.to_csv(index=False)}"        
+        analysis_text = llm.invoke(analysis_prompt).content
+        logging.info(f"Generated Analysis: {analysis_text[:200]}...")
+
+        # Step 5: Generate the plot using intelligent chart selection
+        plt.style.use('seaborn-v0_8-whitegrid')
+        fig, ax = plt.subplots(figsize=(10, 6))
+        numeric, categorical, dates = get_column_types(df)
+        
+        if chart_type == 'bar' and categorical and numeric:
+            x_col = categorical[0]
+            if len(numeric) > 1: # Handle multi-series bar charts
+                df.set_index(x_col)[numeric].plot(kind='bar', ax=ax, figsize=(12, 7))
+                ax.set_ylabel("Values")
+                ax.legend(title='Metrics')
+            else: # Handle single-series bar charts
+                y_col = numeric[0]
+                df.plot(kind='bar', x=x_col, y=y_col, ax=ax, legend=False)
+                ax.set_ylabel(y_col.replace('_', ' ').title())
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            plt.xticks(rotation=45, ha='right')
+
+        # --- THIS IS THE SINGLE, CORRECT BLOCK FOR LINE CHARTS ---
+        elif chart_type == 'line' and (dates or categorical) and numeric:
+            # Prioritize date/time, then categorical for the x-axis.
+            if dates:
+                x_col = dates[0]
+            else:
+                x_col = categorical[0]
+
+            # All numeric columns are y-axis columns.
+            y_cols = numeric
+            
+            logging.info(f"Plotting line chart with X='{x_col}' and Y={y_cols}")
+            df.plot(kind='line', x=x_col, y=y_cols, ax=ax, marker='o')
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            ax.set_ylabel("Value")
+            plt.xticks(rotation=45, ha='right')
+
+        elif chart_type == 'scatter' and len(numeric) >= 2:
+            x_col, y_col = numeric[0], numeric[1]
+            df.plot(kind='scatter', x=x_col, y=y_col, ax=ax)
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            ax.set_ylabel(y_col.replace('_', ' ').title())
+
+        elif chart_type == 'pie' and categorical and numeric:
+            df.set_index(categorical[0])[numeric[0]].plot(
+                kind='pie', ax=ax, autopct='%1.1f%%', startangle=90
+            )
+            ax.set_ylabel('')
+        
+        else: # Fallback
+            logging.warning(f"Could not find a perfect chart match for type '{chart_type}'. Using generic plot.")
+            df.plot(ax=ax)
+       
+        # Formatting common to all charts
+        ax.set_title(query.title())
+        ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{x:,.0f}'))
+        plt.tight_layout()
+        
+        # Step 6: Convert plot to base64
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png', bbox_inches='tight')
+        buffer.seek(0)
+        image_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+        plt.close(fig)
+        logging.info(f"Successfully generated plot image (Base64 length: {len(image_base64)}).")
+
+        return {
+            "visualization_result": {
+                "analysis": analysis_text,
+                "image_base64": image_base64
+            }
+        }
     
-    if not messages:
-
-        return {"messages": [AIMessage(content="Hello! I am Damilola, your AI-powered virtual assistant. Welcome to ATB Bank. How can I help you today?")]}
-      
-      
-    retrieved_template1=py.response_prompt 
-    # response_prompt = retrieved_template1.format( greetings=greetings )
-    response_prompt = retrieved_template1.format( greetings=greetings )
-    system_prompt = SystemMessage(content=response_prompt)
+    except Exception as e:
+        logging.error("Error in visualization tool", exc_info=True)
+        analysis_text_on_error = analysis_text if analysis_text else f"Sorry, I encountered an unrecoverable error: {e}"
+        return {"visualization_result": {"analysis": analysis_text_on_error, "image_base64": None}}
 
 
+
+# --- FULLY ENHANCED VISUALIZATION TOOL ---
+def generate_visualization_func1(query: str) -> dict:
+    """
+    Generates a data visualization based on a natural language query.
+    """
+    logging.info(f"--- Generating Visualization for query: '{query}' ---")
+    analysis_text = "" # Initialize in case of early failure
+    try:
+        # Step 1: Generate SQL from the natural language query (with few-shot prompt)
+        sql_generation_prompt = f"""Given the user's question, create a single, syntactically correct SQL query to retrieve the data needed for a chart.
+Do not include any other text or explanation, just the SQL query itself.
+
+Tables available: {db.get_table_info()}
+
+### Example ###
+User question: "Show me the total transaction value for each month this year."
+SQL Query:
+```sql
+SELECT
+  STRFTIME('%Y-%m', timestamp) AS month,
+  SUM(amount) AS total_value
+FROM
+  ai_transaction
+WHERE
+  STRFTIME('%Y', timestamp) = STRFTIME('%Y', 'now')
+GROUP BY
+  month
+ORDER BY
+  month;
+```
+### End Example ###
+
+User question: "{query}"
+SQL Query:
+"""
+        raw_sql_query = llm.invoke(sql_generation_prompt).content.strip()
+
+        match = re.search(r"```(?:sql)?\s*(.*?)\s*```", raw_sql_query, re.DOTALL)
+        if match:
+            sql_query = match.group(1).strip()
+        else:
+            sql_query = raw_sql_query
+        
+        logging.info(f"Generated SQL: {sql_query}")
+
+        # Step 2: Execute the query with Pandas
+        engine = create_engine(DB_URI)
+        df = pd.read_sql_query(sql_query, con=engine)
+        
+        if df.empty:
+            logging.warning("Query returned no data.")
+            return {"visualization_result": {"analysis": "I found no data to visualize for your request.", "image_base64": None}}
+
+        # --- ENHANCED LOGGING: Log DataFrame details ---
+        buffer = io.StringIO()
+        df.info(buf=buffer)
+        df_info_str = buffer.getvalue()
+        logging.info(f"--- DataFrame Details ---\nHead:\n{df.head().to_string()}\nInfo:\n{df_info_str}")
+
+        # Step 3: Determine the best chart type
+        df_info_for_prompt = f"Data Columns: {df.columns.tolist()}\nData Head:\n{df.head().to_string()}"
+        chart_selection_prompt = f"""
+        Given the user's original query '{query}' and the following data summary, what is the best chart type to use?
+        Your answer must be a single word from this list: 'bar', 'line', 'scatter', 'pie'.
+
+        Data Summary:\n{df_info_for_prompt}
+        """
+        chart_type = llm.invoke(chart_selection_prompt).content.strip().lower()
+        logging.info(f"LLM chose chart type: '{chart_type}'")
+
+        # Step 4: Get textual analysis from the LLM
+        analysis_prompt = f"Analyze this data and provide a brief, insightful summary based on the user's original request: '{query}'.\n\nData:\n{df.to_csv(index=False)}"        
+        analysis_text = llm.invoke(analysis_prompt).content
+        logging.info(f"Generated Analysis: {analysis_text[:200]}...") # Log a snippet
+
+        # Step 5: Generate the plot using intelligent chart selection
+        plt.style.use('seaborn-v0_8-whitegrid')
+        fig, ax = plt.subplots(figsize=(10, 6))
+        numeric, categorical, dates = get_column_types(df)
+        
+        if chart_type == 'bar' and categorical and numeric:
+            x_col = categorical[0]
+            if len(numeric) > 1: # Handle multi-series bar charts
+                df.set_index(x_col)[numeric].plot(kind='bar', ax=ax, figsize=(12, 7))
+                ax.set_ylabel("Values")
+                ax.legend(title='Metrics')
+            else: # Handle single-series bar charts
+                y_col = numeric[0]
+                df.plot(kind='bar', x=x_col, y=y_col, ax=ax, legend=False)
+                ax.set_ylabel(y_col.replace('_', ' ').title())
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            plt.xticks(rotation=45, ha='right')
+
+        elif chart_type == 'line' and (dates or numeric):
+            x_col = dates[0] if dates else numeric[0]
+            y_cols = [c for c in numeric if c != x_col]
+            if not y_cols: y_cols = numeric # Fallback if x is also the only numeric
+            df.plot(kind='line', x=x_col, y=y_cols, ax=ax, marker='o')
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            ax.set_ylabel("Value")
+            plt.xticks(rotation=45, ha='right')
+
+        elif chart_type == 'scatter' and len(numeric) >= 2:
+            x_col, y_col = numeric[0], numeric[1]
+            df.plot(kind='scatter', x=x_col, y=y_col, ax=ax)
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            ax.set_ylabel(y_col.replace('_', ' ').title())
+
+        elif chart_type == 'pie' and categorical and numeric:
+            df.set_index(categorical[0])[numeric[0]].plot(
+                kind='pie', ax=ax, autopct='%1.1f%%', startangle=90
+            )
+            ax.set_ylabel('')
+        
+        elif chart_type == 'line' and (dates or categorical) and numeric:
+            # --- REVISED LOGIC ---
+            # Prioritize date/time, then categorical for the x-axis.
+            if dates:
+                x_col = dates[0]
+            else:
+                x_col = categorical[0]
+
+            # All numeric columns that are NOT the x-axis column are y-axis columns.
+            y_cols = numeric
+            
+            # This check is crucial for the case where the only numeric column was
+            # incorrectly identified as the x-axis. We ensure 'y_cols' is not empty.
+            if not y_cols:
+                # Fallback: if there are no other numeric columns, something is wrong.
+                # Let's try plotting the first numeric column we found.
+                logging.warning("Line chart logic fallback: using the first numeric column for Y-axis.")
+                y_cols = [df.select_dtypes(include=['number']).columns[0]]
+
+
+            logging.info(f"Plotting line chart with X='{x_col}' and Y={y_cols}")
+            df.plot(kind='line', x=x_col, y=y_cols, ax=ax, marker='o')
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            ax.set_ylabel("Value")
+            plt.xticks(rotation=45, ha='right')
+
+        else: # Fallback
+            logging.warning(f"Could not find a perfect chart match for type '{chart_type}'. Using generic plot.")
+            df.plot(ax=ax)
+       
+        # Formatting common to all charts
+        ax.set_title(query.title())
+        ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{x:,.0f}'))
+        plt.tight_layout()
+        
+        # Step 6: Convert plot to base64
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png', bbox_inches='tight')
+        buffer.seek(0)
+        image_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+        plt.close(fig)
+        logging.info(f"Successfully generated plot image (Base64 length: {len(image_base64)}).")
+
+        return {
+            "visualization_result": {
+                "analysis": analysis_text,
+                "image_base64": image_base64
+            }
+        }
     
-#     system_prompt = SystemMessage(
-#         content=(f""" 
-#             "You are Damilola, the AI-powered virtual assistant for ATB Bank."
-#             "Your primary goal is to answer questions using the tools you have access to. "
-#             "Your core purpose is to deliver professional, accurate, and courteous customer support while performing data analytics when applicable."
-#             "Always be empathetic, non-judgmental, and polite, ensuring every interaction reflects ATB Bank's commitment to exceptional service."
+    except Exception as e:
+        # --- ENHANCED LOGGING: Log the full exception traceback ---
+        logging.error("Error in visualization tool", exc_info=True)
+        analysis_text_on_error = analysis_text if analysis_text else f"Sorry, I encountered an unrecoverable error: {e}"
+        return {"visualization_result": {"analysis": analysis_text_on_error, "image_base64": None}}
 
 
-#             "You have the following tools available:\n"
-#             "- `tavily_search_tool`: Use this to find general information on the web or current events. "
-#             "  It takes a `query` (string) as input.\n"
-#             "- `pdf_retrieval_tool`: Use this to look up information from the bank's internal documents. "
-#             "  It takes a `query` (string) as input, which should be the user's question or key phrases related to bank services or requirements.\n"
-#             "- `sql_query_tool`: Use this to query a SQL database for structured data, such as counts of items, lists of entities, etc. "
-#             "  It takes a `query` (string) as input, which should be a natural language question about the database content. "
-#             "  Only use this if the question is clearly about structured data that would reside in a database."
-#             "  For example, if asked 'How many customers do we have?', use the `sql_query_tool`.\n\n"
-#             "Always prefer using a tool if the user's question requires external knowledge or specific data. "
-#             "You MUST use a tool to get the information first, and then formulate your final answer. "
-#             "Do not answer questions from your internal knowledge base if a tool can be used. "
-#             "Respond in a clear, polite, and helpful manner. Do NOT output structured JSON for your final answer here; simply provide plain text or tool calls."
-#             1. Introduction and Tone:
-#         •  Greeting: Always start by introducing yourself politely, tailored to the current time:{greetings} . For example: "Good [morning/afternoon/evening] and welcome to ATB Bank. I’m Damilola, your AI-powered virtual assistant and Data Analyst. How can I assist you today? 😊"
-#         •  Language: Respond in the user's preferred language, matching the language of their message.
-#         •  Politeness: Maintain a consistently polite and professional tone.
-#         •  Emojis: Use emojis sparingly but appropriately to convey empathy and friendliness, matching the user's tone (e.g., 🥳, 🙂‍↕️, 😏, 😒, 🙂‍↔️).
-#     2. Information Handling and Tools:
-#     •  Commitment: Your responses must always indicate you are a member of ATB Bank (e.g., "we offer competitive loan rates," "our services include...").
-#     3. Complaint and Issue Resolution:
-#     •  Empathy: When responding to complaints, express genuine empathy and acknowledge the user's feelings. Use appropiate emojis to response to customer's feelings
-#     •  Resolution Process: First, attempt to resolve the issue using information from PDF Content, Web Search, or SQL Database tools.
-#     •  Unresolved Issues & Escalation: If you cannot resolve the issue or the user remains unsatisfied despite your efforts: 
-#     o  Courteously inform the user that the issue will be escalated to the support team.
-#     o  Categorize the unresolved issue by its relevant channel (e.g., POS, ATM, Web).
-#     o  Communicate the action taken (e.g., "I understand your frustration. I'm escalating this to our dedicated support team for further investigation. They will reach out to you shortly regarding your ATM transaction issue.").
-#     •  Resolution Update: Clearly communicate the actions taken or the resolution achieved for an issue.
-#     4. Customer Engagement and Closing:
-#     •  Positive Feedback: Thank customers for their kind words or positive feedback.
-#     •  Apology: Sincerely apologize for any dissatisfaction or inconvenience caused.
-#     •  Closing: End every interaction politely by asking if the user needs further assistance. For example: "Is there anything else I can assist you with today? I'm here to help! 😊
+
+
+
+def get_column_types1(df: pd.DataFrame):
+    """Helper function to identify column types for plotting."""
+    numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
+    categorical_cols = df.select_dtypes(include=['object', 'category']).columns.tolist()
+    date_cols = df.select_dtypes(include=['datetime', 'datetimetz']).columns.tolist()
+    return numeric_cols, categorical_cols, date_cols
+# --- NEW VISUALIZATION TOOL ---
+def generate_visualization_func1(query: str) -> dict:
+    """
+    Generates a data visualization based on a natural language query.
+    1. Converts the query to SQL.
+    2. Executes the SQL to get data.
+    3. Generates a textual analysis of the data.
+    4. Creates a plot and returns it as a base64 string.
+    """
+    print(f"--- Generating Visualization for query: '{query}' ---")
+    try:
+        # Step 1: Generate SQL from the natural language query
+        # sql_generation_prompt = f"""Given the user's question, create a syntactically correct SQL query to retrieve the data needed for a chart.
+        # Tables available: {db.get_table_info()}
+        # User question: "{query}"
+        # """
+        # sql_query = llm.invoke(sql_generation_prompt).content.strip().replace("```sql", "").replace("```", "")
+#         sql_generation_prompt2 = f"""Given the user's question, create a single, syntactically correct SQL query to retrieve the data needed for a chart.
+# Do not include any other text or explanation, just the SQL query itself.
+# Tables available: {db.get_table_info()}
+# User question: "{query}"
 
 # """
-#         )
+        # # sql_query = llm.invoke(sql_generation_prompt).content.strip() # Remove the .replace() calls
+        # sql_generation_prompt = f"""Given the user's question, create a single, syntactically correct SQL query to retrieve the data needed for a chart.
+        # Do not include any other text or explanation, just the SQL query itself.
+        # Tables available: {db.get_table_info()}
+        # User question: "{query}"
+        # """
+        
+
+        # raw_sql_query = llm.invoke(sql_generation_prompt).content.strip()
+
+        # # More robustly find a SQL block
+        # match = re.search(r"```(?:sql)?\s*(.*?)\s*```", raw_sql_query, re.DOTALL)
+        # if match:
+        #     sql_query = match.group(1).strip()
+        # else:
+        #     # If no markdown block is found, assume the whole output is the query
+        #     sql_query = raw_sql_query
+
+
+     # Step 1: Generate SQL from the natural language query
+        sql_generation_prompt = f"""Given the user's question, create a single, syntactically correct SQL query to retrieve the data needed for a chart.
+        Do not include any other text or explanation, just the SQL query itself.
+        Tables available: {db.get_table_info()}
+        User question: "{query}"
+        """
+        raw_sql_query = llm.invoke(sql_generation_prompt).content.strip()
+
+        # AMENDED: Use robust regex to find the SQL block
+        match = re.search(r"```(?:sql)?\s*(.*?)\s*```", raw_sql_query, re.DOTALL)
+        if match:
+            sql_query = match.group(1).strip()
+        else:
+            sql_query = raw_sql_query
+
+
+         # --- FIX: Clean the query by removing markdown syntax ---
+        # sql_query = raw_sql_query.replace("```sql", "").replace("```", "").strip()
+        
+        print(f"Generated SQL: {sql_query}")
+        # print(f"Generated SQL: {sql_query}")
+
+        # Step 2: Execute the query with Pandas
+        # engine = create_engine(DB_URI)
+        # df = pd.read_sql_query(sql_query, con=engine)
+        # print ("AYEM")
+        # if df.empty:
+        #     return {"visualization_result": {"analysis": "I found no data to visualize for your request.", "image_base64": None}}
+
+
+           # Step 2: Execute the query with Pandas
+        engine = create_engine(DB_URI)
+        df = pd.read_sql_query(sql_query, con=engine)
+        print("AYEM")
+        if df.empty:
+            return {"visualization_result": {"analysis": "I found no data to visualize for your request.", "image_base64": None}}
+
+ # --- NEW: Step 3.5: Determine the best chart type ---
+        df_info = f"""
+        Data Columns: {df.columns.tolist()}
+        Data Types: {df.dtypes.to_dict()}
+        Data Head:
+        {df.head().to_string()}
+        """
+
+        chart_selection_prompt = f"""
+        Given the user's original query '{query}' and the following data summary, what is the best chart type to use?
+        Your answer must be a single word from this list: 'bar', 'line', 'scatter', 'pie'.
+
+        Data Summary:
+        {df_info}
+        """
+        chart_type = llm.invoke(chart_selection_prompt).content.strip().lower()
+        print(f"--- LLM chose chart type: '{chart_type}' ---")
+
+
+       # Step 4: Get textual analysis from the LLM
+        data_str = df.to_csv(index=False)
+        analysis_prompt = f"Analyze this data and provide a brief, insightful summary based on the user's original request: '{query}'.\n\nData:\n{data_str}"        
+        analysis_text = llm.invoke(analysis_prompt).content
+
+        # --- AMENDED: Step 5: Generate the plot using intelligent chart selection ---
+        plt.style.use('seaborn-v0_8-whitegrid')
+        fig, ax = plt.subplots(figsize=(10, 6))
+        numeric, categorical, dates = get_column_types(df)
+        
+        # Simple logic to determine plot type (can be improved)
+        # if len(df.columns) == 2:
+        #     x_col, y_col = df.columns[0], df.columns[1]
+        #     if pd.api.types.is_numeric_dtype(df[y_col]):
+        #         df.plot(kind='bar', x=x_col, y=y_col, ax=ax, legend=False)
+        #         ax.set_ylabel(y_col.replace('_', ' ').title())
+        #         ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x):,}'))
+        #     else: # Fallback for non-numeric y
+        #         df[x_col].value_counts().plot(kind='pie', ax=ax, autopct='%1.1f%%')
+        if chart_type == 'bar' and categorical and numeric:
+
+            x_col, y_col = categorical[0], numeric[0]
+            df.plot(kind='bar', x=x_col, y=y_col, ax=ax, legend=False)
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            ax.set_ylabel(y_col.replace('_', ' ').title())
+            plt.xticks(rotation=45, ha='right')     
+            ax.set_title(query.title())
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            plt.xticks(rotation=45, ha='right')
+        
+
+        elif chart_type == 'line' and (dates or numeric):
+            x_col = dates[0] if dates else numeric[0]
+            y_cols = [c for c in numeric if c != x_col]
+            df.plot(kind='line', x=x_col, y=y_cols, ax=ax)
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            ax.set_ylabel("Value")
+            plt.xticks(rotation=45, ha='right')
+
+        elif chart_type == 'scatter' and len(numeric) >= 2:
+            x_col, y_col = numeric[0], numeric[1]
+            df.plot(kind='scatter', x=x_col, y=y_col, ax=ax)
+            ax.set_xlabel(x_col.replace('_', ' ').title())
+            ax.set_ylabel(y_col.replace('_', ' ').title())
+
+        elif chart_type == 'pie' and categorical and numeric:
+            # Pie chart works best with a single categorical and numeric series
+            df.set_index(categorical[0])[numeric[0]].plot(
+                kind='pie', ax=ax, autopct='%1.1f%%', startangle=90
+            )
+            ax.set_ylabel('') # Hide y-label for pie charts
+        
+        else:
+            # Fallback for other data shapes
+            df.plot(ax=ax)
+       
+            # ax.set_title(query.title())
+         # Formatting common to all charts
+
+        ax.set_title(query.title())
+        ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{x:,.0f}'))
+        plt.tight_layout()
+        # plt.tight_layout()
+        
+        # Step 5: Convert plot to base64
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png', bbox_inches='tight')
+        buffer.seek(0)
+        image_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+        plt.close(fig)
+
+
+        return {
+            "visualization_result": {
+                "analysis": analysis_text,
+                "image_base64": image_base64
+            }
+        }
+    
+    
+    
+    # except Exception as e:
+    #     print(f"Error in visualization tool: {e}")
+    #     return {"visualization_result": {"analysis": f"Sorry, I encountered an error while creating the visualization: {e}", "image_base64": None}}
+
+    except Exception as e:
+            print(f"Error in visualization tool: {e}")
+            # Return the analysis if it was generated before the error
+            analysis_text_on_error = analysis_text if 'analysis_text' in locals() else f"Sorry, I encountered an error: {e}"
+            return {"visualization_result": {"analysis": analysis_text_on_error, "image_base64": None}}
+
+
+
+
+generate_visualization_tool = Tool(
+    name="generate_visualization_tool",
+    description="Use this tool to create charts, graphs, plots, or any data visualizations. This is the best tool when the user asks to 'plot', 'chart', 'visualize', or 'draw' data.",
+    func=generate_visualization_func,
+    args_schema=VisualizationInput,
+)
+
+# tools = [pdf_retrieval_tool, tavily_search_tool, sql_query_tool, generate_visualization_tool]
+
+
+
+# Combine all tools (Corrected logic)
+tools = [pdf_retrieval_tool, tavily_search_tool,generate_visualization_tool]
+if SQL_AGENT:
+    tools.append(sql_query_tool)
+
+
+
+
+
+
+# Updated `update_state_after_tool_call` function
+def update_state_after_tool_call(state: State) -> dict:
+    """
+    Updates the specific state field with the output from the last tool call.
+    """
+    print("--- UPDATING STATE FROM TOOL OUTPUT ---")
+    last_message = state["messages"][-1]
+    
+    # Ensure the last message is a ToolMessage
+    if not isinstance(last_message, ToolMessage):
+        return {}
+
+    tool_name = state.get("last_tool_name")
+    tool_output = last_message.content
+    
+    print(f"Tool '{tool_name}' returned: {tool_output[:200]}...")
+
+    if tool_name == "pdf_retrieval_tool":
+        return {"pdf_content": tool_output}
+    elif tool_name == "tavily_search_tool":
+        return {"web_content": tool_output}
+    elif tool_name == "sql_query_tool":
+        return {"sql_result": tool_output}
+    elif tool_name == "generate_visualization_tool":
+        # The tool's output is a stringified JSON. We need to parse it.
+
+        try:
+            # Find the start and end of the JSON object in the raw output
+            start_index = tool_output.find('{')
+            end_index = tool_output.rfind('}') + 1
+            if start_index != -1 and end_index != -1:
+                json_string = tool_output[start_index:end_index]
+                parsed_output = json.loads(json_string)
+                viz_data = parsed_output.get("visualization_result")
+                if viz_data:
+                    return {"visualization_result": viz_data}
+            return {} # Return empty dict if no valid JSON is found
+        except json.JSONDecodeError as e:
+            print(f"Error parsing visualization tool output: {e}")
+            return {}
+        # try:
+        #     parsed_output = json.loads(tool_output)
+        #     # The tool returns a dictionary with one key: "visualization_result"
+        #     viz_data = parsed_output.get("visualization_result")
+        #     if viz_data:
+        #         return {"visualization_result": viz_data}
+        # except json.JSONDecodeError as e:
+        #     print(f"Error parsing visualization tool output: {e}")
+        #     return {}
+    
+    return {}
+
+
+
+
+# def agent_node1(state: State):
+#     """
+#     The Router Node: Decides whether to call a tool or generate a final answer.
+#     This node's prompt is focused on routing, not on generating the final answer.
+#     """
+#     print("--- AGENT NODE (ROUTER) ---")
+#     messages = state["messages"]
+    
+#     # Handle the very first message with a greeting
+#     if len(messages) == 1:
+#         return {"messages": [AIMessage(content=f"{get_time_based_greeting()}! I am Damilola, your AI-powered virtual assistant. Welcome to ATB Bank. How can I help you today?")]}
+    
+#     system_prompt = SystemMessage(
+#         content=f"""You are Damilola, a helpful AI assistant for ATB Bank. Your role is to decide the next step in the conversation.
+        
+#         You have access to the following tools: {', '.join([t.name for t in tools])}.
+        
+#         1. Review the user's latest message in the context of the conversation history.
+#         2. If the user's question can be answered using one of your tools, call the most appropriate tool with the correct input.
+#         3. If you have already used a tool and have enough information to answer the user's question, respond directly.
+#         4. Do not generate the final answer here. Your job is to either call a tool or indicate that you're ready to answer.
+        
+#         Current Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+#         """
 #     )
-
-
-
     
-    full_messages = [system_prompt] + messages
+#     llm_with_tools = llm.bind_tools(tools)
+#     response = llm_with_tools.invoke([system_prompt] + messages)
     
-    response = llm_with_tools.invoke(full_messages)
-     # The response from llm_with_tools.invoke will either be an AIMessage with content
-    # or an AIMessage with tool_calls.
-    return {"messages": [response]}
+#     return {"messages": [response]}
 
-# Utility function for greeting (from original code)
+
+def agent_node(state: State):
+    """
+    The Router Node: Decides whether to call a tool or generate a final answer.
+    """
+    print("--- AGENT NODE (ROUTER) ---")
+    messages = state["messages"]
+    
+    # Handle the very first message with a greeting
+    if len(messages) == 1:
+        return {"messages": [AIMessage(content=f"{get_time_based_greeting()}! I am Damilola... How can I help?")]}
+    
+    # REVISED PROMPT: More specific on tool usage
+    system_prompt = SystemMessage(
+        content=f"""You are a helpful AI assistant for ATB Bank. Your task is to analyze the user's request and decide if a tool is needed to answer it.
+        
+        You have access to the following tools:
+        - `pdf_retrieval_tool`: For questions about bank policies, products, or internal knowledge.
+        - `tavily_search_tool`: For general knowledge or up-to-date information.
+        - `sql_query_tool`: For questions about specific data, like user counts or transaction volumes.
+        - **`generate_visualization_tool`**: **Use this tool ONLY when the user explicitly asks to 'plot', 'chart', 'graph', or 'visualize' data. This is your primary tool for creating visual representations from database data.**
+        
+        Based on the conversation history, either call the most appropriate tool to gather information or, if you have enough information already, prepare to answer the user directly.
+        """
+    )
+    
+    llm_with_tools = llm.bind_tools(tools)
+    response = llm_with_tools.invoke([system_prompt] + messages)
+    
+    last_tool_name = None
+    if response.tool_calls:
+        last_tool_name = response.tool_calls[0]['name']
+        print(f"LLM decided to call tool: {last_tool_name}")
+        
+    return {"messages": [response], "last_tool_name": last_tool_name}
 
 
 def generate_final_answer_node(state: State):
     """
-    This node generates the final answer based on the accumulated context from tools.
-    It ensures the output is a plain AIMessage.
+    The Generator Node: Creates the final structured answer after gathering all necessary context from tools.
     """
-    print("--- Inside generate_final_answer_node2 ---")
-    
-    # Extract relevant content from the state
-    # Ensure user_query is extracted from the last HumanMessage in the history
-    user_query = ""
-    for msg in reversed(state.get("messages", [])):
-        if isinstance(msg, HumanMessage):
-            user_query = msg.content
-            break
+    print("--- GENERATE FINAL ANSWER NODE ---")
+    user_query = state["messages"][-1].content
+    print ("Lemu",state["messages"][-1])
 
-    # Get tool outputs from state, ensuring they are strings
-    pdf_text_output = state.get("pdf_content", "")
-    web_text_output = state.get("web_content", "")
-    query_answer_output = state.get("query_answerT", "")
-    attached_content = state.get("attached_content", "None")
-
+    state_updates = {}  #KD
     context_parts = []
-    if pdf_text_output:
-        context_parts.append(f"PDF Content:\n{pdf_text_output}")
-    if web_text_output:
-        context_parts.append(f"Web Content:\n{web_text_output}")
-    if query_answer_output:
-        context_parts.append(f"Query Answer:\n{query_answer_output}")
-    if attached_content and attached_content != "None":
-        context_parts.append(f"Attached Content:\n{attached_content}")
+    if state.get("pdf_content"): context_parts.append(f"PDF Content:\n{state['pdf_content']}")
+    if state.get("web_content"): context_parts.append(f"Web Content:\n{state['web_content']}")
+    if state.get("sql_result"): context_parts.append(f"SQL Database Result:\n{state['sql_result']}")
 
-    context = "\n\n".join(context_parts) if context_parts else "No additional context found."
 
-    greeting = get_time_based_greeting() # Using the utility function
 
-    # Hardcoded prompt template for final answer (plain text output)
-    # Removed the structured output instructions from this prompt
-    response_prompt = f"""
-You are Damilola, the AI-powered virtual assistant for ATB Bank.
-Your core purpose is to deliver professional, accurate, and courteous customer support.
-When required used tool ;{tools}
 
-{greeting}!
+    # # NEW: Handle visualization result
+    # viz_result = state.get("visualization_result")
+    # chart_base64 = None
+    # if viz_result:
+    #     analysis = viz_result.get('analysis', 'Chart analysis is not available.')   
+    #     chart_base64 = viz_result.get('image_base64')
+    #     context_parts.append(f"Visualization Analysis:\n{analysis}")
 
-Based on the following information, please provide a clear, concise, empathetic, and polite answer to the user's question.
-User Question: {user_query}
+    # --- THE FIX: PART 1 ---
+    # Store the chart data in a variable, but only put the TEXT analysis in the LLM context.
+    viz_result = state.get("visualization_result")
+    chart_base64_data = None # Initialize
+    if viz_result:
+        analysis = viz_result.get('analysis', 'Chart analysis is not available.')   
+        chart_base64_data = viz_result.get('image_base64') # Store the data here
+        context_parts.append(f"Visualization Analysis:\n{analysis}") # Add ONLY analysis to context
 
-Context from tools:
-{context}
+        # KD 
+        if not chart_base64_data:
+            print("--- Incomplete visualization result found. Clearing from state for next turn. ---")
+            state_updates["visualization_result"] = None
 
-Please ensure your response is in plain text, directly addressing the user's question.
-Always maintain a polite and professional tone, and conclude by asking if there's anything else you can assist with today.
-"""
+
+    # if state.get("attached_content"): context_parts.append(f"Attached Content:\n{state['attached_content']}")
+    # context = "\n\n".join(context_parts) if context_parts else "No additional context was retrieved."
+
+    if state.get("attached_content"): context_parts.append(f"Attached Content:\n{state['attached_content']}")
+    context = "\n\n".join(context_parts) if context_parts else "No additional context was retrieved."
+
+    # Prompt designed to generate a structured JSON output based on the Answer schema
+    # prompt = f"""You are Damilola, the AI-powered virtual assistant for ATB Bank.
+    # Your goal is to provide a final, comprehensive, and empathetic answer based on the user's question and the context gathered from your tools.
     
-    print("--- PROMPT for final answer ---")
-    print(response_prompt)
+    # User Question: "{user_query}"
+    
+    # Available Context:
+    # ---
+    # {context}
+    # ---
+    
+    # Based on all the information above, generate a structured response. You MUST format your response as a JSON object that strictly follows the schema below.
+    
+    #     Generate a structured JSON response. 
+    # - The 'answer' field should summarize the findings. If a chart was generated, describe what the chart shows.
+    # - If a chart was generated (indicated by 'Visualization Analysis' in the context), copy the provided chart data into the 'chart_base64' field. Otherwise, leave it as null.
+    #     Schema:
+    # {{
+    #   "answer": "str: A clear, concise, empathetic, and polite response directly addressing the user's question. Use straightforward language.",
+    #   "sentiment": "int: An integer rating of the user's sentiment, from -2 (very negative) to +2 (very positive).",
+    #   "ticket": "List[str]: A list of service channels relevant to any unresolved issue. Possible values: ['POS', 'ATM', 'Web', 'Mobile App', 'Branch', 'Call Center', 'Other']. Leave empty if not applicable.",
+    #   "source": "List[str]: A list of sources used. Possible values: ['PDF Content', 'Web Search', 'SQL Database', 'User Provided Context', 'Internal Knowledge']. Leave empty if no specific source was used."
+    # }}
+    # """
+    
 
-    try:
-        # Pass both the system prompt and the user's last message for context
-        messages_for_llm = [SystemMessage(content=response_prompt)]
-        if user_query: # Only add user message if it's not empty
-            messages_for_llm.append(HumanMessage(content=user_query)) 
+ # --- THE FIX: PART 2 ---
+    # Simplify the prompt. The LLM should NOT handle the chart_base64 data.
+    prompt = f"""You are Damilola, the AI-powered virtual assistant for ATB Bank.
+    Your goal is to provide a final, comprehensive, and empathetic answer based on the user's question and the context gathered from your tools.
+    
+    User Question: "{user_query}"
+    
+    Available Context:
+    ---
+    {context}
+    ---
+    
+    Based on all the information above, generate a structured response. If the context includes 'Visualization Analysis', your answer should describe what the chart shows.
+    You MUST format your response as a JSON object that strictly follows this schema, omitting the 'chart_base64' field as it will be handled separately.
+    
+    Schema:
+    {{
+      "answer": "str: Your clear, concise, and polite response.",
+      "sentiment": "int: An integer rating of the user's sentiment (-2 to +2).",
+      "ticket": "List[str]: Relevant service channels. Empty list if not applicable.",
+      "source": "List[str]: Sources used. Empty list if not applicable."
+    }}
+    """
+
+    structured_llm = llm.with_structured_output(Answer)
+    final_answer_obj = structured_llm.invoke(prompt)
+
+    if chart_base64_data:
+        final_answer_obj.chart_base64 = chart_base64_data
+
+    ai_response_message = None
+
+
+    if final_answer_obj.chart_base64:
+        # If a chart exists, store it in the message's kwargs.
+        # The LLM will only see the 'content' in the next turn, not the large base64 string.
+
+        ai_response_message = AIMessage(
+            content=final_answer_obj.answer,
+            additional_kwargs={"chart_base64": final_answer_obj.chart_base64}
+        )
+    else:
+        # If no chart, just create a standard AIMessage.
+        ai_response_message
         
-        final_ai_response = llm.invoke(messages_for_llm)
-        
-        # Update the state with the final answer and related metadata
-        # The 'messages' list in the state should be updated with the new AIMessage
-        new_messages = state.get("messages", []) + [AIMessage(content=final_ai_response.content)]
+        ai_response_message = AIMessage(content=final_answer_obj.answer)
 
-        return {
-            "answer": final_ai_response.content,
-            "sentiment": 1, # Placeholder, could be derived by another LLM call
-            "ticket": [], # Placeholder
-            "source": ["Internal Knowledge" if not context_parts else "Mixed Sources"], # Placeholder
-            "messages": new_messages # Update messages in state
-        }
+   
+    # if chart_base64_data:
+    #     final_answer_obj.chart_base64 = chart_base64_data
+    
+    # Append the human-readable part of the answer to the message history
+    new_messages = state["messages"] + [AIMessage(content=final_answer_obj.answer)]
+    return {
+        "final_answer": final_answer_obj,
+        "messages": new_messages
+    }
 
-    except Exception as e:
-        print(f"\n!!! ERROR during final answer generation: {e}")
-        # Ensure 'messages' is always a list of BaseMessage objects
-        error_message_content = f"An error occurred while generating the final answer: {e}"
-        new_messages = state.get("messages", []) + [AIMessage(content=error_message_content)]
-        return {
-            "answer": error_message_content,
-            "sentiment": -1,
-            "ticket": [],
-            "source": ["Internal Error"],
-            "messages": new_messages
-        }
+
+    
+    # return {
+    #     "final_answer": final_answer_obj,
+    #     "messages": new_messages
+    # }
 
 def summarize_conversation(state: State):
-    """Generate conversation summary"""
-    print("--- Inside summarize_conversation node ---")
+    """Generates a final summary of the conversation.
+     
+    Generates a final summary of the conversation after the answer has been provided.
+
+    This node:
+    1. Takes the complete message history from the state.
+    2. Uses an LLM with structured output to generate a Summary object.
+    3. Compiles a comprehensive 'metadatas' dictionary for logging, combining
+       information from the final answer and the new summary.
+    4. Updates the state with the 'conversation_summary' and 'metadatas'.
+    """
+    print("--- SUMMARIZE CONVERSATION NODE ---")
+    
     messages = state.get("messages", [])
+ 
     
-    # Check if messages is empty or invalid before proceeding
+    # 1. Prepare the conversation history for the LLM
+    # Using .get() provides a default empty list if 'messages' is not in the state
+     
     if not messages:
-        print("Warning: No messages found for summarization.")
-        return { "metadatas": {"summary_data":"Unable to generate summary - no messages"}, }
-
-    # Convert messages to a readable format for summarization
-    conversation_history = "\n".join([f"{msg.type}: {msg.content}" for msg in messages if hasattr(msg, 'content') and msg.content is not None])
-
-    # Hardcoded summarize prompt template for structured summary output
-    summarize_prompt_template = """
-Please summarize the following conversation. Also, identify the overall sentiment of the conversation (e.g., 1 for positive, 0 for neutral, -1 for negative), any unresolved issues/channels, and all sources referenced.
-
-Conversation History:
-{conversation_history}
-
-Provide the summary, sentiment, unresolved tickets, and sources in the following JSON format:
-{{
-    "summaryS": "Summary of the entire conversation",
-    "sum_sentimentS": "Sentiment analysis of entire conversation (1, 0, or -1)",
-    "sum_ticketS": ["Channels with unresolved issues"],
-    "sum_sourceS": ["All sources referenced in conversation"]
-}}
-"""
-    summarize_prompt = summarize_prompt_template.format(conversation_history=conversation_history)
-
-    try:
-        model_with_structure = model.with_structured_output(Summary)
-        # Pass the system prompt and the full message history
-        # Ensure messages are not empty before passing to invoke
-        messages_for_summary = [SystemMessage(content=summarize_prompt)] + messages
-        response = model_with_structure.invoke(messages_for_summary)
-        print ("Summary Response:", response)
-        
-        # Access attributes directly, as 'response' is a Pydantic object
-        summary_data = {
-            "question": state.get("messages", [])[-1].content if state.get("messages") else "",
-            "answer": state.get('answer', ''),
-            "sentiment": state.get('sentiment', 0),
-            "ticket": state.get('ticket', []),
-            "source": state.get('source', []),
-            "attached_content": state.get('attached_content', ''),
-            "summary": response.summaryS, # Direct attribute access
-            "sum_sentiment": response.sum_sentimentS, # Direct attribute access
-            "sum_ticket": response.sum_ticketS, # Direct attribute access
-            "sum_source": response.sum_sourceS # Direct attribute access
+        # If there are no messages, we can't summarize. Return an empty update.
+        return {
+            "conversation_summary": None,
+            "metadatas": {"error": "No messages to summarize."}
         }
+
+
+
+    conversation_history = "\n".join([f"{msg.type}: {msg.content}" for msg in state["messages"]])
     
-        return { "metadatas": summary_data }
+    summarize_prompt = f"""Please provide a structured summary of the following conversation.
     
-    except Exception as e:
-        print(f"Error summarizing conversation: {e}")
-        return { "metadatas": {"summary_data":f"Unable to generate summary: {e}"}, }
+    Conversation History:
+    {conversation_history}
+    
+    Provide the output in a JSON format matching this schema:
+    {{
+        "summary": "A concise summary of the entire conversation.",
+        "sentiment": "Overall sentiment score of the conversation (-2 to +2).",
+        "unresolved_tickets": ["List of channels with unresolved issues."],
+        "all_sources": ["All unique sources referenced in the conversation."]
+    }}
+    """
+    
+    structured_llm = llm.with_structured_output(Summary)
+    summary_obj = structured_llm.invoke(summarize_prompt)
+    
+    # Create the final metadata dictionary for logging
+    final_answer = state.get("final_answer")
+    last_user_question = ""
+    if len(messages) > 1:
+        # The last message is the AI's answer, the one before is the user's prompt for that turn
+        last_user_question = messages[-2].content
 
+    metadata_dict = {
+        "question": state["messages"][-2].content if len(state["messages"]) > 1 else "",
+        "answer": final_answer.answer if final_answer else "N/A",
+        "sentiment": final_answer.sentiment if final_answer else 0,
+        "ticket": final_answer.ticket if final_answer else [],
+        "source": final_answer.source if final_answer else [],
+        "chart_base64": final_answer.chart_base64 if final_answer else None,
+        "summary": summary_obj.summary,
+        "summary_sentiment": summary_obj.sentiment,
+        "summary_unresolved_tickets": summary_obj.unresolved_tickets,
+        "summary_sources": summary_obj.all_sources,
+    }
 
-
-
-# Define the condition to check if a tool was called
-# def should_continue(state: State) -> str:
-#     """
-#     Determines whether the agent should continue by calling a tool or
-#     generate a final answer.
-#     """
-#     last_message = state.get("messages", [])[-1]
-#     if last_message.tool_calls:
-#         return "tools"
-#     # If no tool calls, it means the LLM is ready to generate a final answer
-#     return "generate_final_answer"
-
+    return {
+        "conversation_summary": summary_obj,
+        "metadatas": metadata_dict
+    }
 
 # Define the condition to check if a tool was called
 def should_continue(state: State) -> str:
-    """
-    Determines whether the agent should continue by calling a tool or
-    generate a final answer.
-    """
-    last_message = state.get("messages", [])[-1]
-    if last_message.tool_calls:
+    """Determines the next step: call a tool or generate the final answer."""
+    if state["messages"][-1].tool_calls:
         return "tools"
-    # If no tool calls, it means the LLM is ready to generate a final answer
     return "generate_final_answer"
-
 
 # ==========================
 # 🔄 Graph Workflow
 # ==========================
 
+def build_graph():
+    """Builds and compiles the LangGraph workflow."""
+    workflow = StateGraph(State)
+    
+    workflow.add_node("agent_node", agent_node)
+    workflow.add_node("tools", ToolNode(tools=tools))
+    workflow.add_node("update_state", update_state_after_tool_call)
 
-def gambo(message: HumanMessage, attached_content: str, session_id: str):
-    print ("--- Building LangGraph workflow ---")
-    # with PostgresSaver.from_conn_string(DB_URI) as memory:
+    workflow.add_node("generate_final_answer", generate_final_answer_node)
+    workflow.add_node("summarize", summarize_conversation)
 
-    # # Use the specified DB_FILE_PATH for SqliteSaver
-    conn_checkpoint = None
+    workflow.set_entry_point("agent_node")
+
+    workflow.add_conditional_edges("agent_node", tools_condition, {"tools": "tools",END: "generate_final_answer",})
+    
+
+
+    # workflow.add_conditional_edges("agent_node", should_continue)
+    workflow.add_edge("tools", "update_state")
+    workflow.add_edge("update_state", "agent_node")
+    # workflow.add_edge("tools", "agent_node")
+    workflow.add_edge("generate_final_answer", "summarize")
+    workflow.add_edge("summarize", END)
+    
+    # Initialize checkpointing with a robust fallback
+    memory = None
     try:
-        conn_checkpoint = sqlite3.connect(DB_FILE_PATH, check_same_thread=False)
-        memory = SqliteSaver(conn=conn_checkpoint)
+        # DB_FILE_PATH should be defined, e.g., "checkpoints.sqlite"
+        conn = sqlite3.connect(DB_FILE_PATH, check_same_thread=False)
+        memory = SqliteSaver(conn=conn)
         print("SQLite checkpointing connected successfully.")
     except Exception as e:
-        print(f"Error connecting to SQLite for checkpointing: {e}. Checkpointing will not be available.")
         # from langgraph.checkpoint.memory import InMemorySaver
+        print(f"Error connecting to SQLite for checkpointing: {e}. Using in-memory saver.")
         # memory = InMemorySaver()
+    return workflow.compile(checkpointer=memory)
 
-        workflow = StateGraph(State)
-        workflow.add_node("agent_node", agent_node) # Node for LLM decision-making (tool or answer)
-        workflow.add_node("tools", ToolNode(tools=tools)) # Node for executing tools
-        workflow.add_node("generate_final_answer", generate_final_answer_node) # Node for generating final text response
-        workflow.add_node("summarize", summarize_conversation) # Node for summarizing
-
-        # Define workflow edges
-        workflow.add_edge(START, "agent_node")
-        
-        # The agent_node decides if it needs to use a tool or generate a final answer
-        workflow.add_conditional_edges(
-            "agent_node",
-            should_continue,
-            {
-                "tools": "tools",
-                "generate_final_answer": "generate_final_answer",
-            },
-        )
-        
-        # After a tool is executed, return to the agent_node to decide the next step
-        workflow.add_edge("tools", "agent_node")
-        
-        # After generating the final answer, proceed to summarize
-        workflow.add_edge("generate_final_answer", "summarize")
-        
-        # After summarizing, the workflow ends
-        workflow.add_edge("summarize", END)
-
-        graph = workflow.compile(checkpointer=memory)
-        
-        config = {"configurable": {"thread_id": session_id}}
-        
-        # Initial state for the graph invocation
-        initial_state = {"messages": [message], "attached_content": attached_content}
-        
-        output = graph.invoke(initial_state, config)
-        print("--- LangGraph workflow completed ---")
-        
-        # Close the checkpointing connection after invocation
-        # if conn_checkpoint:
-        #     conn_checkpoint.close()
-
-        return output
-        
-
-# Main function to process user messages
+# Main processing function
 def process_message(message_content: str, session_id: str, file_path: Optional[str] = None):
-    """Main function to process user messages"""
-    print("Processing message:")
-  
-    attached_content = "None"
-
-    # Only process image if file_path is provided
-    if file_path and os.path.exists(file_path):
+    """Main function to process user messages using the LangGraph agent."""
+    graph = build_graph()
+    config = {"configurable": {"thread_id": session_id}}
+    
+    attached_content = None # Simplified for this example
+    # Image processing logic can be added here as in the original code
+    if file_path:
         try:
             image = Image.open(file_path)
             image.thumbnail([512, 512]) # Resize for efficiency
-            prompt = "Describe the content of the picture in detail."
-            # configure(api_key=GOOGLE_API_KEY)
-            genai.configure(api_key=GOOGLE_API_KEY)  # Configure the API key
-            modelT = genai.GenerativeModel('gemini-pro-vision') # Specify the vision model
-            # modelT = GenerativeModel(model_name="gemini-2.0-flash", generation_config={"temperature": 0.7,"max_output_tokens": 512 })
+            # prompt = "Describe the content of the picture in detail."
+            prompt = "Generate the message in the content of the picture."
+            configure(api_key=GOOGLE_API_KEY)
+            # genai.configure(api_key=GOOGLE_API_KEY)  # Configure the API key
+            # modelT = genai.GenerativeModel('gemini-pro-vision') # Specify the vision model
+            modelT = GenerativeModel(model_name="gemini-2.0-flash", generation_config={"temperature": 0.7,"max_output_tokens": 512 })
             response = modelT.generate_content([image, prompt])
             attached_content = response.text
             print ("Attached content from image:", attached_content)
@@ -843,23 +1420,42 @@ def process_message(message_content: str, session_id: str, file_path: Optional[s
             attached_content = f"Error: Could not process attached file ({e})"
     elif file_path:
         print(f"Warning: Attached file not found at {file_path}. Skipping image processing.")
-
-    # Create HumanMessage for the graph
-    user_message_for_graph = HumanMessage(content=message_content)
-
-    output = gambo(user_message_for_graph, attached_content, session_id)
-    print ("AJAYITTT")
     
-    print("--- LangGraph workflow completed --- Final Output:", output)
+    initial_state = {"messages": [HumanMessage(content=message_content)], "attached_content": attached_content}
+    output = graph.invoke(initial_state, config)
+    print("--- LangGraph workflow completed ---")
     
-    # Extract the final answer content
-    final_answer_content = output.get('answer', 'No answer generated.')
-    
-    return {
-        "messages": final_answer_content,
-        "metadata": output.get("metadatas", {})
-    }
+    # Extract final answer from the structured Pydantic object
+    final_answer_obj = output.get('final_answer')
+    final_answer_content = final_answer_obj.answer if final_answer_obj else "No final answer was generated."
+    if final_answer_obj:
+        return {
+            "answer": final_answer_content,
+            "chart": final_answer_obj.chart_base64, # <-- Pass chart data to the view
+            "metadata": output.get("metadatas", {})
+        }
+    # return {
+    #     "answer": final_answer_content,
+    #     "metadata": output.get("metadatas", {})
+    # }
+    else:
+        return {
+            "answer": "I'm sorry, I could not generate a response.",
+            "chart": None,
+            "metadata": {}
+        }
 
+
+
+
+
+
+
+
+
+
+
+# kd ed 
 # # ==========================
 # # ▶️ Main Execution
 # # ==========================
@@ -1274,6 +1870,193 @@ Maintain a professional, objective, and data-driven tone. Your primary goal is t
     ])
     return responseY.content
 
+systemprompt = """
+
+You are a professional financial analyst specializing in payroll and variance analysis. Your task is to perform a detailed payroll comparison between two datasets provided in JSON format:
+
+"Previous Payroll Period": {old}
+
+"Current Payroll Period": {new}
+
+Your analysis must be meticulous, data-driven, and presented in a clear, professional Markdown report.
+
+Analysis Instructions
+
+You must follow these steps precisely:
+
+1. Identify Employee Status:
+Use employeeID._id as the unique identifier for each employee across both datasets. Classify each employee into one of the following categories:
+
+Continuing: The employeeID._id exists in both the previous and current datasets.
+
+New: The employeeID._id exists only in the current dataset.
+
+Departed: The employeeID._id exists only in the previous dataset.
+
+Suspicious: Flag any continuing employee as "Suspicious" if ANY of the following conditions are met. Comparison must be exact and case-sensitive.
+
+fullname has changed.
+
+employeeID.bankName has changed (e.g., "Zenith Bank" vs. "Zenith Banks").
+
+employeeID.accountNumber has changed.
+
+employeeID.phone has changed.
+
+Suspicious (Duplicate ID): If an employeeID._id appears more than once within the payslips array of the Current Payroll Period, it must be flagged as a critical data integrity issue.
+
+Note: If a file contains multiple top-level payroll objects, consolidate all payslips into a single list for each period before starting the analysis.
+
+2. Calculate Monetary Variances:
+For each employee and for the overall totals, compute the monetary variance (Current - Previous) in NGN for the following fields:
+
+gross (Gross Pay)
+
+tax (Tax)
+
+pension (Employee Pension Contribution)
+
+3. Identify Key Drivers of Variance:
+Analyze the data to determine the root causes of any financial changes. Your analysis must explicitly connect variances to:
+
+Headcount Changes: The financial impact of new hires and departures.
+
+Pay Changes: Changes in gross pay for continuing employees.
+
+Anomalies & Data Quality: The financial impact of suspicious records, especially duplicate entries.
+
+Required Output Format (Markdown)
+
+Generate the report using the exact structure and formatting below.
+
+1. Executive Summary
+
+Start with a headline figure: the total variance in Gross Pay.
+
+State whether the variance is favorable (cost decrease) or unfavorable (cost increase).
+
+Briefly summarize the primary drivers (e.g., headcount changes, significant pay adjustments, data anomalies).
+
+2. Overall Payroll Summary
+
+Provide a Markdown table comparing the aggregate values:
+
+Generated markdown
+| Metric        | Previous Period | Current Period | Variance (NGN) | Variance (%) |
+|---------------|-----------------|----------------|----------------|--------------|
+| Gross Pay     |                 |                |                |              |
+| Total Tax     |                 |                |                |              |
+| Total Pension |                 |                |                |              |
+
+3. Detailed Variance Analysis
+3.1 Headcount Changes
+
+List new and departed employees and their financial impact.
+
+Departed Employees (Count)
+
+Generated markdown
+| Employee Name | Employee ID | Gross Pay Impact (NGN) |
+|---------------|-------------|------------------------|
+| ...           |             |                        |
+| **Total Departures** | | **(Total Value)** |
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Markdown
+IGNORE_WHEN_COPYING_END
+
+New Employees (Count)
+
+Generated markdown
+| Employee Name | Employee ID | Gross Pay Impact (NGN) |
+|---------------|-------------|------------------------|
+| ...           |             |                        |
+| **Total New Hires** | | **(Total Value)** |
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Markdown
+IGNORE_WHEN_COPYING_END
+3.2 Variances for Continuing & Suspicious Employees
+
+Create a table for all continuing employees. Highlight significant changes and flag suspicious records.
+
+Generated markdown
+| Employee Name | Employee ID | Gross Pay Variance (NGN) | Notes & Flags |
+|---------------|-------------|--------------------------|---------------|
+| ...           |             |                          | 🔴 **Suspicious (Identity Change):** Bank name changed from 'Old Bank' to 'New Bank'. |
+| ...           |             |                          | 🔴 **Suspicious (Duplicate ID):** Employee ID appears X times in the current period. |
+| ...           |             |                          | **Significant Pay Change:** Describe the change (e.g., Housing increased by NXX). |
+| ...           |             |                          | No significant variance. |
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Markdown
+IGNORE_WHEN_COPYING_END
+4. Reconciliation of Gross Pay Variance
+
+Summarize the drivers contributing to the total Gross Pay variance in a reconciliation table.
+
+Generated markdown
+| Driver                               | Count | Value Impact (NGN) |
+|--------------------------------------|-------|--------------------|
+| New Hires                            |       |                    |
+| Departures                           |       |                    |
+| Pay Changes (Continuing Employees)   |       |                    |
+| Suspicious Anomalies (e.g., Duplicates) |       |                    |
+| **Total Gross Pay Variance**         |       |                    |
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Markdown
+IGNORE_WHEN_COPYING_END
+5. Conclusion & Recommendations
+
+Provide clear, numbered, and actionable recommendations based on your findings. Prioritize critical issues.
+
+🔴 URGENT: Investigate Duplicate Employee ID: Detail the specific employee and the risk of double payment.
+
+🔴 URGENT: Verify Bank Detail Change: Detail the specific employee and the potential fraud risk.
+
+Review Pay Increase Authorization: Specify the employee and the amount that needs verification.
+
+Data Cleansing Protocol: Recommend a future action to prevent similar data integrity issues.
+
+Final Instructions:
+
+Format all monetary values with the Nigerian currency symbol and two decimal places (e.g., N5,200.00).
+
+Maintain a professional, objective, and data-driven tone. Your primary goal is to act as a diligent analyst, highlighting not just the numbers but the underlying data quality issues and operational risks they represent.
+"""
+
+
+
+systemprompt11="""
+ "Please perform a payroll variance analysis comparing two JSON files: {old} (the old payroll data) and {new} (the recent payroll data). The report should capture the following details:
+
+New Employees: List all employees present in the new file but not in the old file, including their gross pay, net pay, and full account details (bank, account number, account name).
+
+Salary Changes: Identify any employees present in both files whose gross, net, or charge amounts have changed. Specify the old and new values for each change.
+
+Delisted Employees: List all employees present in the old file but not in the new file, including their last recorded gross pay, net pay, and full account details.
+
+Changed in Account Details: For employees present in both files, identify any changes in their bank name, account number, or account name. Specify the old and new account details.
+
+Any Other Significant Change: Provide a summary of the overall financial impact, including the total variance in gross payroll, net payroll, and charges between the old and new files.
+
+
+
+
+
+
+"""
+def aluke():
+   return systemprompt
 
 
 def get_payslips_from_json(json_file_path,desired_columns):
@@ -1381,171 +2164,3 @@ def get_payslips_from_json(json_file_path,desired_columns):
 # # Pass the JSON string to your function
 # yemo = atb(initial_json,treated_json)
 # print(yemo)
-
-
-
-
-
-
-
-
-
-
-
-@csrf_exempt
-def send_message(request):
-    """
-    Handles incoming user messages, processes them with an LLM,
-    sends an immediate response to the user, and then saves
-    the bot's message and any associated metadata in a background thread.
-    """
-    try:
-        user_message, attachment = '', None
-
-        # 📍 Ensure session key is created for conversation tracking
-        if not request.session.session_key:
-            request.session.create()
-        session_key = request.session.session_key
-
-        # 📨 Handle input from JSON payload or form-data
-        if 'application/json' in request.content_type:
-            try:
-                if request.body:
-                    data = json.loads(request.body)
-                    user_message = data.get('message', '').strip()
-            except json.JSONDecodeError:
-                # Return error if JSON is malformed
-                return JsonResponse({'status': 'error', 'response': 'Invalid JSON format'}, status=400)
-        else:
-            # Handle form-data (e.g., from a web form submission)
-            user_message = request.POST.get('message', '').strip()
-            attachment = request.FILES.get('attachment')
-
-        # 🚫 Validate input: either a message or an attachment must be present
-        if not user_message and not attachment:
-            return JsonResponse({'status': 'error', 'response': 'Message or attachment is required'}, status=400)
-
-        # 🗃️ Get or create the conversation for the current session
-        conversation, _ = Conversation.objects.get_or_create(session_id=session_key, is_active=True)
-
-        # Create and save the user's message immediately
-        user_msg_obj = Message.objects.create(
-            conversation=conversation,
-            text=user_message,
-            is_user=True
-        )
-
-        # 📎 Handle attachment upload (if any)
-        file_path = ""
-        if attachment and hasattr(attachment, 'read'):
-            user_msg_obj.attachment = attachment
-            user_msg_obj.save() # Save the attachment to the user message object
-            try:
-                file_path = user_msg_obj.attachment.path
-            except Exception as e:
-                # Log a warning if the attachment path cannot be resolved
-                logging.warning(f"Could not resolve attachment path: {e}")
-                file_path = ""
-
-        # 🧠 Process the user's message with the Language Model (LLM)
-        bot_response_data = {}  # <-- Ensure this is always defined
-
-        try:
-            # Check if user is asking for a chart
-            if any(word in user_message.lower() for word in ['chart', 'graph', 'plot', 'visualize']):
-                # Use the chart generation function
-                from .kip import generate_chart
-                chart_text, chart_image = generate_chart(user_message)
-                
-                # Create HTML response with image
-                if chart_image:
-                    html_response = f"""
-                    <div class="chart-response">
-                        <div class="analysis-text">{chart_text}</div>
-                        <div class="chart-image">
-                            <img src="data:image/png;base64,{chart_image}" 
-                                 alt="Generated Chart" 
-                                 class="img-fluid" 
-                                 style="max-width: 100%; height: auto;">
-                        </div>
-                    </div>
-                    """
-                    bot_text = html_response
-                else:
-                    bot_text = chart_text
-            else:
-                # Use regular message processing
-                bot_response_data = process_message(user_message, session_key, file_path)
-                bot_text = bot_response_data.get('answer', '')
-                
-            if not bot_text:
-                bot_text = "I'm sorry, I couldn't process your request."
-        except Exception as e:
-            # Handle errors during LLM processing
-            bot_text = f"Error processing message: {str(e)}"
-            logging.error(f"process_message failed: {e}", exc_info=True)
-
-        # ✅ Create and save the bot's response message immediately for efficiency
-        # This ensures the bot's reply is recorded quickly, separate from metadata.
-        Message.objects.create(
-            conversation=conversation,
-            text=bot_text,
-            is_user=False
-        )
-
-        # ✅ Prepare the JSON response payload to send back to the user
-        response_payload = {
-            'status': 'success',
-            'response': bot_text,
-            'attachment_url': user_msg_obj.attachment.url if attachment else None
-        }
-        JsonResponseReady = JsonResponse(response_payload)
-        if JsonResponseReady:
-            logging.info(f"Bot response: {bot_text}")
-            return JsonResponseReady
-        if True:
-
-            # Log the bot's response for debugging purposes
-            
-
-            # 🧵 Define a function for background saving of metadata
-            def save_metadata_async(bot_response_data_for_thread, current_session_key):
-                """
-                Saves bot response metadata (insights) in a separate thread.
-                This prevents blocking the main request-response cycle.
-                """
-                try:
-                    metadata = bot_response_data_for_thread.get('metadata', {})
-                    if metadata:
-                        # Retrieve the latest Insight object for the session or create a new one
-                        insight_obj = Insight.objects.filter(session_id=current_session_key).order_by('-updated_at').first()
-                        if not insight_obj:
-                            insight_obj = Insight(session_id=current_session_key)
-
-                        # Populate Insight object fields from metadata
-                        insight_obj.question      = metadata.get('question', '')
-                        insight_obj.answer        = metadata.get('answer', '')
-                        insight_obj.sentiment     = metadata.get('sentiment', 0)
-                        insight_obj.ticket        = safe_json(metadata.get('ticket', {}))
-                        insight_obj.source        = safe_json(metadata.get('source', {}))
-                        insight_obj.summary       = metadata.get('summary', '')
-                        insight_obj.sum_sentiment = safe_json(metadata.get('sum_sentiment', 0))
-                        insight_obj.sum_ticket    = safe_json(metadata.get('sum_ticket', {}))
-                        insight_obj.sum_source    = safe_json(metadata.get('sum_source', {}))
-
-                        insight_obj.save() # Save the updated or new Insight object
-                except Exception as e:
-                    # Log any errors encountered during background saving
-                    logging.error(f"Background DB save failed: {e}", exc_info=True)
-
-            # 🚀 Launch the background thread to save metadata
-            # Pass bot_response_data and session_key as arguments to the thread function
-            threading.Thread(target=save_metadata_async, args=(bot_response_data, session_key,)).start()
-
-        # Return the JSON response to the user immediately
-        # return JsonResponseReady
-
-    except Exception as e:
-        # Catch any fatal server errors and return a 500 response
-        logging.error(f"Fatal server error: {e}", exc_info=True)
-        return JsonResponse({'status': 'error', 'response': f"Server error: {str(e)}"}, status=500)

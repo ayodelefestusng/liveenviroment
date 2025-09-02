@@ -1,19 +1,24 @@
-import random
-import uuid
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_ollama.llms import OllamaLLM
+from datetime import datetime
 
-import datetime
 
-START_YEAR = 2010
-# START_YEAR = 2025
 
-TODAY = datetime.date.today()
+start_time = datetime.now()
+print(f"Start Time: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
 
-def random_date(start_year=START_YEAR, end_date=TODAY):
-    """Generate a random date between a start year and today."""
-    start_date = datetime.date(start_year, 1, 1)
-    time_between_dates = (end_date - start_date).days
-    random_days = random.randint(0, time_between_dates)
-    return start_date + datetime.timedelta(days=random_days)
+template = """Question: {question}
+Answer: Let's think step by step."""
+prompt = ChatPromptTemplate.from_template(template)
 
-# random_date()
-print(random_date())
+# Explicitly set base_url to avoid WinError 10049
+# model = OllamaLLM(model="llama3", base_url="http://127.0.0.1:11434")
+model = OllamaLLM(model="gpt-oss:20b", base_url="http://127.0.0.1:11434")
+
+chain = prompt | model
+
+response = chain.invoke({"question": "What is LangChain?"})
+print(response)
+
+start_time = datetime.now()
+print(f"Start Time: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")

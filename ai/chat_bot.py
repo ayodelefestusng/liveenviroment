@@ -1266,6 +1266,13 @@ def process_message(message_content: str, session_id: str, file_path: Optional[s
 
 
 
+
+
+
+
+
+
+
 # kd ed 
 # # ==========================
 # # ▶️ Main Execution
@@ -1681,6 +1688,193 @@ Maintain a professional, objective, and data-driven tone. Your primary goal is t
     ])
     return responseY.content
 
+systemprompt = """
+
+You are a professional financial analyst specializing in payroll and variance analysis. Your task is to perform a detailed payroll comparison between two datasets provided in JSON format:
+
+"Previous Payroll Period": {old}
+
+"Current Payroll Period": {new}
+
+Your analysis must be meticulous, data-driven, and presented in a clear, professional Markdown report.
+
+Analysis Instructions
+
+You must follow these steps precisely:
+
+1. Identify Employee Status:
+Use employeeID._id as the unique identifier for each employee across both datasets. Classify each employee into one of the following categories:
+
+Continuing: The employeeID._id exists in both the previous and current datasets.
+
+New: The employeeID._id exists only in the current dataset.
+
+Departed: The employeeID._id exists only in the previous dataset.
+
+Suspicious: Flag any continuing employee as "Suspicious" if ANY of the following conditions are met. Comparison must be exact and case-sensitive.
+
+fullname has changed.
+
+employeeID.bankName has changed (e.g., "Zenith Bank" vs. "Zenith Banks").
+
+employeeID.accountNumber has changed.
+
+employeeID.phone has changed.
+
+Suspicious (Duplicate ID): If an employeeID._id appears more than once within the payslips array of the Current Payroll Period, it must be flagged as a critical data integrity issue.
+
+Note: If a file contains multiple top-level payroll objects, consolidate all payslips into a single list for each period before starting the analysis.
+
+2. Calculate Monetary Variances:
+For each employee and for the overall totals, compute the monetary variance (Current - Previous) in NGN for the following fields:
+
+gross (Gross Pay)
+
+tax (Tax)
+
+pension (Employee Pension Contribution)
+
+3. Identify Key Drivers of Variance:
+Analyze the data to determine the root causes of any financial changes. Your analysis must explicitly connect variances to:
+
+Headcount Changes: The financial impact of new hires and departures.
+
+Pay Changes: Changes in gross pay for continuing employees.
+
+Anomalies & Data Quality: The financial impact of suspicious records, especially duplicate entries.
+
+Required Output Format (Markdown)
+
+Generate the report using the exact structure and formatting below.
+
+1. Executive Summary
+
+Start with a headline figure: the total variance in Gross Pay.
+
+State whether the variance is favorable (cost decrease) or unfavorable (cost increase).
+
+Briefly summarize the primary drivers (e.g., headcount changes, significant pay adjustments, data anomalies).
+
+2. Overall Payroll Summary
+
+Provide a Markdown table comparing the aggregate values:
+
+Generated markdown
+| Metric        | Previous Period | Current Period | Variance (NGN) | Variance (%) |
+|---------------|-----------------|----------------|----------------|--------------|
+| Gross Pay     |                 |                |                |              |
+| Total Tax     |                 |                |                |              |
+| Total Pension |                 |                |                |              |
+
+3. Detailed Variance Analysis
+3.1 Headcount Changes
+
+List new and departed employees and their financial impact.
+
+Departed Employees (Count)
+
+Generated markdown
+| Employee Name | Employee ID | Gross Pay Impact (NGN) |
+|---------------|-------------|------------------------|
+| ...           |             |                        |
+| **Total Departures** | | **(Total Value)** |
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Markdown
+IGNORE_WHEN_COPYING_END
+
+New Employees (Count)
+
+Generated markdown
+| Employee Name | Employee ID | Gross Pay Impact (NGN) |
+|---------------|-------------|------------------------|
+| ...           |             |                        |
+| **Total New Hires** | | **(Total Value)** |
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Markdown
+IGNORE_WHEN_COPYING_END
+3.2 Variances for Continuing & Suspicious Employees
+
+Create a table for all continuing employees. Highlight significant changes and flag suspicious records.
+
+Generated markdown
+| Employee Name | Employee ID | Gross Pay Variance (NGN) | Notes & Flags |
+|---------------|-------------|--------------------------|---------------|
+| ...           |             |                          | 🔴 **Suspicious (Identity Change):** Bank name changed from 'Old Bank' to 'New Bank'. |
+| ...           |             |                          | 🔴 **Suspicious (Duplicate ID):** Employee ID appears X times in the current period. |
+| ...           |             |                          | **Significant Pay Change:** Describe the change (e.g., Housing increased by NXX). |
+| ...           |             |                          | No significant variance. |
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Markdown
+IGNORE_WHEN_COPYING_END
+4. Reconciliation of Gross Pay Variance
+
+Summarize the drivers contributing to the total Gross Pay variance in a reconciliation table.
+
+Generated markdown
+| Driver                               | Count | Value Impact (NGN) |
+|--------------------------------------|-------|--------------------|
+| New Hires                            |       |                    |
+| Departures                           |       |                    |
+| Pay Changes (Continuing Employees)   |       |                    |
+| Suspicious Anomalies (e.g., Duplicates) |       |                    |
+| **Total Gross Pay Variance**         |       |                    |
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Markdown
+IGNORE_WHEN_COPYING_END
+5. Conclusion & Recommendations
+
+Provide clear, numbered, and actionable recommendations based on your findings. Prioritize critical issues.
+
+🔴 URGENT: Investigate Duplicate Employee ID: Detail the specific employee and the risk of double payment.
+
+🔴 URGENT: Verify Bank Detail Change: Detail the specific employee and the potential fraud risk.
+
+Review Pay Increase Authorization: Specify the employee and the amount that needs verification.
+
+Data Cleansing Protocol: Recommend a future action to prevent similar data integrity issues.
+
+Final Instructions:
+
+Format all monetary values with the Nigerian currency symbol and two decimal places (e.g., N5,200.00).
+
+Maintain a professional, objective, and data-driven tone. Your primary goal is to act as a diligent analyst, highlighting not just the numbers but the underlying data quality issues and operational risks they represent.
+"""
+
+
+
+systemprompt11="""
+ "Please perform a payroll variance analysis comparing two JSON files: {old} (the old payroll data) and {new} (the recent payroll data). The report should capture the following details:
+
+New Employees: List all employees present in the new file but not in the old file, including their gross pay, net pay, and full account details (bank, account number, account name).
+
+Salary Changes: Identify any employees present in both files whose gross, net, or charge amounts have changed. Specify the old and new values for each change.
+
+Delisted Employees: List all employees present in the old file but not in the new file, including their last recorded gross pay, net pay, and full account details.
+
+Changed in Account Details: For employees present in both files, identify any changes in their bank name, account number, or account name. Specify the old and new account details.
+
+Any Other Significant Change: Provide a summary of the overall financial impact, including the total variance in gross payroll, net payroll, and charges between the old and new files.
+
+
+
+
+
+
+"""
+def aluke():
+   return systemprompt
 
 
 def get_payslips_from_json(json_file_path,desired_columns):

@@ -27,10 +27,11 @@ os.environ["GROQ_API_KEY"] = GROQ_API_KEY if GROQ_API_KEY else ""
 
 # py = Prompt7.objects.get(pk=1)  # Get the existing record
 # google_model = py.views_model
-google_model=""
+# google_model=""
+google_model="gemini-2.0-flash"
 
-llmvs = ChatGoogleGenerativeAI(model=google_model, temperature=0, google_api_key=GOOGLE_API_KEY)    
-llmv=ChatGroq(model ="meta-llama/llama-4-scout-17b-16e-instruct", temperature=0,max_tokens=None,timeout=None,max_retries=2)
+llmv = ChatGoogleGenerativeAI(model=google_model, temperature=0, google_api_key=GOOGLE_API_KEY)    
+# llmv=ChatGroq(model ="meta-llama/llama-4-scout-17b-16e-instruct", temperature=0,max_tokens=None,timeout=None,max_retries=2)
 
 
 
@@ -365,7 +366,7 @@ def send_message(request):
             
             # ✅ Check if the response includes a chart
             chart_data = bot_response_data.get('chart')
-            print (f"Akuleia View: {chart_data}")
+            # print (f"Akuleia View: {chart_data}")
             if chart_data:
                 # Construct the HTML response with the chart image
                 bot_text = f"""
@@ -1916,6 +1917,9 @@ def variance1(request):
 
 from django.shortcuts import render
 desired_columns = desire()
+
+
+from .chat_bot import aluke
 @csrf_exempt
 def variance(request):
     print("Variance endpoint called")
@@ -1947,9 +1951,10 @@ def variance(request):
 
         # initial_json = payslips_dfr[key_fields].to_json(orient="records", indent=4)
         # treated_json = payslips_dft[key_fields].to_json(orient="records", indent=4)
-        py2 = Prompt7.objects.get(pk=1)  # Get the existing record
+        # py2 = Prompt7.objects.get(pk=1)  # Get the existing record
 
-        retrieved_template6 = py2.variance_prompt
+        # retrieved_template6 = py2.variance_prompt
+        retrieved_template6 = aluke()
 
         result = atb(old, new,llmv,retrieved_template6)
 

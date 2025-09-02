@@ -10,7 +10,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager,AbstractBas
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings # Still needed if CustomUser remains primary for other features
-
+ 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
