@@ -1,0 +1,225 @@
+<!-- myapp/templates/myapp/upload_vehicle.html -->
+{% extends 'bases.html' %}
+{% load crispy_forms_tags %} {# Load crispy forms tags #}
+
+{% block title %}Upload Vehicle{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm p-4">
+            <h2 class="card-title text-center mb-4">Upload New Vehicle</h2>
+            <form method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+
+                {# Render each field individually to control HTMX attributes #}
+
+                {# Category #}
+                <div class="mb-3">
+                    {{ form.category.label_tag }}
+                    {{ form.category }}
+                    {% if form.category.errors %}
+                        <div class="invalid-feedback d-block">{{ form.category.errors }}</div>
+                    {% endif %}
+                </div>
+
+                {# Brand - HTMX enabled #}
+                <div class="mb-3">
+                    {{ form.brand.label_tag }}
+                    {{ form.brand }}
+                    {% if form.brand.errors %}
+                        <div class="invalid-feedback d-block">{{ form.brand.errors }}</div>
+                    {% endif %}
+                </div>
+
+                {# Vehicle Model - HTMX target #}
+                <div id="div_id_vehicle_model" class="mb-3">
+                    {# This div will be swapped by HTMX #}
+                    {% include 'myapp/partials/vehicle_model_options.html' with models=form.vehicle_model.field.queryset %}
+                </div>
+
+                {# Trim - HTMX target #}
+                <div id="div_id_trim" class="mb-3">
+                    {# This div will be swapped by HTMX #}
+                    {% include 'myapp/partials/trim_options.html' with trims=form.trim.field.queryset %}
+                </div>
+                
+                {# Manufacture Year #}
+                <div class="mb-3">
+                    {{ form.manufacture_year.label_tag }}
+                    {{ form.manufacture_year }}
+                    {% if form.manufacture_year.errors %}
+                        <div class="invalid-feedback d-block">{{ form.manufacture_year.errors }}</div>
+                    {% endif %}
+                </div>
+
+                {# Condition #}
+                <div class="mb-3">
+                    {{ form.condition.label_tag }}
+                    {{ form.condition }}
+                    {% if form.condition.errors %}
+                        <div class="invalid-feedback d-block">{{ form.condition.errors }}</div>
+                    {% endif %}
+                </div>
+
+                {# Fuel Option #}
+                <div class="mb-3">
+                    {{ form.fuel_option.label_tag }}
+                    {{ form.fuel_option }}
+                    {% if form.fuel_option.errors %}
+                        <div class="invalid-feedback d-block">{{ form.fuel_option.errors }}</div>
+                    {% endif %}
+                </div>
+
+                {# Color #}
+                <div class="mb-3">
+                    {{ form.color.label_tag }}
+                    {{ form.color }}
+                    {% if form.color.errors %}
+                        <div class="invalid-feedback d-block">{{ form.color.errors }}</div>
+                    {% endif %}
+                </div>
+
+                {# Engine Type #}
+                <div class="mb-3">
+                    {{ form.engine_type.label_tag }}
+                    {{ form.engine_type }}
+                    {% if form.engine_type.errors %}
+                        <div class="invalid-feedback d-block">{{ form.engine_type.errors }}</div>
+                    {% endif %}
+                </div>
+
+                {# Drive Terrain #}
+                <div class="mb-3">
+                    {{ form.drive_terrain.label_tag }}
+                    {{ form.drive_terrain }}
+                    {% if form.drive_terrain.errors %}
+                        <div class="invalid-feedback d-block">{{ form.drive_terrain.errors }}</div>
+                    {% endif %}
+                </div>
+
+                {# State - HTMX enabled #}
+                <div class="mb-3">
+                    {{ form.state.label_tag }}
+                    {{ form.state }}
+                    {% if form.state.errors %}
+                        <div class="invalid-feedback d-block">{{ form.state.errors }}</div>
+                    {% endif %}
+                </div>
+
+                {# Town - HTMX target #}
+                <div id="div_id_town" class="mb-3">
+                    {# This div will be swapped by HTMX #}
+                    {% include 'myapp/partials/town_options.html' with towns=form.town.field.queryset %}
+                </div>
+
+                {# Other fields #}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form.no_of_tyres|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.seat|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form.mileage|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.price|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form.transmission|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.number_cylinder|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    {{ form.horsepower|as_crispy_field }}
+                </div>
+                <div class="mb-3">
+                    {{ form.contact_phone|as_crispy_field }}
+                </div>
+                <div class="mb-3">
+                    {{ form.description|as_crispy_field }}
+                </div>
+                <div class="mb-3">
+                    {{ form.social_media|as_crispy_field }}
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4 form-check">
+                        {{ form.exchange_option }}
+                        <label class="form-check-label" for="{{ form.exchange_option.id_for_label }}">
+                            Exchange Option
+                        </label>
+                    </div>
+                    <div class="col-md-4 form-check">
+                        {{ form.registered }}
+                        <label class="form-check-label" for="{{ form.registered.id_for_label }}">
+                            Registered
+                        </label>
+                    </div>
+                    <div class="col-md-4 form-check">
+                        {{ form.negotiable }}
+                        <label class="form-check-label" for="{{ form.negotiable.id_for_label }}">
+                            Price Negotiable
+                        </label>
+                    </div>
+                </div>
+
+                {# Many-to-Many - VAS #}
+                <div class="mb-3">
+                    <label class="form-label d-block">Value Added Services:</label>
+                    <div class="d-flex flex-wrap">
+                        {% for checkbox in form.vas %}
+                            <div class="form-check form-check-inline">
+                                {{ checkbox.tag }}
+                                <label class="form-check-label" for="{{ checkbox.id_for_label }}">
+                                    {{ checkbox.choice_label }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if form.vas.errors %}
+                        <div class="invalid-feedback d-block">{{ form.vas.errors }}</div>
+                    {% endif %}
+                </div>
+
+                {# Image Uploads #}
+                <h5 class="mt-4 mb-3">Vehicle Images (Minimum 5 required)</h5>
+                {% for field in form %}
+                    {% if field.name == 'image' or field.name == 'image2' or field.name == 'image3' or field.name == 'image4' or field.name == 'image5' or field.name == 'image6' or field.name == 'image7' or field.name == 'image8' or field.name == 'image9' or field.name == 'image10' %}
+                        <div class="mb-3">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% if field.errors %}
+                                <div class="invalid-feedback d-block">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                {# Is Available #}
+                <div class="form-check mb-3">
+                    {{ form.is_available }}
+                    <label class="form-check-label" for="{{ form.is_available.id_for_label }}">
+                        Available for Sale
+                    </label>
+                </div>
+
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Upload Vehicle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

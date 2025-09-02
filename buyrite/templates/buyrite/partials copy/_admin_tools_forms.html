@@ -1,0 +1,25 @@
+{% load static %}
+
+<div class="modal-header">
+<h5 class="modal-title" id="adminToolModalLabel">Add/Edit {{ model_name }}</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<form hx-post="{% url 'handle_admin_tool_form' model_name %}"
+hx-target="#admin-modal-body"
+hx-swap="innerHTML">
+{% csrf_token %}
+<div class="modal-body">
+{% for field in form %}
+<div class="mb-3">
+<label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+{{ field }}
+{% if field.errors %}
+<div class="text-red-500 text-sm mt-1">{{ field.errors }}</div>
+{% endif %}
+</div>
+{% endfor %}
+</div>
+<div class="modal-footer">
+<button type="submit" class="btn btn-primary rounded-lg">Save</button>
+</div>
+</form>

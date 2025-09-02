@@ -1,0 +1,316 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load humanize %}
+
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>3-Column Grid</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+<style>
+
+</style>
+
+
+</head>
+<body>
+  <div class="container-fluid mt-5">
+
+
+
+    <!-- for search  -->
+
+<form method="get">
+  <select name="brand">
+    <option value="">All Brands</option>
+    {% for brand in brands %}
+      <option value="{{ brand.id }}">{{ brand.name }}</option>
+    {% endfor %}
+  </select>
+
+  <select name="model">
+    <option value="">All Models</option>
+    {% for model in models %}
+      <option value="{{ model.id }}">{{ model.name }}</option>
+    {% endfor %}
+  </select>
+
+  <select name="trim">
+    <option value="">All Trims</option>
+    {% for trim in trims %}
+      <option value="{{ trim.id }}">{{ trim.name }}</option>
+    {% endfor %}
+  </select>
+
+  <select name="year">
+    <option value="">All Years</option>
+    {% for year in years %}
+      <option value="{{ year.id }}">{{ year.year }}</option>
+    {% endfor %}
+  </select>
+
+  <button type="submit">Filter</button>
+</form>
+
+<div>
+  KUNLE
+{% for post in posts %}
+  <h3>{{ post.title }}</h3>
+  <!-- <ul> -->
+    {% for tag in post.tags.all %}
+      <!-- <li>{{ tag.name }}</li> -->
+      {{ tag.name }},
+    {% empty %}
+      <!-- <li>No tags available.</li> -->
+    {% endfor %}
+  <!-- </ul> -->
+{% endfor %}
+
+
+</div>
+
+        <div class="row row-cols-4 row-cols-lg-5 g-2">
+          {% for category in categories %}
+            <div class="col text-center">
+
+              <div class="image-wrapper">
+                <img src="{{ category.image.url }}" alt="{{ category.name }}" class="car-image">
+              </div>
+
+              <!-- <img src="{{ category.image.url }}" alt="{{ category.name }}" class="img-fluid rounded car-image"> -->
+              <h6 class="mt-0 car-text">{{ category.name }}</h6>
+            </div>  
+          {% empty %}
+            <p>No categories available.</p>
+          {% endfor %}
+        </div>
+        <br>
+
+        
+        <div id="myCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+        <div class="carousel-inner">
+        {% for carousel in carousels %}
+          <div class="carousel-item active">
+            <img src="{{ carousel.image.url }}"  class="d-block w-100 img-fluid carol-image" alt="Car 1">
+          </div>
+          {% empty %}
+                <p>No categories available.</p>
+              {% endfor %}
+
+
+          <!-- <div class="carousel-item">
+            <img src="{% static 'images/network.jpeg' %}"   class="d-block w-100 img-fluid carol-image" alt="Car 2">
+          </div> -->
+          <!-- <div class="carousel-item">
+            <img src="{% static 'images/innovation.jpeg' %}"   class="d-block w-100 img-fluid carol-image" alt="Car 3">
+          </div> -->
+        </div>
+
+        <!-- Optional controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+
+
+      <!-- product grid  -->
+<div class=" text-start">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
+
+ <div class="col  product-frame">
+    <div class="product-image">
+      <img src="{% static 'images/New folder/Carosel/payment2.png' %}" alt="Car" class="rounded ">
+    </div>
+
+<div class="product-price">
+        <p> N50,000,0000.00 </p>
+    </div>
+      <div class="product-name">
+        <p>Toyota</p>
+    </div>
+   <div class="product-info">
+        <p>Super Clean Fuel Efficeint Elegance Spacious</p>
+    </div>
+       <div class="location-info">
+        Lagos, Ikorodu 
+    </div>
+      <div class="product-status">
+        Nigerian Used
+    </div>
+
+
+      <div class="Other-info">
+        Nigerian Used
+    </div>
+
+    </div>
+Goba
+
+ <div class="col text-start product-frame">
+    <div class="product-image">
+      <img src="{% static 'images/New folder/products/jaguar.webp' %}" alt="Car" class="rounded">
+    </div>
+
+<div class="product-pricea">
+  <p class="price-label">Price: <strong>₦{{ vehicle.price|intcomma }}</strong></p>
+        <!-- <p> N50,000,000.00 </p> -->
+    </div>
+      <div class="product-name">
+        <p>Toyota</p>
+    </div>
+   <div class="product-info">
+        <p>Super Clean Fuel Efficeint Elegance Spacio</p>
+    </div>
+       <div class="location-info">
+        Lagos, Ikorodu 
+    </div>
+      <div class="product-status">
+        Nigerian Used
+    </div>
+
+      <div class="Other-info">
+        Nigerian Used
+    </div>
+
+    </div>
+
+JADI 
+
+    {% for vehicle in vehicles %}
+    <div class="col text-start product-frame">
+        <div class="product-image">
+            <a href="{% url 'vehicle_detail' slug=vehicle.slug %}">
+                <img src="{{ vehicle.image.url }}" alt="{{ vehicle.brand.name }} {{ vehicle.vehicle_model.name }}" class="rounded">
+            </a>
+        </div>
+
+        <div class="product-pricea">
+            <p class="price-label">Price: <strong>₦{{ vehicle.price|intcomma }}</strong></p>
+        </div>
+
+        <div class="product-name">
+            <p>{{ vehicle.brand.name }} {{ vehicle.vehicle_model.name }}</p>
+        </div>
+
+        <div class="product-info">
+            <p>{{ vehicle.description|truncatechars:50 }}</p>
+        </div>
+
+        <div class="location-info">
+            {{ vehicle.town.name }}, {{ vehicle.state.name }}
+        </div>
+
+        <div class="product-status">
+            {{ vehicle.condition.name }}
+        </div>
+
+        <div class="Other-info">
+            {{ vehicle.manufacture_year.year }}
+        </div>
+    </div>
+
+    {% empty %}
+        <p>No vehicles match your criteria.</p>
+    {% endfor %}
+
+
+
+    </div>
+  </div>
+
+
+
+
+
+Second
+
+  <!-- Second  -->
+   <div class=" text-start">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
+
+
+  {% for vehicle in alukuku %}
+
+ <div class="col text-start product-frame">
+
+    <div class="product-image">
+      <img src="{{ vehicle.image.url }}" alt="Car" class="rounded">
+    </div>
+
+<div class="product-info">
+  
+  <div class="product-price">
+    <p class="price-label">Price: <strong>₦{{ vehicle.price|intcomma }}</strong></p>
+  </div>
+
+    </div>
+      <div class="product-name">
+        <p>{{ vehicle.brand.name }} {{ vehicle.vehicle_model.name }} {{ vehicle.trim.name }}</p>
+    </div>
+   <div class="product-info">
+        <p>Super Clean Fuel Efficeint Elegance Spacio</p>
+    </div>
+       <div class="location-info">
+        Lagos, Ikorodu 
+    </div>
+      <div class="product-status">
+        Nigerian Used
+    </div>
+
+
+      <div class="Other-info">
+        Nigerian Used
+    </div>
+
+    </div>
+      {% empty %}
+    <p>No vehicles match your criteria.</p>
+  {% endfor %}
+
+    </div>
+
+
+  </div>
+
+
+
+  <form method="POST" action="/submit">
+  <label for="fruits">Choose your fruits:</label><br>
+  <select name="fruits[]" multiple size="4">
+    <option value="apple">Apple</option>
+    <option value="banana">Banana</option>
+    <option value="mango">Mango</option>
+    <option value="orange">Orange</option>
+  </select>
+  <br><br>
+  <input type="submit" value="Submit">
+</form>
+
+</div>
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
+</body>
+</html>

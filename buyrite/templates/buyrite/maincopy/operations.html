@@ -1,0 +1,134 @@
+{% extends 'bases.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Operations Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container mx-auto px-4 py-8">
+<h1 class="text-4xl font-extrabold text-gray-900 mb-8">
+Operations Dashboard
+</h1>
+
+<!-- Unconfirmed Dealers Section -->
+<div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">🔍 Unconfirmed Dealers</h2>
+    {% if unconfirmed_dealers %}
+    <div class="overflow-x-auto">
+        <table class="table w-full">
+            <thead>
+                <tr class="text-gray-600 uppercase text-sm leading-normal">
+                    <th class="py-3 px-6 text-left">User</th>
+                    <th class="py-3 px-6 text-left">Business Name</th>
+                    <th class="py-3 px-6 text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-700 text-sm font-light">
+                {% for dealer in unconfirmed_dealers %}
+                <tr class="border-b border-gray-200 hover:bg-gray-100">
+                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ dealer.user.username }}</td>
+                    <td class="py-3 px-6 text-left">{{ dealer.business_address }}</td>
+                    <td class="py-3 px-6 text-center">
+                        <button class="btn btn-primary rounded-lg"
+                            data-bs-toggle="modal"
+                            data-bs-target="#dealerModal"
+                            hx-get="{% url 'approve_dealer' dealer.pk %}"
+                            hx-target="#modal-body"
+                            hx-swap="innerHTML">
+                            View
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="text-gray-500">No unconfirmed dealers to display.</p>
+    {% endif %}
+</div>
+
+<!-- Rejected Dealers Section -->
+<div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">❌ Rejected Dealers</h2>
+    {% if rejected_dealers %}
+    <ul class="space-y-4">
+        {% for dealer in rejected_dealers %}
+        <li class="bg-gray-100 p-4 rounded-lg flex justify-between items-center">
+            <span>{{ dealer.user.username }} - {{ dealer.business_address }}</span>
+            <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm">Rejected</span>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-gray-500">No rejected dealers to display.</p>
+    {% endif %}
+</div>
+
+<!-- Approved Dealers Section -->
+<div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">✅ Approved Dealers</h2>
+    {% if approved_dealers %}
+    <ul class="space-y-4">
+        {% for dealer in approved_dealers %}
+        <li class="bg-green-100 p-4 rounded-lg flex justify-between items-center">
+            <span>{{ dealer.user.username }} - {{ dealer.business_address }}</span>
+            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">Approved</span>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-gray-500">No approved dealers to display.</p>
+    {% endif %}
+</div>
+
+<!-- Admin Tools Section -->
+<div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">🧰 Admin Tools</h2>
+    {% if allowed_models %}
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {% for model in allowed_models %}
+        <button class="btn btn-secondary rounded-lg"
+                data-bs-toggle="modal"
+                data-bs-target="#adminToolModal"
+                hx-get="{% url 'handle_admin_tool_form' model.model_name %}"
+                hx-target="#admin-modal-body"
+                hx-swap="innerHTML">
+            Add/Edit {{ model.name }}
+        </button>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-red-500">You do not have permission to use any admin tools.</p>
+    {% endif %}
+</div>
+
+</div>
+
+<!-- Dealer View Modal (for approve/reject) -->
+
+<div class="modal fade" id="dealerModal" tabindex="-1" aria-labelledby="dealerModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content" id="modal-body">
+<!-- HTMX will load the full dealer profile and actions here -->
+<div class="p-4 text-center">
+<p class="text-gray-500">Loading dealer profile...</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Admin Tools Modal -->
+
+<div class="modal fade" id="adminToolModal" tabindex="-1" aria-labelledby="adminToolModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-lg">
+<div class="modal-content" id="admin-modal-body">
+<!-- HTMX will load the admin form here -->
+<div class="p-4 text-center">
+<p class="text-gray-500">Loading admin tool form...</p>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

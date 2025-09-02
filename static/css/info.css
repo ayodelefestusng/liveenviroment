@@ -1,0 +1,97 @@
+/* .total_info{
+  background-color: blue;
+  width: 100px;
+  width: 100px;
+}
+.product-tame p{
+  margin: 0px;
+  font-weight:50px;
+  color: rgb(255, 217, 0);
+  
+}
+
+ */
+
+
+
+
+
+ 
+
+.product-tame p{
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  /* font-weight:100; */
+  font-style: normal;
+  font-variation-settings:"wdth" 100;
+  line-height: normal;
+
+  margin: 0px;
+  font-weight:10px;
+  color: black;
+  font-size: 30px;
+}
+
+.geo_location p{
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+.geo_locations p{
+  display: inline;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+
+.advert_info_stat,
+.brand_info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 20px;
+  text-align: center;
+  padding: 10px;
+}
+
+.brand_info{
+  padding: 0%;;
+  margin-top: 0px;
+  margin-bottom: 0px;
+
+}
+
+.brand_info_column {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal-width columns */
+  gap: 20px;
+  padding: 10px;
+}
+
+.brand_info_column > div {
+  text-align: left; /* Align content inside each column to the left */
+}
+.brand_info_tiny {
+  font-size: 13px;
+  /* color: aqua; */
+}
+
+
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info-item img,
+.info-item svg {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.info-item p {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #333;
+}

@@ -1,0 +1,19 @@
+<!-- myapp/templates/myapp/partials/trim_options.html -->
+<label class="form-label" for="id_trim">Trim</label>
+<select name="trim" id="id_trim" class="form-select">
+    <option value="">---------</option>
+    {% for trim in trims %}
+        <option value="{{ trim.pk }}">{{ trim.name }}</option>
+    {% endfor %}
+</select>
+{% if form.trim.errors %} {# Access errors from the main form object #}
+    <div class="invalid-feedback d-block">{{ form.trim.errors }}</div>
+{% endif %}
+
+
+
+<!-- <label for="{{ form.trim.id_for_label }}" class="form-label">Trim</label>
+{{ form.trim }}
+{% if form.trim.errors %}
+<div class="invalid-feedback d-block">{{ form.trim.errors }}</div>
+{% endif %} -->

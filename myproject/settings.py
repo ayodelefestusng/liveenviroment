@@ -64,6 +64,8 @@ INSTALLED_APPS = [
     'crossborder',
     "ai",
     "buyrite",
+      'django.contrib.humanize',
+
     
 
     'django_otp',
@@ -71,6 +73,7 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_totp',
     'django_otp.plugins.otp_static',
     'crispy_forms',
+     'rest_framework',
 
 
 
@@ -157,7 +160,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-
+STATIC_URL = "static/"
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]

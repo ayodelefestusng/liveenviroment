@@ -1,0 +1,8 @@
+<!-- myapp/templates/myapp/partials/trim_dropdown.html -->
+<label for="trim" class="form-label">Trim</label>
+<select name="trim" id="trim" class="form-select">
+    <option value="">All Trims</option>
+    {% for trim in trims %}
+        <option value="{{ trim.id }}">{{ trim.name }}</option>
+    {% endfor %}
+</select>

@@ -1,0 +1,9 @@
+<div id="id_model_container" class="mb-4">
+<label for="id_model" class="form-label">Model</label>
+<select name="model" id="id_model" class="form-select rounded-lg shadow-sm">
+<option value="">All Models</option>
+{% for model in models %}
+<option value="{{ model.pk }}">{{ model.name }}</option>
+{% endfor %}
+</select>
+</div>

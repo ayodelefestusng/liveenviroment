@@ -1,0 +1,96 @@
+{% extends 'bases.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Home | Car Listings{% endblock %}
+
+{% block content %}
+
+<div class="container mx-auto px-4 py-8">
+<div class="flex justify-between items-center mb-8">
+<h1 class="text-4xl font-extrabold text-gray-900">
+Featured Listings
+</h1>
+<button class="btn btn-dark rounded-lg shadow-md" type="button" data-bs-toggle="offcanvas" data-bs-target="#vehicleFilterOffcanvas" aria-controls="vehicleFilterOffcanvas">
+Filter Vehicles
+</button>
+</div>
+<div id="loading-indicator" class="htmx-indicator text-center text-gray-500 my-4">
+<p>Loading...</p>
+</div>
+<div id="vehicle-list-container">
+{% include 'myapp/partials/_vehicle_list.html' with vehicles=vehicles %}
+</div>
+
+<!-- Filter Offcanvas -->
+<div class="offcanvas offcanvas-start bg-gray-50 rounded-r-2xl" tabindex="-1" id="vehicleFilterOffcanvas" aria-labelledby="vehicleFilterOffcanvasLabel">
+    <div class="offcanvas-header border-b border-gray-200 p-4">
+        <h5 class="offcanvas-title text-xl font-bold" id="vehicleFilterOffcanvasLabel">Vehicle Filters</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-4">
+        <form id="filter-form" hx-get="{% url 'home' %}" hx-target="#vehicle-list-container" hx-swap="innerHTML" hx-indicator="#loading-indicator">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="id_brand" class="form-label">Brand</label>
+                <select class="form-select rounded-lg" id="id_brand" name="brand">
+                    <option value="">All Brands</option>
+                    {% for brand in brands %}
+                        <option value="{{ brand.id }}">{{ brand.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="id_category" class="form-label">Category</label>
+                <select class="form-select rounded-lg" id="id_category" name="category">
+                    <option value="">All Categories</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="id_color" class="form-label">Exterior Color</label>
+                <select class="form-select rounded-lg" id="id_color" name="color">
+                    <option value="">All Colors</option>
+                    {% for color in colors %}
+                        <option value="{{ color }}">{{ color }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="id_inner_color" class="form-label">Interior Color</label>
+                <select class="form-select rounded-lg" id="id_inner_color" name="inner_color">
+                    <option value="">All Colors</option>
+                    {% for color in inner_colors %}
+                        <option value="{{ color.id }}">{{ color.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="mb-4">
+                    <label for="min_price" class="form-label">Min Price</label>
+                    <input type="number" class="form-control rounded-lg" id="min_price" name="min_price" placeholder="Min">
+                </div>
+                <div class="mb-4">
+                    <label for="max_price" class="form-label">Max Price</label>
+                    <input type="number" class="form-control rounded-lg" id="max_price" name="max_price" placeholder="Max">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="mb-4">
+                    <label for="min_year" class="form-label">Min Year</label>
+                    <input type="number" class="form-control rounded-lg" id="min_year" name="min_year" placeholder="Min">
+                </div>
+                <div class="mb-4">
+                    <label for="max_year" class="form-label">Max Year</label>
+                    <input type="number" class="form-control rounded-lg" id="max_year" name="max_year" placeholder="Max">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-full rounded-lg shadow-md">Apply Filters</button>
+        </form>
+    </div>
+</div>
+
+</div>
+{% endblock %}

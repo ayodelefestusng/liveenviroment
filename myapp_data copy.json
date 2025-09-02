@@ -1,0 +1,4880 @@
+[
+{
+  "model": "myapp.carousel",
+  "pk": 1,
+  "fields": {
+    "name": "Payment",
+    "image": "carosel_images/payment2.png"
+  }
+},
+{
+  "model": "myapp.carousel",
+  "pk": 2,
+  "fields": {
+    "name": "Network",
+    "image": "carosel_images/network.jpeg"
+  }
+},
+{
+  "model": "myapp.carousel",
+  "pk": 3,
+  "fields": {
+    "name": "Innovation",
+    "image": "carosel_images/innovation.jpeg"
+  }
+},
+{
+  "model": "myapp.tag",
+  "pk": 1,
+  "fields": {
+    "name": "Ayodele"
+  }
+},
+{
+  "model": "myapp.tag",
+  "pk": 2,
+  "fields": {
+    "name": "Nigeria used"
+  }
+},
+{
+  "model": "myapp.tag",
+  "pk": 3,
+  "fields": {
+    "name": "Clean Body"
+  }
+},
+{
+  "model": "myapp.post",
+  "pk": 1,
+  "fields": {
+    "title": "Nigeria Independence",
+    "content": "The day Nigeria got indepence was great",
+    "tags": [
+      1,
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "myapp.post",
+  "pk": 2,
+  "fields": {
+    "title": "The Ghana Indepence",
+    "content": "The great day of Gjhana",
+    "tags": [
+      1,
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "myapp.post",
+  "pk": 3,
+  "fields": {
+    "title": "England Indepence",
+    "content": "Hedjdjdj",
+    "tags": [
+      1,
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "myapp.category",
+  "pk": 1,
+  "fields": {
+    "name": "Car",
+    "image": "category_images/car_0pTSfRh.png"
+  }
+},
+{
+  "model": "myapp.category",
+  "pk": 2,
+  "fields": {
+    "name": "Lorry",
+    "image": "category_images/truckv2.png"
+  }
+},
+{
+  "model": "myapp.category",
+  "pk": 3,
+  "fields": {
+    "name": "Bus",
+    "image": "category_images/bus_S7vWx4R.png"
+  }
+},
+{
+  "model": "myapp.category",
+  "pk": 4,
+  "fields": {
+    "name": "Machinery",
+    "image": "category_images/heavy-equipment.png"
+  }
+},
+{
+  "model": "myapp.category",
+  "pk": 5,
+  "fields": {
+    "name": "Motorcycle",
+    "image": "category_images/motorcycle.png"
+  }
+},
+{
+  "model": "myapp.category",
+  "pk": 6,
+  "fields": {
+    "name": "Truck",
+    "image": "category_images/truck.png"
+  }
+},
+{
+  "model": "myapp.category",
+  "pk": 7,
+  "fields": {
+    "name": "Services",
+    "image": "category_images/services.png"
+  }
+},
+{
+  "model": "myapp.category",
+  "pk": 8,
+  "fields": {
+    "name": "Spare Part",
+    "image": "category_images/vehicle_part.png"
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 8,
+  "fields": {
+    "name": "Mercedes-Benz",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 9,
+  "fields": {
+    "name": "Volvo",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 10,
+  "fields": {
+    "name": "Yutong",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 11,
+  "fields": {
+    "name": "MAN",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 12,
+  "fields": {
+    "name": "Scania",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 13,
+  "fields": {
+    "name": "Toyota",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 14,
+  "fields": {
+    "name": "Honda",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 15,
+  "fields": {
+    "name": "Volkswagen",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 16,
+  "fields": {
+    "name": "BMW",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 17,
+  "fields": {
+    "name": "Tesla",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 18,
+  "fields": {
+    "name": "Iveco",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 19,
+  "fields": {
+    "name": "Caterpillar",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 20,
+  "fields": {
+    "name": "Komatsu",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 21,
+  "fields": {
+    "name": "John Deere",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 22,
+  "fields": {
+    "name": "JCB",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 23,
+  "fields": {
+    "name": "Harley-Davidson",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 24,
+  "fields": {
+    "name": "Yamaha",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 25,
+  "fields": {
+    "name": "Kawasaki",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 26,
+  "fields": {
+    "name": "Ford",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 27,
+  "fields": {
+    "name": "Chevrolet",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 28,
+  "fields": {
+    "name": "Ram",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.brand",
+  "pk": 29,
+  "fields": {
+    "name": "GMC",
+    "logo": ""
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 25,
+  "fields": {
+    "brand": 8,
+    "name": "Citaro"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 26,
+  "fields": {
+    "brand": 9,
+    "name": "9700"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 27,
+  "fields": {
+    "brand": 10,
+    "name": "ZK6122H"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 28,
+  "fields": {
+    "brand": 11,
+    "name": "Lion's City"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 29,
+  "fields": {
+    "brand": 12,
+    "name": "Irizar"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 30,
+  "fields": {
+    "brand": 13,
+    "name": "Corolla"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 31,
+  "fields": {
+    "brand": 13,
+    "name": "RAV4"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 32,
+  "fields": {
+    "brand": 14,
+    "name": "Civic"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 33,
+  "fields": {
+    "brand": 14,
+    "name": "CR-V"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 34,
+  "fields": {
+    "brand": 15,
+    "name": "Golf"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 35,
+  "fields": {
+    "brand": 15,
+    "name": "Polo"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 36,
+  "fields": {
+    "brand": 16,
+    "name": "3 Series"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 37,
+  "fields": {
+    "brand": 17,
+    "name": "Model Y"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 38,
+  "fields": {
+    "brand": 17,
+    "name": "Model 3"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 39,
+  "fields": {
+    "brand": 8,
+    "name": "Actros"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 40,
+  "fields": {
+    "brand": 9,
+    "name": "FH"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 41,
+  "fields": {
+    "brand": 12,
+    "name": "R-Series"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 42,
+  "fields": {
+    "brand": 18,
+    "name": "Stralis"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 43,
+  "fields": {
+    "brand": 11,
+    "name": "TGX"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 44,
+  "fields": {
+    "brand": 19,
+    "name": "D10"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 45,
+  "fields": {
+    "brand": 19,
+    "name": "320"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 46,
+  "fields": {
+    "brand": 20,
+    "name": "PC200"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 47,
+  "fields": {
+    "brand": 21,
+    "name": "8R"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 48,
+  "fields": {
+    "brand": 22,
+    "name": "3CX"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 49,
+  "fields": {
+    "brand": 14,
+    "name": "Super Cub"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 50,
+  "fields": {
+    "brand": 23,
+    "name": "Street Glide"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 51,
+  "fields": {
+    "brand": 24,
+    "name": "YZF-R1"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 52,
+  "fields": {
+    "brand": 25,
+    "name": "Ninja"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 53,
+  "fields": {
+    "brand": 16,
+    "name": "R 1250 GS"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 54,
+  "fields": {
+    "brand": 26,
+    "name": "F-150"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 55,
+  "fields": {
+    "brand": 27,
+    "name": "Silverado"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 56,
+  "fields": {
+    "brand": 28,
+    "name": "1500"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 57,
+  "fields": {
+    "brand": 13,
+    "name": "Hilux"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 58,
+  "fields": {
+    "brand": 29,
+    "name": "Sierra"
+  }
+},
+{
+  "model": "myapp.vehiclemodel",
+  "pk": 59,
+  "fields": {
+    "brand": 26,
+    "name": "Ranger"
+  }
+},
+{
+  "model": "myapp.trim",
+  "pk": 73,
+  "fields": {
+    "vehicle_model": 30,
+    "name": "LE"
+  }
+},
+{
+  "model": "myapp.trim",
+  "pk": 74,
+  "fields": {
+    "vehicle_model": 31,
+    "name": "XLE"
+  }
+},
+{
+  "model": "myapp.trim",
+  "pk": 75,
+  "fields": {
+    "vehicle_model": 32,
+    "name": "EX"
+  }
+},
+{
+  "model": "myapp.trim",
+  "pk": 76,
+  "fields": {
+    "vehicle_model": 33,
+    "name": "EX-L"
+  }
+},
+{
+  "model": "myapp.trim",
+  "pk": 77,
+  "fields": {
+    "vehicle_model": 34,
+    "name": "GTI"
+  }
+},
+{
+  "model": "myapp.trim",
+  "pk": 78,
+  "fields": {
+    "vehicle_model": 36,
+    "name": "330i"
+  }
+},
+{
+  "model": "myapp.trim",
+  "pk": 79,
+  "fields": {
+    "vehicle_model": 37,
+    "name": "Long Range"
+  }
+},
+{
+  "model": "myapp.trim",
+  "pk": 80,
+  "fields": {
+    "vehicle_model": 38,
+    "name": "Long Range"
+  }
+},
+{
+  "model": "myapp.trim",
+  "pk": 81,
+  "fields": {
+    "vehicle_model": 49,
+    "name": "C125"
+  }
+},
+{
+  "model": "myapp.trim",
+  "pk": 82,
+  "fields": {
+    "vehicle_model": 50,
+    "name": "Special"
+  }
+},
+{
+  "model": "myapp.trim",
+  "pk": 83,
+  "fields": {
+    "vehicle_model": 52,
+    "name": "ZX-10R"
+  }
+},
+{
+  "model": "myapp.trim",
+  "pk": 84,
+  "fields": {
+    "vehicle_model": 53,
+    "name": "Adventure"
+  }
+},
+{
+  "model": "myapp.trim",
+  "pk": 85,
+  "fields": {
+    "vehicle_model": 54,
+    "name": "XLT"
+  }
+},
+{
+  "model": "myapp.trim",
+  "pk": 86,
+  "fields": {
+    "vehicle_model": 55,
+    "name": "LT"
+  }
+},
+{
+  "model": "myapp.trim",
+  "pk": 87,
+  "fields": {
+    "vehicle_model": 56,
+    "name": "Big Horn"
+  }
+},
+{
+  "model": "myapp.trim",
+  "pk": 88,
+  "fields": {
+    "vehicle_model": 57,
+    "name": "SR5"
+  }
+},
+{
+  "model": "myapp.trim",
+  "pk": 89,
+  "fields": {
+    "vehicle_model": 58,
+    "name": "1500"
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 1,
+  "fields": {
+    "year": 2005
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 2,
+  "fields": {
+    "year": 2006
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 3,
+  "fields": {
+    "year": 2007
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 4,
+  "fields": {
+    "year": 2008
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 5,
+  "fields": {
+    "year": 2009
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 6,
+  "fields": {
+    "year": 2010
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 7,
+  "fields": {
+    "year": 2011
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 8,
+  "fields": {
+    "year": 2012
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 9,
+  "fields": {
+    "year": 2013
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 10,
+  "fields": {
+    "year": 2014
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 11,
+  "fields": {
+    "year": 2015
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 12,
+  "fields": {
+    "year": 2016
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 13,
+  "fields": {
+    "year": 2017
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 14,
+  "fields": {
+    "year": 2018
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 15,
+  "fields": {
+    "year": 2019
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 16,
+  "fields": {
+    "year": 2020
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 17,
+  "fields": {
+    "year": 2021
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 18,
+  "fields": {
+    "year": 2022
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 19,
+  "fields": {
+    "year": 2023
+  }
+},
+{
+  "model": "myapp.manufactureyear",
+  "pk": 20,
+  "fields": {
+    "year": 2024
+  }
+},
+{
+  "model": "myapp.fueloption",
+  "pk": 1,
+  "fields": {
+    "name": "Petrol"
+  }
+},
+{
+  "model": "myapp.fueloption",
+  "pk": 2,
+  "fields": {
+    "name": "Diesel"
+  }
+},
+{
+  "model": "myapp.fueloption",
+  "pk": 3,
+  "fields": {
+    "name": "Electric"
+  }
+},
+{
+  "model": "myapp.fueloption",
+  "pk": 4,
+  "fields": {
+    "name": "Hybrid"
+  }
+},
+{
+  "model": "myapp.fueloption",
+  "pk": 5,
+  "fields": {
+    "name": "CNG"
+  }
+},
+{
+  "model": "myapp.color",
+  "pk": 1,
+  "fields": {
+    "name": "Red",
+    "hex_code": null
+  }
+},
+{
+  "model": "myapp.color",
+  "pk": 2,
+  "fields": {
+    "name": "Blue",
+    "hex_code": null
+  }
+},
+{
+  "model": "myapp.color",
+  "pk": 3,
+  "fields": {
+    "name": "Black",
+    "hex_code": null
+  }
+},
+{
+  "model": "myapp.color",
+  "pk": 4,
+  "fields": {
+    "name": "White",
+    "hex_code": null
+  }
+},
+{
+  "model": "myapp.color",
+  "pk": 5,
+  "fields": {
+    "name": "Silver",
+    "hex_code": null
+  }
+},
+{
+  "model": "myapp.color",
+  "pk": 6,
+  "fields": {
+    "name": "Green",
+    "hex_code": null
+  }
+},
+{
+  "model": "myapp.innercolor",
+  "pk": 1,
+  "fields": {
+    "name": "Ash"
+  }
+},
+{
+  "model": "myapp.enginetype",
+  "pk": 1,
+  "fields": {
+    "name": "V6"
+  }
+},
+{
+  "model": "myapp.enginetype",
+  "pk": 2,
+  "fields": {
+    "name": "V8"
+  }
+},
+{
+  "model": "myapp.enginetype",
+  "pk": 3,
+  "fields": {
+    "name": "Inline-4"
+  }
+},
+{
+  "model": "myapp.enginetype",
+  "pk": 4,
+  "fields": {
+    "name": "Electric Motor"
+  }
+},
+{
+  "model": "myapp.enginetype",
+  "pk": 5,
+  "fields": {
+    "name": "Hybrid Drive"
+  }
+},
+{
+  "model": "myapp.driveterrain",
+  "pk": 1,
+  "fields": {
+    "name": "FWD"
+  }
+},
+{
+  "model": "myapp.driveterrain",
+  "pk": 2,
+  "fields": {
+    "name": "RWD"
+  }
+},
+{
+  "model": "myapp.driveterrain",
+  "pk": 3,
+  "fields": {
+    "name": "AWD"
+  }
+},
+{
+  "model": "myapp.driveterrain",
+  "pk": 4,
+  "fields": {
+    "name": "4WD"
+  }
+},
+{
+  "model": "myapp.condition",
+  "pk": 1,
+  "fields": {
+    "name": "New"
+  }
+},
+{
+  "model": "myapp.condition",
+  "pk": 2,
+  "fields": {
+    "name": "Used"
+  }
+},
+{
+  "model": "myapp.condition",
+  "pk": 3,
+  "fields": {
+    "name": "Refurbished"
+  }
+},
+{
+  "model": "myapp.vas",
+  "pk": 1,
+  "fields": {
+    "name": "First Body"
+  }
+},
+{
+  "model": "myapp.vas",
+  "pk": 2,
+  "fields": {
+    "name": "Accident Free"
+  }
+},
+{
+  "model": "myapp.vas",
+  "pk": 3,
+  "fields": {
+    "name": "Aloy Wheel"
+  }
+},
+{
+  "model": "myapp.vas",
+  "pk": 4,
+  "fields": {
+    "name": "Leather Seat"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 1,
+  "fields": {
+    "name": "Lagos"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 2,
+  "fields": {
+    "name": "Abuja"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 3,
+  "fields": {
+    "name": "Abia"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 4,
+  "fields": {
+    "name": "Ebonyi"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 5,
+  "fields": {
+    "name": "Ogun"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 6,
+  "fields": {
+    "name": "Rivers"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 7,
+  "fields": {
+    "name": "Ekiti"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 8,
+  "fields": {
+    "name": "Delta"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 9,
+  "fields": {
+    "name": "Anambra"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 10,
+  "fields": {
+    "name": "Enugu"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 11,
+  "fields": {
+    "name": "Ondo"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 12,
+  "fields": {
+    "name": "Kebbi"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 13,
+  "fields": {
+    "name": "Edo"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 14,
+  "fields": {
+    "name": "Bauchi"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 15,
+  "fields": {
+    "name": "Benue"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 16,
+  "fields": {
+    "name": "Niger"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 17,
+  "fields": {
+    "name": "Kano"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 18,
+  "fields": {
+    "name": "Cross River"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 19,
+  "fields": {
+    "name": "Yobe"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 20,
+  "fields": {
+    "name": "Kogi"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 21,
+  "fields": {
+    "name": "Jigawa"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 22,
+  "fields": {
+    "name": "Osun"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 23,
+  "fields": {
+    "name": "Imo"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 24,
+  "fields": {
+    "name": "Bayelsa"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 25,
+  "fields": {
+    "name": "Gombe"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 26,
+  "fields": {
+    "name": "Zamfara"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 27,
+  "fields": {
+    "name": "Oyo"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 28,
+  "fields": {
+    "name": "Akwa Ibom"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 29,
+  "fields": {
+    "name": "Kwara"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 30,
+  "fields": {
+    "name": "Taraba"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 31,
+  "fields": {
+    "name": "Adamawa"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 32,
+  "fields": {
+    "name": "Plateau"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 33,
+  "fields": {
+    "name": "Kaduna"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 34,
+  "fields": {
+    "name": "Katsina"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 35,
+  "fields": {
+    "name": "Nasarawa"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 36,
+  "fields": {
+    "name": "Sokoto"
+  }
+},
+{
+  "model": "myapp.state",
+  "pk": 37,
+  "fields": {
+    "name": "Borno"
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 1,
+  "fields": {
+    "name": "Ikeja",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 2,
+  "fields": {
+    "name": "Lekki",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 3,
+  "fields": {
+    "name": "Yaba",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 4,
+  "fields": {
+    "name": "Garki",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 5,
+  "fields": {
+    "name": "Wuse",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 6,
+  "fields": {
+    "name": "Maitama",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 7,
+  "fields": {
+    "name": "Aba",
+    "state": 3
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 8,
+  "fields": {
+    "name": "Abakaliki",
+    "state": 4
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 9,
+  "fields": {
+    "name": "Abeokuta",
+    "state": 5
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 10,
+  "fields": {
+    "name": "Abonnema",
+    "state": 6
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 11,
+  "fields": {
+    "name": "Ado Ekiti",
+    "state": 7
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 12,
+  "fields": {
+    "name": "Afikpo",
+    "state": 4
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 13,
+  "fields": {
+    "name": "Agbor",
+    "state": 8
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 14,
+  "fields": {
+    "name": "Agulu",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 15,
+  "fields": {
+    "name": "Aku",
+    "state": 10
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 16,
+  "fields": {
+    "name": "Akure",
+    "state": 11
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 17,
+  "fields": {
+    "name": "Amaigbo",
+    "state": 3
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 18,
+  "fields": {
+    "name": "Ankpa",
+    "state": 12
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 19,
+  "fields": {
+    "name": "Asaba",
+    "state": 8
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 20,
+  "fields": {
+    "name": "Auchi",
+    "state": 13
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 21,
+  "fields": {
+    "name": "Awka",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 22,
+  "fields": {
+    "name": "Azare",
+    "state": 14
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 23,
+  "fields": {
+    "name": "Bama",
+    "state": 15
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 24,
+  "fields": {
+    "name": "Bauchi",
+    "state": 14
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 25,
+  "fields": {
+    "name": "Bende",
+    "state": 3
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 26,
+  "fields": {
+    "name": "Benin City",
+    "state": 13
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 27,
+  "fields": {
+    "name": "Bida",
+    "state": 16
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 28,
+  "fields": {
+    "name": "Birnin Kebbi",
+    "state": 17
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 29,
+  "fields": {
+    "name": "Biu",
+    "state": 15
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 30,
+  "fields": {
+    "name": "Buguma",
+    "state": 6
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 31,
+  "fields": {
+    "name": "Calabar",
+    "state": 18
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 32,
+  "fields": {
+    "name": "Damaturu",
+    "state": 19
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 33,
+  "fields": {
+    "name": "Daura",
+    "state": 20
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 34,
+  "fields": {
+    "name": "Dutse",
+    "state": 21
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 35,
+  "fields": {
+    "name": "Ede",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 36,
+  "fields": {
+    "name": "Effium",
+    "state": 4
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 37,
+  "fields": {
+    "name": "Effon Alaiye",
+    "state": 7
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 38,
+  "fields": {
+    "name": "Eha Amufu",
+    "state": 10
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 39,
+  "fields": {
+    "name": "Ejigbo",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 40,
+  "fields": {
+    "name": "Ekpoma",
+    "state": 13
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 41,
+  "fields": {
+    "name": "Enugu",
+    "state": 10
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 42,
+  "fields": {
+    "name": "Enugu Ukwu",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 43,
+  "fields": {
+    "name": "Etiti",
+    "state": 23
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 44,
+  "fields": {
+    "name": "Ezza Inyimagu",
+    "state": 4
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 45,
+  "fields": {
+    "name": "Funtua",
+    "state": 20
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 46,
+  "fields": {
+    "name": "Gamboru",
+    "state": 15
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 47,
+  "fields": {
+    "name": "Gashua",
+    "state": 19
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 48,
+  "fields": {
+    "name": "Gboko",
+    "state": 24
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 49,
+  "fields": {
+    "name": "Gbongan",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 50,
+  "fields": {
+    "name": "Gombe",
+    "state": 25
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 51,
+  "fields": {
+    "name": "Gusau",
+    "state": 26
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 52,
+  "fields": {
+    "name": "Hadejia",
+    "state": 21
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 53,
+  "fields": {
+    "name": "Ibadan",
+    "state": 27
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 54,
+  "fields": {
+    "name": "Idah",
+    "state": 12
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 55,
+  "fields": {
+    "name": "Ife",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 56,
+  "fields": {
+    "name": "Ifo",
+    "state": 5
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 57,
+  "fields": {
+    "name": "Ifon",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 58,
+  "fields": {
+    "name": "Igbo Ora",
+    "state": 27
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 59,
+  "fields": {
+    "name": "Igbo Ukwu",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 60,
+  "fields": {
+    "name": "Igboho",
+    "state": 27
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 61,
+  "fields": {
+    "name": "Ihiala",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 62,
+  "fields": {
+    "name": "Ijebu Igbo",
+    "state": 5
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 63,
+  "fields": {
+    "name": "Ijebu Ode",
+    "state": 5
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 64,
+  "fields": {
+    "name": "Ijero",
+    "state": 7
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 65,
+  "fields": {
+    "name": "Ikare",
+    "state": 11
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 66,
+  "fields": {
+    "name": "Ikerre",
+    "state": 7
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 67,
+  "fields": {
+    "name": "Ikire",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 68,
+  "fields": {
+    "name": "Ikirun",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 69,
+  "fields": {
+    "name": "Ikom",
+    "state": 18
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 70,
+  "fields": {
+    "name": "Ikot Ekpene",
+    "state": 28
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 71,
+  "fields": {
+    "name": "Ila Orangun",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 72,
+  "fields": {
+    "name": "Ilawe Ekiti",
+    "state": 7
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 73,
+  "fields": {
+    "name": "Ilesha",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 74,
+  "fields": {
+    "name": "Ilobu",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 75,
+  "fields": {
+    "name": "Ilorin",
+    "state": 29
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 76,
+  "fields": {
+    "name": "Inisa",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 77,
+  "fields": {
+    "name": "Ise",
+    "state": 7
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 78,
+  "fields": {
+    "name": "Iseyin",
+    "state": 27
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 79,
+  "fields": {
+    "name": "Ishieke",
+    "state": 4
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 80,
+  "fields": {
+    "name": "Iwo",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 81,
+  "fields": {
+    "name": "Jalingo",
+    "state": 30
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 82,
+  "fields": {
+    "name": "Jimeta",
+    "state": 31
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 83,
+  "fields": {
+    "name": "Jos",
+    "state": 32
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 84,
+  "fields": {
+    "name": "Kaduna",
+    "state": 33
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 85,
+  "fields": {
+    "name": "Kafanchan",
+    "state": 33
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 86,
+  "fields": {
+    "name": "Kagoro",
+    "state": 33
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 87,
+  "fields": {
+    "name": "Kano",
+    "state": 34
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 88,
+  "fields": {
+    "name": "Katsina",
+    "state": 20
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 89,
+  "fields": {
+    "name": "Kaura Namoda",
+    "state": 26
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 90,
+  "fields": {
+    "name": "Keffi",
+    "state": 35
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 91,
+  "fields": {
+    "name": "Kishi",
+    "state": 27
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 92,
+  "fields": {
+    "name": "Kontagora",
+    "state": 16
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 93,
+  "fields": {
+    "name": "Kuroko",
+    "state": 12
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 94,
+  "fields": {
+    "name": "Lafia",
+    "state": 35
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 95,
+  "fields": {
+    "name": "Lokoja",
+    "state": 12
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 96,
+  "fields": {
+    "name": "Maiduguri",
+    "state": 15
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 97,
+  "fields": {
+    "name": "Makurdi",
+    "state": 24
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 98,
+  "fields": {
+    "name": "Malumfashi",
+    "state": 20
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 99,
+  "fields": {
+    "name": "Minna",
+    "state": 16
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 100,
+  "fields": {
+    "name": "Modakeke",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 101,
+  "fields": {
+    "name": "Mubi",
+    "state": 31
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 102,
+  "fields": {
+    "name": "Nguru",
+    "state": 19
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 103,
+  "fields": {
+    "name": "Nkpor",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 104,
+  "fields": {
+    "name": "Nnewi",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 105,
+  "fields": {
+    "name": "Nsukka",
+    "state": 10
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 106,
+  "fields": {
+    "name": "Numan",
+    "state": 31
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 107,
+  "fields": {
+    "name": "Obosi",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 108,
+  "fields": {
+    "name": "Offa",
+    "state": 29
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 109,
+  "fields": {
+    "name": "Ogaminan",
+    "state": 12
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 110,
+  "fields": {
+    "name": "Ogbomosho",
+    "state": 27
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 111,
+  "fields": {
+    "name": "Ohafia",
+    "state": 3
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 112,
+  "fields": {
+    "name": "Oka Akoko",
+    "state": 11
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 113,
+  "fields": {
+    "name": "Okene",
+    "state": 12
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 114,
+  "fields": {
+    "name": "Okigwi",
+    "state": 23
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 115,
+  "fields": {
+    "name": "Okitipupa",
+    "state": 11
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 116,
+  "fields": {
+    "name": "Okpoko",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 117,
+  "fields": {
+    "name": "Okrika",
+    "state": 6
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 118,
+  "fields": {
+    "name": "Ondo",
+    "state": 11
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 119,
+  "fields": {
+    "name": "Onitsha",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 120,
+  "fields": {
+    "name": "Oron",
+    "state": 28
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 121,
+  "fields": {
+    "name": "Oshogbo",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 122,
+  "fields": {
+    "name": "Otukpo",
+    "state": 24
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 123,
+  "fields": {
+    "name": "Owerri",
+    "state": 23
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 124,
+  "fields": {
+    "name": "Owo",
+    "state": 11
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 125,
+  "fields": {
+    "name": "Oyo",
+    "state": 27
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 126,
+  "fields": {
+    "name": "Ozubulu",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 127,
+  "fields": {
+    "name": "Port Harcourt",
+    "state": 6
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 128,
+  "fields": {
+    "name": "Sagamu",
+    "state": 5
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 129,
+  "fields": {
+    "name": "Sango Otta",
+    "state": 5
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 130,
+  "fields": {
+    "name": "Sapele",
+    "state": 8
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 131,
+  "fields": {
+    "name": "Shaki",
+    "state": 27
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 132,
+  "fields": {
+    "name": "Sokoto",
+    "state": 36
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 133,
+  "fields": {
+    "name": "Suleja",
+    "state": 16
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 134,
+  "fields": {
+    "name": "Uga",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 135,
+  "fields": {
+    "name": "Ugep",
+    "state": 18
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 136,
+  "fields": {
+    "name": "Ughelli",
+    "state": 8
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 137,
+  "fields": {
+    "name": "Umuahia",
+    "state": 3
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 138,
+  "fields": {
+    "name": "Uromi",
+    "state": 13
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 139,
+  "fields": {
+    "name": "Uyo",
+    "state": 28
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 140,
+  "fields": {
+    "name": "Warri",
+    "state": 8
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 141,
+  "fields": {
+    "name": "Wukari",
+    "state": 30
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 142,
+  "fields": {
+    "name": "Yenagoa",
+    "state": 37
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 143,
+  "fields": {
+    "name": "Yola",
+    "state": 31
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 144,
+  "fields": {
+    "name": "Zaria",
+    "state": 33
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 145,
+  "fields": {
+    "name": "Ajah",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 146,
+  "fields": {
+    "name": "Alimosho",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 147,
+  "fields": {
+    "name": "Ikeja",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 148,
+  "fields": {
+    "name": "Ojo",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 149,
+  "fields": {
+    "name": "Surulere",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 150,
+  "fields": {
+    "name": "Abule Egba",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 151,
+  "fields": {
+    "name": "Agbara-Igbesan",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 152,
+  "fields": {
+    "name": "Agboyi/Ketu",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 153,
+  "fields": {
+    "name": "Agege",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 154,
+  "fields": {
+    "name": "Amuwo-Odofin",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 155,
+  "fields": {
+    "name": "Apapa",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 156,
+  "fields": {
+    "name": "Badagry",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 157,
+  "fields": {
+    "name": "Egbe/Idimu",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 158,
+  "fields": {
+    "name": "Ejigbo",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 159,
+  "fields": {
+    "name": "Eko Atlantic",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 160,
+  "fields": {
+    "name": "Epe",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 161,
+  "fields": {
+    "name": "Gbagada",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 162,
+  "fields": {
+    "name": "Ibeju",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 163,
+  "fields": {
+    "name": "Ifako-Ijaiye",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 164,
+  "fields": {
+    "name": "Ikorodu",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 165,
+  "fields": {
+    "name": "Ikotun/Igando",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 166,
+  "fields": {
+    "name": "Ikoyi",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 167,
+  "fields": {
+    "name": "Ilashe",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 168,
+  "fields": {
+    "name": "Ilupeju",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 169,
+  "fields": {
+    "name": "Ipaja",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 170,
+  "fields": {
+    "name": "Isolo",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 171,
+  "fields": {
+    "name": "Kosofe",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 172,
+  "fields": {
+    "name": "Lagos Island (Eko)",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 173,
+  "fields": {
+    "name": "Magodo",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 174,
+  "fields": {
+    "name": "Maryland",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 175,
+  "fields": {
+    "name": "Mushin",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 176,
+  "fields": {
+    "name": "Ogba",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 177,
+  "fields": {
+    "name": "Ogudu",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 178,
+  "fields": {
+    "name": "Ojodu",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 179,
+  "fields": {
+    "name": "Ojota",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 180,
+  "fields": {
+    "name": "Orile",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 181,
+  "fields": {
+    "name": "Oshodi",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 182,
+  "fields": {
+    "name": "Shomolu",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 183,
+  "fields": {
+    "name": "Tarkwa Bay Island",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 184,
+  "fields": {
+    "name": "Victoria Island",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 185,
+  "fields": {
+    "name": "Asokoro",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 186,
+  "fields": {
+    "name": "Abaji",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 187,
+  "fields": {
+    "name": "Abuja Municipal",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 188,
+  "fields": {
+    "name": "Apo",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 189,
+  "fields": {
+    "name": "Asokoro",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 190,
+  "fields": {
+    "name": "Bwari",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 191,
+  "fields": {
+    "name": "Durumi",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 192,
+  "fields": {
+    "name": "Gudu",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 193,
+  "fields": {
+    "name": "Gwagwalada",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 194,
+  "fields": {
+    "name": "Gwarinpa",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 195,
+  "fields": {
+    "name": "Jabi",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 196,
+  "fields": {
+    "name": "Kado",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 197,
+  "fields": {
+    "name": "Katampe",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 198,
+  "fields": {
+    "name": "Kuje",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 199,
+  "fields": {
+    "name": "Kwali",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 200,
+  "fields": {
+    "name": "Lugbe",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 201,
+  "fields": {
+    "name": "Mabushi",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 202,
+  "fields": {
+    "name": "Utako",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 203,
+  "fields": {
+    "name": "Aba",
+    "state": 3
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 204,
+  "fields": {
+    "name": "Abakaliki",
+    "state": 4
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 205,
+  "fields": {
+    "name": "Abeokuta",
+    "state": 5
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 206,
+  "fields": {
+    "name": "Abonnema",
+    "state": 6
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 207,
+  "fields": {
+    "name": "Ado Ekiti",
+    "state": 7
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 208,
+  "fields": {
+    "name": "Afikpo",
+    "state": 4
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 209,
+  "fields": {
+    "name": "Agbor",
+    "state": 8
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 210,
+  "fields": {
+    "name": "Agulu",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 211,
+  "fields": {
+    "name": "Aku",
+    "state": 10
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 212,
+  "fields": {
+    "name": "Akure",
+    "state": 11
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 213,
+  "fields": {
+    "name": "Amaigbo",
+    "state": 3
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 214,
+  "fields": {
+    "name": "Ankpa",
+    "state": 12
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 215,
+  "fields": {
+    "name": "Asaba",
+    "state": 8
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 216,
+  "fields": {
+    "name": "Auchi",
+    "state": 13
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 217,
+  "fields": {
+    "name": "Awka",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 218,
+  "fields": {
+    "name": "Azare",
+    "state": 14
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 219,
+  "fields": {
+    "name": "Bama",
+    "state": 15
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 220,
+  "fields": {
+    "name": "Bauchi",
+    "state": 14
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 221,
+  "fields": {
+    "name": "Bende",
+    "state": 3
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 222,
+  "fields": {
+    "name": "Benin City",
+    "state": 13
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 223,
+  "fields": {
+    "name": "Bida",
+    "state": 16
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 224,
+  "fields": {
+    "name": "Birnin Kebbi",
+    "state": 17
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 225,
+  "fields": {
+    "name": "Biu",
+    "state": 15
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 226,
+  "fields": {
+    "name": "Buguma",
+    "state": 6
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 227,
+  "fields": {
+    "name": "Calabar",
+    "state": 18
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 228,
+  "fields": {
+    "name": "Damaturu",
+    "state": 19
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 229,
+  "fields": {
+    "name": "Daura",
+    "state": 20
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 230,
+  "fields": {
+    "name": "Dutse",
+    "state": 21
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 231,
+  "fields": {
+    "name": "Ede",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 232,
+  "fields": {
+    "name": "Effium",
+    "state": 4
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 233,
+  "fields": {
+    "name": "Effon Alaiye",
+    "state": 7
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 234,
+  "fields": {
+    "name": "Eha Amufu",
+    "state": 10
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 235,
+  "fields": {
+    "name": "Ejigbo",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 236,
+  "fields": {
+    "name": "Ekpoma",
+    "state": 13
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 237,
+  "fields": {
+    "name": "Enugu",
+    "state": 10
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 238,
+  "fields": {
+    "name": "Enugu Ukwu",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 239,
+  "fields": {
+    "name": "Etiti",
+    "state": 23
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 240,
+  "fields": {
+    "name": "Ezza Inyimagu",
+    "state": 4
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 241,
+  "fields": {
+    "name": "Funtua",
+    "state": 20
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 242,
+  "fields": {
+    "name": "Gamboru",
+    "state": 15
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 243,
+  "fields": {
+    "name": "Gashua",
+    "state": 19
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 244,
+  "fields": {
+    "name": "Gboko",
+    "state": 24
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 245,
+  "fields": {
+    "name": "Gbongan",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 246,
+  "fields": {
+    "name": "Gombe",
+    "state": 25
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 247,
+  "fields": {
+    "name": "Gusau",
+    "state": 26
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 248,
+  "fields": {
+    "name": "Hadejia",
+    "state": 21
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 249,
+  "fields": {
+    "name": "Ibadan",
+    "state": 27
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 250,
+  "fields": {
+    "name": "Idah",
+    "state": 12
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 251,
+  "fields": {
+    "name": "Ife",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 252,
+  "fields": {
+    "name": "Ifo",
+    "state": 5
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 253,
+  "fields": {
+    "name": "Ifon",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 254,
+  "fields": {
+    "name": "Igbo Ora",
+    "state": 27
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 255,
+  "fields": {
+    "name": "Igbo Ukwu",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 256,
+  "fields": {
+    "name": "Igboho",
+    "state": 27
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 257,
+  "fields": {
+    "name": "Ihiala",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 258,
+  "fields": {
+    "name": "Ijebu Igbo",
+    "state": 5
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 259,
+  "fields": {
+    "name": "Ijebu Ode",
+    "state": 5
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 260,
+  "fields": {
+    "name": "Ijero",
+    "state": 7
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 261,
+  "fields": {
+    "name": "Ikare",
+    "state": 11
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 262,
+  "fields": {
+    "name": "Ikerre",
+    "state": 7
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 263,
+  "fields": {
+    "name": "Ikire",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 264,
+  "fields": {
+    "name": "Ikirun",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 265,
+  "fields": {
+    "name": "Ikom",
+    "state": 18
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 266,
+  "fields": {
+    "name": "Ikot Ekpene",
+    "state": 28
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 267,
+  "fields": {
+    "name": "Ila Orangun",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 268,
+  "fields": {
+    "name": "Ilawe Ekiti",
+    "state": 7
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 269,
+  "fields": {
+    "name": "Ilesha",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 270,
+  "fields": {
+    "name": "Ilobu",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 271,
+  "fields": {
+    "name": "Ilorin",
+    "state": 29
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 272,
+  "fields": {
+    "name": "Inisa",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 273,
+  "fields": {
+    "name": "Ise",
+    "state": 7
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 274,
+  "fields": {
+    "name": "Iseyin",
+    "state": 27
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 275,
+  "fields": {
+    "name": "Ishieke",
+    "state": 4
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 276,
+  "fields": {
+    "name": "Iwo",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 277,
+  "fields": {
+    "name": "Jalingo",
+    "state": 30
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 278,
+  "fields": {
+    "name": "Jimeta",
+    "state": 31
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 279,
+  "fields": {
+    "name": "Jos",
+    "state": 32
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 280,
+  "fields": {
+    "name": "Kaduna",
+    "state": 33
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 281,
+  "fields": {
+    "name": "Kafanchan",
+    "state": 33
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 282,
+  "fields": {
+    "name": "Kagoro",
+    "state": 33
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 283,
+  "fields": {
+    "name": "Kano",
+    "state": 34
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 284,
+  "fields": {
+    "name": "Katsina",
+    "state": 20
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 285,
+  "fields": {
+    "name": "Kaura Namoda",
+    "state": 26
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 286,
+  "fields": {
+    "name": "Keffi",
+    "state": 35
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 287,
+  "fields": {
+    "name": "Kishi",
+    "state": 27
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 288,
+  "fields": {
+    "name": "Kontagora",
+    "state": 16
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 289,
+  "fields": {
+    "name": "Kuroko",
+    "state": 12
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 290,
+  "fields": {
+    "name": "Lafia",
+    "state": 35
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 291,
+  "fields": {
+    "name": "Lokoja",
+    "state": 12
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 292,
+  "fields": {
+    "name": "Maiduguri",
+    "state": 15
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 293,
+  "fields": {
+    "name": "Makurdi",
+    "state": 24
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 294,
+  "fields": {
+    "name": "Malumfashi",
+    "state": 20
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 295,
+  "fields": {
+    "name": "Minna",
+    "state": 16
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 296,
+  "fields": {
+    "name": "Modakeke",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 297,
+  "fields": {
+    "name": "Mubi",
+    "state": 31
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 298,
+  "fields": {
+    "name": "Nguru",
+    "state": 19
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 299,
+  "fields": {
+    "name": "Nkpor",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 300,
+  "fields": {
+    "name": "Nnewi",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 301,
+  "fields": {
+    "name": "Nsukka",
+    "state": 10
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 302,
+  "fields": {
+    "name": "Numan",
+    "state": 31
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 303,
+  "fields": {
+    "name": "Obosi",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 304,
+  "fields": {
+    "name": "Offa",
+    "state": 29
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 305,
+  "fields": {
+    "name": "Ogaminan",
+    "state": 12
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 306,
+  "fields": {
+    "name": "Ogbomosho",
+    "state": 27
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 307,
+  "fields": {
+    "name": "Ohafia",
+    "state": 3
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 308,
+  "fields": {
+    "name": "Oka Akoko",
+    "state": 11
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 309,
+  "fields": {
+    "name": "Okene",
+    "state": 12
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 310,
+  "fields": {
+    "name": "Okigwi",
+    "state": 23
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 311,
+  "fields": {
+    "name": "Okitipupa",
+    "state": 11
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 312,
+  "fields": {
+    "name": "Okpoko",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 313,
+  "fields": {
+    "name": "Okrika",
+    "state": 6
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 314,
+  "fields": {
+    "name": "Ondo",
+    "state": 11
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 315,
+  "fields": {
+    "name": "Onitsha",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 316,
+  "fields": {
+    "name": "Oron",
+    "state": 28
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 317,
+  "fields": {
+    "name": "Oshogbo",
+    "state": 22
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 318,
+  "fields": {
+    "name": "Otukpo",
+    "state": 24
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 319,
+  "fields": {
+    "name": "Owerri",
+    "state": 23
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 320,
+  "fields": {
+    "name": "Owo",
+    "state": 11
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 321,
+  "fields": {
+    "name": "Oyo",
+    "state": 27
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 322,
+  "fields": {
+    "name": "Ozubulu",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 323,
+  "fields": {
+    "name": "Port Harcourt",
+    "state": 6
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 324,
+  "fields": {
+    "name": "Sagamu",
+    "state": 5
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 325,
+  "fields": {
+    "name": "Sango Otta",
+    "state": 5
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 326,
+  "fields": {
+    "name": "Sapele",
+    "state": 8
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 327,
+  "fields": {
+    "name": "Shaki",
+    "state": 27
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 328,
+  "fields": {
+    "name": "Sokoto",
+    "state": 36
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 329,
+  "fields": {
+    "name": "Suleja",
+    "state": 16
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 330,
+  "fields": {
+    "name": "Uga",
+    "state": 9
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 331,
+  "fields": {
+    "name": "Ugep",
+    "state": 18
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 332,
+  "fields": {
+    "name": "Ughelli",
+    "state": 8
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 333,
+  "fields": {
+    "name": "Umuahia",
+    "state": 3
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 334,
+  "fields": {
+    "name": "Uromi",
+    "state": 13
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 335,
+  "fields": {
+    "name": "Uyo",
+    "state": 28
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 336,
+  "fields": {
+    "name": "Warri",
+    "state": 8
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 337,
+  "fields": {
+    "name": "Wukari",
+    "state": 30
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 338,
+  "fields": {
+    "name": "Yenagoa",
+    "state": 37
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 339,
+  "fields": {
+    "name": "Yola",
+    "state": 31
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 340,
+  "fields": {
+    "name": "Zaria",
+    "state": 33
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 341,
+  "fields": {
+    "name": "Ajah",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 342,
+  "fields": {
+    "name": "Alimosho",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 343,
+  "fields": {
+    "name": "Ikeja",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 344,
+  "fields": {
+    "name": "Ojo",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 345,
+  "fields": {
+    "name": "Surulere",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 346,
+  "fields": {
+    "name": "Abule Egba",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 347,
+  "fields": {
+    "name": "Agbara-Igbesan",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 348,
+  "fields": {
+    "name": "Agboyi/Ketu",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 349,
+  "fields": {
+    "name": "Agege",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 350,
+  "fields": {
+    "name": "Amuwo-Odofin",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 351,
+  "fields": {
+    "name": "Apapa",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 352,
+  "fields": {
+    "name": "Badagry",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 353,
+  "fields": {
+    "name": "Egbe/Idimu",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 354,
+  "fields": {
+    "name": "Ejigbo",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 355,
+  "fields": {
+    "name": "Eko Atlantic",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 356,
+  "fields": {
+    "name": "Epe",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 357,
+  "fields": {
+    "name": "Gbagada",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 358,
+  "fields": {
+    "name": "Ibeju",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 359,
+  "fields": {
+    "name": "Ifako-Ijaiye",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 360,
+  "fields": {
+    "name": "Ikorodu",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 361,
+  "fields": {
+    "name": "Ikotun/Igando",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 362,
+  "fields": {
+    "name": "Ikoyi",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 363,
+  "fields": {
+    "name": "Ilashe",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 364,
+  "fields": {
+    "name": "Ilupeju",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 365,
+  "fields": {
+    "name": "Ipaja",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 366,
+  "fields": {
+    "name": "Isolo",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 367,
+  "fields": {
+    "name": "Kosofe",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 368,
+  "fields": {
+    "name": "Lagos Island (Eko)",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 369,
+  "fields": {
+    "name": "Magodo",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 370,
+  "fields": {
+    "name": "Maryland",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 371,
+  "fields": {
+    "name": "Mushin",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 372,
+  "fields": {
+    "name": "Ogba",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 373,
+  "fields": {
+    "name": "Ogudu",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 374,
+  "fields": {
+    "name": "Ojodu",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 375,
+  "fields": {
+    "name": "Ojota",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 376,
+  "fields": {
+    "name": "Orile",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 377,
+  "fields": {
+    "name": "Oshodi",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 378,
+  "fields": {
+    "name": "Shomolu",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 379,
+  "fields": {
+    "name": "Tarkwa Bay Island",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 380,
+  "fields": {
+    "name": "Victoria Island",
+    "state": 1
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 381,
+  "fields": {
+    "name": "Asokoro",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 382,
+  "fields": {
+    "name": "Abaji",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 383,
+  "fields": {
+    "name": "Abuja Municipal",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 384,
+  "fields": {
+    "name": "Apo",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 385,
+  "fields": {
+    "name": "Asokoro",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 386,
+  "fields": {
+    "name": "Bwari",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 387,
+  "fields": {
+    "name": "Durumi",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 388,
+  "fields": {
+    "name": "Gudu",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 389,
+  "fields": {
+    "name": "Gwagwalada",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 390,
+  "fields": {
+    "name": "Gwarinpa",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 391,
+  "fields": {
+    "name": "Jabi",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 392,
+  "fields": {
+    "name": "Kado",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 393,
+  "fields": {
+    "name": "Katampe",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 394,
+  "fields": {
+    "name": "Kuje",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 395,
+  "fields": {
+    "name": "Kwali",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 396,
+  "fields": {
+    "name": "Lugbe",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 397,
+  "fields": {
+    "name": "Mabushi",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.town",
+  "pk": 398,
+  "fields": {
+    "name": "Utako",
+    "state": 2
+  }
+},
+{
+  "model": "myapp.vehicle",
+  "pk": 214,
+  "fields": {
+    "seller": 1,
+    "category": 1,
+    "brand": 13,
+    "vehicle_model": 30,
+    "trim": 73,
+    "manufacture_year": 9,
+    "condition": 3,
+    "fuel_option": 2,
+    "color": 3,
+    "inner_color": 1,
+    "engine_type": 3,
+    "drive_terrain": 1,
+    "state": 1,
+    "town": 3,
+    "exchange_option": "yes",
+    "registered": "yes",
+    "negotiable": "yes",
+    "no_of_tyres": 4,
+    "seat": 5,
+    "mileage": 10000,
+    "price": "10000.00",
+    "transmission": "automatic",
+    "number_cylinder": 4,
+    "horsepower": 30,
+    "contact_phone": "08021299221",
+    "description": "Hello",
+    "social_media": null,
+    "image": "vehicles/1.jpg",
+    "image2": "vehicles/2.jpg",
+    "image3": "vehicles/3.jpg",
+    "image4": "vehicles/4.jpg",
+    "image5": "vehicles/5.jpg",
+    "image6": "",
+    "image7": "",
+    "image8": "",
+    "image9": "",
+    "image10": "",
+    "image_hash": null,
+    "image2_hash": null,
+    "image3_hash": null,
+    "image4_hash": null,
+    "image5_hash": null,
+    "image6_hash": null,
+    "image7_hash": null,
+    "image8_hash": null,
+    "image9_hash": null,
+    "image10_hash": null,
+    "is_available": true,
+    "created_at": "2025-09-01T16:00:44.045Z",
+    "date_sold": null,
+    "number_of_view": 0,
+    "slug": "toyota-corolla",
+    "vin": "",
+    "index": "toyota-le-car-2013-corolla-refurbished-diesel-inline-4-fwd-lagos-yaba",
+    "vas": [
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "myapp.vehicle",
+  "pk": 215,
+  "fields": {
+    "seller": 1,
+    "category": 3,
+    "brand": 26,
+    "vehicle_model": 59,
+    "trim": 85,
+    "manufacture_year": 2,
+    "condition": 3,
+    "fuel_option": 4,
+    "color": 2,
+    "inner_color": 1,
+    "engine_type": 3,
+    "drive_terrain": 1,
+    "state": 1,
+    "town": 3,
+    "exchange_option": "yes",
+    "registered": "yes",
+    "negotiable": "no",
+    "no_of_tyres": 4,
+    "seat": 5,
+    "mileage": 300,
+    "price": "1000.00",
+    "transmission": "automatic",
+    "number_cylinder": 4,
+    "horsepower": 100,
+    "contact_phone": "08021299221",
+    "description": "Hello",
+    "social_media": null,
+    "image": "vehicles/1_hTsUxls.jpg",
+    "image2": "vehicles/4_fJ1DvDz.jpg",
+    "image3": "vehicles/6.jpg",
+    "image4": "vehicles/5_T4uo7r5.jpg",
+    "image5": "vehicles/3_Mi5bJSG.jpg",
+    "image6": "vehicles/2_jJe6mVK.jpg",
+    "image7": "",
+    "image8": "",
+    "image9": "",
+    "image10": "",
+    "image_hash": null,
+    "image2_hash": null,
+    "image3_hash": null,
+    "image4_hash": null,
+    "image5_hash": null,
+    "image6_hash": null,
+    "image7_hash": null,
+    "image8_hash": null,
+    "image9_hash": null,
+    "image10_hash": null,
+    "is_available": true,
+    "created_at": "2025-09-01T16:04:07.698Z",
+    "date_sold": null,
+    "number_of_view": 0,
+    "slug": "ford-ranger",
+    "vin": "",
+    "index": "ford-xlt-bus-2006-ranger-refurbished-hybrid-inline-4-fwd-lagos-yaba",
+    "vas": [
+      2,
+      1,
+      4
+    ]
+  }
+},
+{
+  "model": "myapp.vehicle",
+  "pk": 216,
+  "fields": {
+    "seller": 2,
+    "category": 2,
+    "brand": 11,
+    "vehicle_model": 27,
+    "trim": 83,
+    "manufacture_year": 4,
+    "condition": 3,
+    "fuel_option": 2,
+    "color": 2,
+    "inner_color": 1,
+    "engine_type": 1,
+    "drive_terrain": 2,
+    "state": 18,
+    "town": 207,
+    "exchange_option": "yes",
+    "registered": "yes",
+    "negotiable": "yes",
+    "no_of_tyres": 4,
+    "seat": 5,
+    "mileage": 6,
+    "price": "1000.00",
+    "transmission": "automatic",
+    "number_cylinder": 4,
+    "horsepower": 6,
+    "contact_phone": "08021299221",
+    "description": "Yeyeyey",
+    "social_media": null,
+    "image": "vehicles/1_4IZb0vz.jpg",
+    "image2": "vehicles/4_hlPaHQZ.jpg",
+    "image3": "vehicles/5_ICOxVto.jpg",
+    "image4": "vehicles/5_kvHdVay.jpg",
+    "image5": "vehicles/3_3CPO7kz.jpg",
+    "image6": "vehicles/5_r9PdqBq.jpg",
+    "image7": "vehicles/3_nSe613s.jpg",
+    "image8": "",
+    "image9": "",
+    "image10": "",
+    "image_hash": null,
+    "image2_hash": null,
+    "image3_hash": null,
+    "image4_hash": null,
+    "image5_hash": null,
+    "image6_hash": null,
+    "image7_hash": null,
+    "image8_hash": null,
+    "image9_hash": null,
+    "image10_hash": null,
+    "is_available": true,
+    "created_at": "2025-09-01T16:06:53.606Z",
+    "date_sold": null,
+    "number_of_view": 0,
+    "slug": "man-zk6122h",
+    "vin": "",
+    "index": "man-zx-10r-lorry-2008-zk6122h-refurbished-diesel-v6-rwd-cross-river-ado-ekiti",
+    "vas": [
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "myapp.vehicle",
+  "pk": 217,
+  "fields": {
+    "seller": 2,
+    "category": 1,
+    "brand": 8,
+    "vehicle_model": 30,
+    "trim": 85,
+    "manufacture_year": 2,
+    "condition": 3,
+    "fuel_option": 2,
+    "color": 2,
+    "inner_color": 1,
+    "engine_type": 1,
+    "drive_terrain": 4,
+    "state": 21,
+    "town": 208,
+    "exchange_option": "yes",
+    "registered": "yes",
+    "negotiable": "yes",
+    "no_of_tyres": 4,
+    "seat": 5,
+    "mileage": 66,
+    "price": "5555.00",
+    "transmission": "automatic",
+    "number_cylinder": 7,
+    "horsepower": 66,
+    "contact_phone": "08021299221",
+    "description": "dffdf",
+    "social_media": null,
+    "image": "vehicles/6_G64FkOv.jpg",
+    "image2": "vehicles/5_fGnTuNJ.jpg",
+    "image3": "vehicles/4_SWfsq8Q.jpg",
+    "image4": "vehicles/4_NFasU9t.jpg",
+    "image5": "vehicles/3_JK2kNqV.jpg",
+    "image6": "vehicles/3_zCfKfYh.jpg",
+    "image7": "",
+    "image8": "",
+    "image9": "",
+    "image10": "",
+    "image_hash": null,
+    "image2_hash": null,
+    "image3_hash": null,
+    "image4_hash": null,
+    "image5_hash": null,
+    "image6_hash": null,
+    "image7_hash": null,
+    "image8_hash": null,
+    "image9_hash": null,
+    "image10_hash": null,
+    "is_available": true,
+    "created_at": "2025-09-01T16:09:40.100Z",
+    "date_sold": null,
+    "number_of_view": 4,
+    "slug": "mercedes-benz-corolla",
+    "vin": "",
+    "index": "mercedes-benz-xlt-car-2006-corolla-refurbished-diesel-v6-4wd-jigawa-afikpo",
+    "vas": [
+      2,
+      1
+    ]
+  }
+},
+{
+  "model": "myapp.vehicle",
+  "pk": 218,
+  "fields": {
+    "seller": 1,
+    "category": 1,
+    "brand": 13,
+    "vehicle_model": 30,
+    "trim": 73,
+    "manufacture_year": 7,
+    "condition": 2,
+    "fuel_option": 5,
+    "color": 3,
+    "inner_color": 1,
+    "engine_type": 3,
+    "drive_terrain": 4,
+    "state": 33,
+    "town": 84,
+    "exchange_option": "yes",
+    "registered": "yes",
+    "negotiable": "yes",
+    "no_of_tyres": 4,
+    "seat": 5,
+    "mileage": 44,
+    "price": "3333.00",
+    "transmission": "manual",
+    "number_cylinder": 4,
+    "horsepower": 43,
+    "contact_phone": "8021299221",
+    "description": "dd",
+    "social_media": "https://www.youtube.com/watch?v=OhER8A2k4Uw&list=PPSV",
+    "image": "vehicles/1_hsAAhyF.jpg",
+    "image2": "vehicles/2_oSwxE3s.jpg",
+    "image3": "vehicles/3_UDew7gn.jpg",
+    "image4": "vehicles/4_lOYeti3.jpg",
+    "image5": "vehicles/5_afoQW9c.jpg",
+    "image6": "vehicles/6_bt3ne9T.jpg",
+    "image7": "",
+    "image8": "",
+    "image9": "",
+    "image10": "",
+    "image_hash": "0506f40c5bc6d36209aaa2f89be79576962ea7b5ce6c97987ee388f69b7abfda",
+    "image2_hash": "5d7c4021bc5ad63bed245636e430d8be854ba5d40bc3a9f0fbcac2f91e39bfc8",
+    "image3_hash": "059358d2ccb50345a5be7f800ec25c60541abe2a8d5327bff9ae08fe7a6821b7",
+    "image4_hash": "992126f3683d88b31b35512900d2e9a2bcd69c24cde7973d57951dbd01bd0d05",
+    "image5_hash": "7aa923a7f8c9f96baadc6fe15a4602e86320783c835e119bf4a6ca1c0dcf99bb",
+    "image6_hash": "064470b7e394517e9ea693e437c69af6f9e76b67dc4850c7fdae97adf58f54ad",
+    "image7_hash": null,
+    "image8_hash": null,
+    "image9_hash": null,
+    "image10_hash": null,
+    "is_available": false,
+    "created_at": "2025-09-01T23:48:55.865Z",
+    "date_sold": "2025-09-01T23:48:55.848Z",
+    "number_of_view": 0,
+    "slug": "toyota-corolla-1",
+    "vin": "",
+    "index": "toyota-le-car-2011-corolla-used-cng-inline-4-4wd-kaduna-kaduna",
+    "vas": [
+      3,
+      1
+    ]
+  }
+},
+{
+  "model": "myapp.article",
+  "pk": 1,
+  "fields": {
+    "title": "The Rebirth of Nigeria",
+    "content": "The rebirth of Nigeria",
+    "excerpt": "The rebirth of Nigeria",
+    "slug": "the-rebirth-of-nigeria",
+    "author": "Anonymous",
+    "published_date": "2025-08-28T12:24:37Z",
+    "tags": [
+      1,
+      2
+    ]
+  }
+},
+{
+  "model": "myapp.article",
+  "pk": 2,
+  "fields": {
+    "title": "The rebirth of Ghana",
+    "content": "The rebirth of Ghana is very key to the national developement",
+    "excerpt": "The rebirth of Ghana is very key to the national developement",
+    "slug": "the-rebirth-of-ghana",
+    "author": "Anonymous",
+    "published_date": "2025-08-28T12:30:56Z",
+    "tags": [
+      1,
+      2
+    ]
+  }
+}
+]

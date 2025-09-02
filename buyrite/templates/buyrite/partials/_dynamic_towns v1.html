@@ -1,0 +1,9 @@
+<div id="id_town_container" class="mb-4">
+<label for="id_town" class="form-label">Town</label>
+<select name="town" id="id_town" class="form-select rounded-lg shadow-sm">
+<option value="">All Towns</option>
+{% for town in towns %}
+<option value="{{ town.pk }}">{{ town.name }}</option>
+{% endfor %}
+</select>
+</div>

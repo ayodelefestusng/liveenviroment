@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Vehicle</title>
+    <!-- Tailwind CSS CDN for easy styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the form */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+        .form-label {
+            @apply block text-sm font-medium text-gray-700 mb-1;
+        }
+        .form-input, .form-select, .form-textarea {
+            @apply mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm;
+        }
+        .form-checkbox {
+            @apply h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded;
+        }
+        .form-group {
+            @apply mb-6;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4 sm:p-6">
+    <div class="bg-white p-6 sm:p-8 rounded-lg shadow-xl w-full max-w-4xl border border-gray-200">
+        <h1 class="text-3xl font-bold text-gray-800 text-center mb-8">Upload New Vehicle</h1>
+        
+        <form id="vehicleForm" action="/your-django-upload-endpoint/" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <!-- CSRF Token (important for Django forms) -->
+            <!-- <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"> -->
+
+            <!-- Seller Information -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label for="seller" class="form-label">Seller</label>
+                    <select id="seller" name="seller" class="form-select" required>
+                        <option value="">Select Seller</option>
+                        <option value="1">dignity.upwardwave@gmail.com</option>
+                        <option value="2">ayodelefestusng@gmail.com</option>
+                        <!-- Options would be dynamically loaded from your Django User model -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="category" class="form-label">Category</label>
+                    <select id="category" name="category" class="form-select" required>
+                        <option value="">Select Category</option>
+                        <option value="1">Car</option>
+                        <option value="2">Bus</option>
+                        <option value="3">Lorry</option>
+                        <!-- Options would be dynamically loaded from your Django Category model -->
+                    </select>
+                </div>
+            </div>
+
+            <!-- Vehicle Details -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="form-group">
+                    <label for="brand" class="form-label">Brand</label>
+                    <select id="brand" name="brand" class="form-select" required>
+                        <option value="">Select Brand</option>
+                        <option value="1">Toyota</option>
+                        <option value="2">Nissan</option>
+                        <option value="3">Honda</option>
+                        <!-- Options would be dynamically loaded from your Django Brand model -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="vehicle_model" class="form-label">Vehicle Model</label>
+                    <select id="vehicle_model" name="vehicle_model" class="form-select" required>
+                        <option value="">Select Model</option>
+                        <option value="1">Camry</option>
+                        <option value="2">Corolla</option>
+                        <option value="3">Pathfinder</option>
+                        <!-- Options would be dynamically loaded based on selected brand -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="trim" class="form-label">Trim</label>
+                    <select id="trim" name="trim" class="form-select" required>
+                        <option value="">Select Trim</option>
+                        <option value="1">Base</option>
+                        <option value="2">Sport</option>
+                        <option value="3">Luxury</option>
+                        <!-- Options would be dynamically loaded based on selected model -->
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="form-group">
+                    <label for="manufacture_year" class="form-label">Manufacture Year</label>
+                    <select id="manufacture_year" name="manufacture_year" class="form-select" required>
+                        <option value="">Select Year</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <!-- Dynamically generated years -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="condition" class="form-label">Condition</label>
+                    <select id="condition" name="condition" class="form-select" required>
+                        <option value="">Select Condition</option>
+                        <option value="1">New</option>
+                        <option value="2">Used</option>
+                        <option value="3">Refurbished</option>
+                        <!-- Options from your Condition model -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="fuel_option" class="form-label">Fuel Option</label>
+                    <select id="fuel_option" name="fuel_option" class="form-select" required>
+                        <option value="">Select Fuel Type</option>
+                        <option value="1">Petrol</option>
+                        <option value="2">Diesel</option>
+                        <option value="3">Electric</option>
+                        <!-- Options from your FuelOption model -->
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="form-group">
+                    <label for="color" class="form-label">Color</label>
+                    <select id="color" name="color" class="form-select" required>
+                        <option value="">Select Color</option>
+                        <option value="1">Red</option>
+                        <option value="2">Blue</option>
+                        <option value="3">Black</option>
+                        <!-- Options from your Color model -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="engine_type" class="form-label">Engine Type</label>
+                    <select id="engine_type" name="engine_type" class="form-select" required>
+                        <option value="">Select Engine Type</option>
+                        <option value="1">Inline-4</option>
+                        <option value="2">V6</option>
+                        <option value="3">V8</option>
+                        <!-- Options from your EngineType model -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="drive_terrain" class="form-label">Drive Terrain</label>
+                    <select id="drive_terrain" name="drive_terrain" class="form-select" required>
+                        <option value="">Select Drive Terrain</option>
+                        <option value="1">FWD</option>
+                        <option value="2">RWD</option>
+                        <option value="3">AWD</option>
+                        <option value="4">4x4</option>
+                        <!-- Options from your DriveTerrain model -->
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label for="state" class="form-label">State</label>
+                    <select id="state" name="state" class="form-select" required>
+                        <option value="">Select State</option>
+                        <option value="1">Lagos</option>
+                        <option value="2">Abuja</option>
+                        <!-- Options from your State model -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="town" class="form-label">Town</label>
+                    <select id="town" name="town" class="form-select" required>
+                        <option value="">Select Town</option>
+                        <option value="1">Ikeja</option>
+                        <option value="2">Victoria Island</option>
+                        <!-- Options from your Town model (dynamically filtered by state) -->
+                    </select>
+                </div>
+            </div>
+
+            <!-- Vehicle Specifications -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="form-group">
+                    <label for="no_of_tyres" class="form-label">Number of Tyres</label>
+                    <input type="number" id="no_of_tyres" name="no_of_tyres" class="form-input" value="4" min="2" max="32" required>
+                </div>
+                <div class="form-group">
+                    <label for="seat" class="form-label">Number of Seats</label>
+                    <input type="number" id="seat" name="seat" class="form-input" value="5" min="1" max="80" required>
+                </div>
+                <div class="form-group">
+                    <label for="mileage" class="form-label">Mileage (km)</label>
+                    <input type="number" id="mileage" name="mileage" class="form-input" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="price" class="form-label">Price (Naira)</label>
+                    <input type="number" id="price" name="price" class="form-input" step="0.01" min="0" required>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label for="transmission" class="form-label">Transmission</label>
+                    <select id="transmission" name="transmission" class="form-select" required>
+                        <option value="automatic">Automatic</option>
+                        <option value="manual">Manual</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="number_cylinder" class="form-label">Number of Cylinders (Optional)</label>
+                    <input type="number" id="number_cylinder" name="number_cylinder" class="form-input" min="1" max="20">
+                </div>
+                <div class="form-group">
+                    <label for="horsepower" class="form-label">Horsepower (Optional)</label>
+                    <input type="number" id="horsepower" name="horsepower" class="form-input" min="1" max="200">
+                </div>
+            </div>
+
+            <!-- Contact & Description -->
+            <div class="form-group">
+                <label for="contact_phone" class="form-label">Contact Phone</label>
+                <input type="tel" id="contact_phone" name="contact_phone" class="form-input" placeholder="e.g., +2348012345678" required>
+            </div>
+            <div class="form-group">
+                <label for="description" class="form-label">Description</label>
+                <textarea id="description" name="description" rows="5" class="form-textarea" placeholder="Provide a detailed description of the vehicle..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="social_media" class="form-label">Social Media Link (Optional)</label>
+                <input type="url" id="social_media" name="social_media" class="form-input" placeholder="e.g., https://facebook.com/myvehiclepage">
+            </div>
+
+            <!-- Checkboxes -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="flex items-center space-x-2">
+                    <input type="checkbox" id="exchange_option" name="exchange_option" value="yes" class="form-checkbox">
+                    <label for="exchange_option" class="text-sm font-medium text-gray-700">Exchange Option</label>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <input type="checkbox" id="registered" name="registered" value="yes" class="form-checkbox">
+                    <label for="registered" class="text-sm font-medium text-gray-700">Registered</label>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <input type="checkbox" id="negotiable" name="negotiable" value="yes" class="form-checkbox">
+                    <label for="negotiable" class="text-sm font-medium text-gray-700">Price Negotiable</label>
+                </div>
+            </div>
+
+            <!-- VAS (Value Added Services) - Many-to-Many -->
+            <div class="form-group">
+                <label class="form-label">Value Added Services (Select all that apply)</label>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-2">
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" id="vas1" name="vas" value="1" class="form-checkbox">
+                        <label for="vas1" class="text-sm text-gray-700">Warranty</label>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" id="vas2" name="vas" value="2" class="form-checkbox">
+                        <label for="vas2" class="text-sm text-gray-700">Roadside Assistance</label>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" id="vas3" name="vas" value="3" class="form-checkbox">
+                        <label for="vas3" class="text-sm text-gray-700">Maintenance Plan</label>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" id="vas4" name="vas" value="4" class="form-checkbox">
+                        <label for="vas4" class="text-sm text-gray-700">Tinted Windows</label>
+                    </div>
+                    <!-- More options from your Vas model -->
+                </div>
+            </div>
+
+            <!-- Image Uploads -->
+            <div class="form-group">
+                <label class="form-label">Vehicle Images (Minimum 5 required)</label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-2">
+                    <input type="file" id="image" name="image" class="form-input p-1" accept="image/*" required>
+                    <input type="file" id="image2" name="image2" class="form-input p-1" accept="image/*" required>
+                    <input type="file" id="image3" name="image3" class="form-input p-1" accept="image/*" required>
+                    <input type="file" id="image4" name="image4" class="form-input p-1" accept="image/*" required>
+                    <input type="file" id="image5" name="image5" class="form-input p-1" accept="image/*" required>
+                    <input type="file" id="image6" name="image6" class="form-input p-1" accept="image/*">
+                    <input type="file" id="image7" name="image7" class="form-input p-1" accept="image/*">
+                    <input type="file" id="image8" name="image8" class="form-input p-1" accept="image/*">
+                    <input type="file" id="image9" name="image9" class="form-input p-1" accept="image/*">
+                    <input type="file" id="image10" name="image10" class="form-input p-1" accept="image/*">
+                </div>
+            </div>
+
+            <!-- Availability -->
+            <div class="flex items-center space-x-2">
+                <input type="checkbox" id="is_available" name="is_available" class="form-checkbox" checked>
+                <label for="is_available" class="text-sm font-medium text-gray-700">Available for Sale</label>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-end pt-4">
+                <button type="submit" class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                    Upload Vehicle
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Optional: Client-side validation for image count (basic example)
+        document.getElementById('vehicleForm').addEventListener('submit', function(event) {
+            const imageInputs = [
+                document.getElementById('image'),
+                document.getElementById('image2'),
+                document.getElementById('image3'),
+                document.getElementById('image4'),
+                document.getElementById('image5')
+            ];
+            let filledImageCount = 0;
+            imageInputs.forEach(input => {
+                if (input.files && input.files.length > 0) {
+                    filledImageCount++;
+                }
+            });
+
+            if (filledImageCount < 5) {
+                alert('Please upload at least 5 images for the vehicle.');
+                event.preventDefault(); // Stop form submission
+            }
+        });
+
+        // Example for dynamically loading towns based on state selection (requires server-side interaction)
+        // document.getElementById('state').addEventListener('change', function() {
+        //     const stateId = this.value;
+        //     const townSelect = document.getElementById('town');
+        //     townSelect.innerHTML = '<option value="">Loading towns...</option>'; // Clear and show loading
+
+        //     if (stateId) {
+        //         // In a real Django app, you'd make an AJAX call here:
+        //         // fetch(`/api/get_towns/?state_id=${stateId}`)
+        //         //     .then(response => response.json())
+        //         //     .then(data => {
+        //         //         townSelect.innerHTML = '<option value="">Select Town</option>';
+        //         //         data.forEach(town => {
+        //         //             const option = document.createElement('option');
+        //         //             option.value = town.id;
+        //         //             option.textContent = town.name;
+        //         //             townSelect.appendChild(option);
+        //         //         });
+        //         //     })
+        //         //     .catch(error => console.error('Error loading towns:', error));
+
+        //         // Placeholder for client-side demo
+        //         setTimeout(() => {
+        //             townSelect.innerHTML = '<option value="">Select Town</option>';
+        //             if (stateId === '1') { // Lagos
+        //                 townSelect.innerHTML += '<option value="1">Ikeja</option>';
+        //                 townSelect.innerHTML += '<option value="2">Victoria Island</option>';
+        //             } else if (stateId === '2') { // Abuja
+        //                 townSelect.innerHTML += '<option value="3">Wuse</option>';
+        //                 townSelect.innerHTML += '<option value="4">Garki</option>';
+        //             }
+        //         }, 500);
+        //     } else {
+        //         townSelect.innerHTML = '<option value="">Select Town</option>';
+        //     }
+        // });
+    </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+{% extends 'bases.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Dealer Registration{% endblock %}
+
+{% block content %}
+
+<div class="container mx-auto px-4 py-8 max-w-2xl" >
+<!-- <div class="bg-white rounded-xl shadow-lg p-8" style="margin-left: 100px; margin-right: 100px;">
+     -->
+
+<div class="bg-white rounded-xl shadow-lg p-8 lg:ml-[100px] lg:mr-[100px]">
+
+
+<h1 class="text-3xl font-extrabold text-gray-900 text-center mb-6">Dealer Registration</h1>
+
+    <!-- Flash messages -->
+    {% if messages %}
+        <ul class="list-none p-0 mb-4">
+        {% for message in messages %}
+            <li class="p-3 mb-2 rounded-lg text-white {% if message.tags %}bg-success{% else %}bg-info{% endif %}">{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" 
+          hx-post="{% url 'dealer_registration' %}"
+          hx-target="#form-container"
+          hx-swap="outerHTML"
+          id="form-container">
+        {% csrf_token %}
+        
+        <div class="mb-4">
+            <label for="id_business_logo" class="form-label">Business Logo</label>
+            {{ form.business_logo }}
+            {% if form.business_logo.errors %}
+                <div class="text-red-500 text-sm mt-1">{{ form.business_logo.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-4">
+            <label for="id_business_address" class="form-label">Business Address</label>
+            {{ form.business_address }}
+            {% if form.business_address.errors %}
+                <div class="text-red-500 text-sm mt-1">{{ form.business_address.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="mb-4">
+            <label for="id_state" class="form-label">State</label>
+            <!-- The key to dynamic loading: HTMX attributes on the select field -->
+            <select id="id_state" name="state" class="form-select rounded-lg"
+                    hx-get="{% url 'get_towns_by_state' 1 %}"
+                    hx-target="#town_container"
+                    hx-swap="innerHTML"
+                    hx-trigger="change"
+                    hx-include="this">
+                <option value="">Choose State</option>
+                {% for state in states %}
+                    <option value="{{ state.id }}">{{ state.name }}</option>
+                {% endfor %}
+            </select>
+            {% if form.state.errors %}
+                <div class="text-red-500 text-sm mt-1">{{ form.state.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-4" id="town_container">
+            <label for="id_town" class="form-label">Town</label>
+            <select id="id_town" name="town" class="form-select rounded-lg">
+                <option value="">Choose Town</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-full rounded-lg shadow-md mt-4">Register</button>
+    </form>
+</div>
+
+</div>
+{% endblock %}

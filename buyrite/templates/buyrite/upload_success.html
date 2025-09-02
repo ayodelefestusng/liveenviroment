@@ -1,0 +1,17 @@
+<!-- myapp/templates/myapp/upload_success.html -->
+{% extends 'base.html' %}
+
+{% block title %}Upload Success{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Vehicle Uploaded Successfully! 🎉</h4>
+        <p>Your vehicle has been successfully added to our listings.</p>
+        <hr>
+        <p class="mb-0">You can view your uploaded vehicles or upload another one.</p>
+    </div>
+    <a href="{% url 'upload_vehicle' %}" class="btn btn-primary me-2">Upload Another Vehicle</a>
+    <a href="/" class="btn btn-secondary">Go to Home</a>
+</div>
+{% endblock %}

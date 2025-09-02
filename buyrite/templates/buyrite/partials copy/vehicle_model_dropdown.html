@@ -1,0 +1,13 @@
+<div class="form-group mb-4" id="div_id_vehicle_model">
+    <label for="id_vehicle_model" class="form-label">Vehicle Model</label>
+    <select name="vehicle_model" id="id_vehicle_model" class="form-select rounded-lg"
+            hx-get="{% url 'load_trims' %}"
+            hx-target="#div_id_trim"
+            hx-swap="outerHTML"
+            hx-trigger="change">
+        <option value="">---------</option>
+        {% for model in models %}
+            <option value="{{ model.pk }}">{{ model.name }}</option>
+        {% endfor %}
+    </select>
+</div>

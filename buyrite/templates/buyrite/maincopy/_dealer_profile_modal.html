@@ -1,0 +1,32 @@
+{% load static %}
+{% load humanize %}
+
+<div class="modal-header">
+<h5 class="modal-title" id="dealerModalLabel">Dealer Profile: {{ dealer.user.username }}</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+<p><strong>Business Address:</strong> {{ dealer.business_address }}</p>
+<p><strong>State:</strong> {{ dealer.state.name }}</p>
+<p><strong>Town:</strong> {{ dealer.town.name }}</p>
+{% if dealer.business_logo %}
+<p><strong>Business Logo:</strong></p>
+<img src="{{ dealer.business_logo.url }}" alt="Business Logo" class="w-full h-auto rounded-lg mt-2">
+{% endif %}
+</div>
+<div class="modal-footer">
+<form hx-post="{% url 'approve_dealer' dealer.pk %}"
+hx-confirm="Are you sure you want to approve this dealer?"
+hx-target="#main-content"
+hx-swap="outerHTML">
+{% csrf_token %}
+<button type="submit" class="btn btn-success rounded-lg">Approve</button>
+</form>
+<form hx-post="{% url 'reject_dealer' dealer.pk %}"
+hx-confirm="Are you sure you want to reject this dealer?"
+hx-target="#main-content"
+hx-swap="outerHTML">
+{% csrf_token %}
+<button type="submit" class="btn btn-danger rounded-lg">Reject</button>
+</form>
+</div>

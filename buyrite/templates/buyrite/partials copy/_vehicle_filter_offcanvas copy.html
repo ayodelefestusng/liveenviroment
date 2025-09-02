@@ -1,0 +1,122 @@
+<div class="offcanvas-header">
+<h5 class="offcanvas-title font-bold text-xl" id="offcanvasLabel">Vehicle Filter</h5>
+<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+</div>
+<div class="offcanvas-body">
+<form hx-get="{% url 'dashboard' %}"
+hx-target="#vehicle-list-container"
+hx-swap="innerHTML"
+hx-indicator="#loading-indicator"
+hx-push-url="true"
+hx-on::after-request="this.closest('.offcanvas').bs.offcanvas('hide');">
+
+    <!-- Status Filter -->
+    <div class="mb-4">
+        <label for="id_status" class="form-label">Listing Status</label>
+        <select name="status" id="id_status" class="form-select rounded-lg shadow-sm">
+            <option value="all" {% if current_status == "all" %}selected{% endif %}>All</option>
+            <option value="unsold" {% if current_status == "unsold" %}selected{% endif %}>Unsold</option>
+            <option value="sold" {% if current_status == "sold" %}selected{% endif %}>Sold</option>
+        </select>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="mb-4">
+        <label for="id_category" class="form-label">Category</label>
+        <select name="category" id="id_category" class="form-select rounded-lg shadow-sm">
+            <option value="">All Categories</option>
+            {% for category in categories %}
+                <option value="{{ category.pk }}" {% if selected_category|stringformat:"d" == category.pk|stringformat:"d" %}selected{% endif %}>{{ category.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- State and Town Filters -->
+    <div class="mb-4">
+        <label for="id_state" class="form-label">State</label>
+        <select name="state" 
+                id="id_state" 
+                class="form-select rounded-lg shadow-sm"
+                hx-get="{% url 'get_towns_by_state' 0 %}"
+                hx-target="#id_town_container"
+                hx-trigger="change"
+                hx-swap="outerHTML">
+            <option value="">All States</option>
+            {% for state in states %}
+                <option value="{{ state.pk }}" {% if selected_state|stringformat:"d" == state.pk|stringformat:"d" %}selected{% endif %}>{{ state.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div id="id_town_container" class="mb-4">
+        <!-- HTMX will swap this with a dynamic town list -->
+        <label for="id_town" class="form-label">Town</label>
+        <select name="town" id="id_town" class="form-select rounded-lg shadow-sm">
+            <option value="">Select a State first</option>
+        </select>
+    </div>
+
+    <!-- Brand and Model Filters -->
+    <div class="mb-4">
+        <label for="id_brand" class="form-label">Brand</label>
+        <select name="brand" 
+                id="id_brand" 
+                class="form-select rounded-lg shadow-sm"
+                hx-get="{% url 'get_models_by_brand' 0 %}"
+                hx-target="#id_model_container"
+                hx-trigger="change"
+                hx-swap="outerHTML">
+            <option value="">All Brands</option>
+            {% for brand in brands %}
+                <option value="{{ brand.pk }}" {% if selected_brand|stringformat:"d" == brand.pk|stringformat:"d" %}selected{% endif %}>{{ brand.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div id="id_model_container" class="mb-4">
+        <!-- HTMX will swap this with a dynamic model list -->
+        <label for="id_model" class="form-label">Model</label>
+        <select name="model" id="id_model" class="form-select rounded-lg shadow-sm">
+            <option value="">Select a Brand first</option>
+        </select>
+    </div>
+
+    <!-- Trim Filter -->
+    <div class="mb-4">
+        <label for="id_trim" class="form-label">Trim</label>
+        <select name="trim" id="id_trim" class="form-select rounded-lg shadow-sm">
+            <option value="">All Trims</option>
+            {% for trim in trims %}
+                <option value="{{ trim.pk }}" {% if selected_trim|stringformat:"d" == trim.pk|stringformat:"d" %}selected{% endif %}>{{ trim.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Year Range Filters -->
+    <div class="mb-4 grid grid-cols-2 gap-4">
+        <div>
+            <label for="id_min_year" class="form-label">Min Year</label>
+            <input type="number" name="min_year" id="id_min_year" class="form-control rounded-lg shadow-sm" placeholder="e.g., 2010" value="{{ selected_min_year|default:'' }}">
+        </div>
+        <div>
+            <label for="id_max_year" class="form-label">Max Year</label>
+            <input type="number" name="max_year" id="id_max_year" class="form-control rounded-lg shadow-sm" placeholder="e.g., 2023" value="{{ selected_max_year|default:'' }}">
+        </div>
+    </div>
+
+    <!-- Price Range Filters -->
+    <div class="mb-4 grid grid-cols-2 gap-4">
+        <div>
+            <label for="id_min_price" class="form-label">Min Price</label>
+            <input type="number" name="min_price" id="id_min_price" class="form-control rounded-lg shadow-sm" placeholder="e.g., 500000" value="{{ selected_min_price|default:'' }}">
+        </div>
+        <div>
+            <label for="id_max_price" class="form-label">Max Price</label>
+            <input type="number" name="max_price" id="id_max_price" class="form-control rounded-lg shadow-sm" placeholder="e.g., 2000000" value="{{ selected_max_price|default:'' }}">
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-full rounded-lg shadow-md mt-4">Apply Filters</button>
+</form>
+
+</div>

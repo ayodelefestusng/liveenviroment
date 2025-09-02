@@ -1,0 +1,83 @@
+{% extends 'bases.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Dashboard | Your Listings{% endblock %}
+
+{% block content %}
+
+<div class=" ayo container mx-auto px-4 py-8">
+<h3 class="text-4xl font-extrabold text-gray-900 mb-8">
+Your Dashboards
+</h3>
+    <!-- New: Vehicle Filter Button -->
+        <button class="btn btn-dark rounded-lg shadow-md" type="button" data-bs-toggle="offcanvas" data-bs-target="#vehicleFilterOffcanvas" aria-controls="vehicleFilterOffcanvas">
+            Vehicle Filter
+        </button>
+
+<!-- Stats & Icon Section -->
+<div class="grid grid-cols-2 md:grid-cols-3 gap-1 mb-8">
+
+
+    <div class=" lame bg-gray-100 rounded-xl p-6 text-center shadow-lg transition-transform hover:scale-105"
+        hx-get="{% url 'dashboard' %}?status=unsold"
+        hx-target="#vehicle-list-container"
+        hx-swap="innerHTML"
+        hx-indicator="#loading-indicator"
+        hx-push-url="true">
+        <h2 class="text-5xl font-bold text-primary-600 mb-2">{{ unsold_count }}</h2>
+        <p class="text-gray-600 font-semibold">Unsold</p>
+    </div>
+    <div class="lame bg-gray-100 rounded-xl p-6 text-center shadow-lg transition-transform hover:scale-105"
+        hx-get="{% url 'dashboard' %}?status=sold"
+        hx-target="#vehicle-list-container"
+        hx-swap="innerHTML"
+        hx-indicator="#loading-indicator"
+        hx-push-url="true">
+        <h2 class="text-5xl font-bold text-gray-600 mb-2">{{ sold_count }}</h2>
+        <p class="text-gray-600 font-semibold">Sold</p>
+    </div>
+    <div class=" lame bg-gray-100 rounded-xl p-6 text-center shadow-lg transition-transform hover:scale-105"
+        hx-get="{% url 'dashboard' %}?status=all"
+        hx-target="#vehicle-list-container"
+        hx-swap="innerHTML"
+        hx-indicator="#loading-indicator"
+        hx-push-url="true">
+        <h2 class="text-5xl font-bold text-gray-800 mb-2">{{ all_vehicles_count }}</h2>
+        <p class="text-gray-800 font-semibold">All Listings</p>
+    </div>
+</div>
+
+
+<!-- Ajadi gemini offcanvas -->
+ 
+
+<!-- end Ajadi -->
+<!-- Loading indicator for HTMX requests -->
+<div id="loading-indicator" class="htmx-indicator text-center text-gray-500 my-4">
+    <p>Loading...</p>
+</div>
+
+<!-- Product List Section -->
+<div id="vehicle-list-container">
+    {% include 'myapp/partials/_vehicle_list.html' with vehicles=vehicles %}
+</div>
+
+<!-- Edit Modal (empty initially, filled by HTMX) -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="modal-content">
+            <!-- HTMX will load the edit form here -->
+            <div class="p-4 text-center">
+                <p class="text-gray-500">Loading form...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+<!-- New: Offcanvas markup -->
+<div class="offcanvas offcanvas-start bg-gray-50 rounded-r-2xl" tabindex="-1" id="vehicleFilterOffcanvas" aria-labelledby="vehicleFilterOffcanvasLabel">
+    {% include 'myapp/partials/_vehicle_filter_offcanvas.html' %}
+</div>
+{% endblock %}

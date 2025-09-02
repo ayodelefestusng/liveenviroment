@@ -1,0 +1,7 @@
+<label for="id_town" class="form-label">Town</label>
+<select id="id_town" name="town" class="form-select rounded-lg">
+<option value="">Choose Town</option>
+{% for town in towns %}
+<option value="{{ town.id }}">{{ town.name }}</option>
+{% endfor %}
+</select>

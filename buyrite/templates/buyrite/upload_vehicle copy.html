@@ -1,0 +1,258 @@
+{% extends 'bases.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Upload Vehicle{% endblock %}
+
+{% block content %}
+
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+<div class="bg-white rounded-xl shadow-lg p-8">
+<h1 class="text-3xl font-extrabold text-gray-900 text-center mb-6">Upload a Vehicle</h1>
+
+<!-- Flash messages -->
+
+{% if messages %}
+<ul class="list-none p-0 mb-4">
+{% for message in messages %}
+<li class="p-3 mb-2 rounded-lg text-white {% if message.tags %}bg-{{ message.tags }}{% else %}bg-info{% endif %}">{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data" novalidate>
+{% csrf_token %}
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Dropdown Fields -->
+    <div class="form-group mb-4">
+        <label for="{{ form.brand.id_for_label }}" class="form-label">Brand</label>
+        <select id="{{ form.brand.id_for_label }}" name="{{ form.brand.name }}" class="form-select rounded-lg"
+                hx-get="/get_models/{this.value}/"
+                hx-target="#div_id_vehicle_model"
+                hx-swap="outerHTML"
+                hx-trigger="change">
+            <option value="">---------</option>
+            {% for brand in brands %}
+                <option value="{{ brand.id }}" {% if form.brand.value == brand.id %}selected{% endif %}>
+                    {{ brand.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group mb-4" id="div_id_vehicle_model">
+        {% include "myapp/partials/_dynamic_models.html" with vehicle_models=form.vehicle_model.field.queryset %}
+    </div>
+
+    <div class="form-group mb-4" id="div_id_trim">
+        {% include "myapp/partials/_dynamic_trims.html" with trims=form.trim.field.queryset %}
+    </div>
+    
+    <div class="form-group mb-4">
+        <label for="{{ form.category.id_for_label }}" class="form-label">Category</label>
+        {{ form.category }}
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="{{ form.manufacture_year.id_for_label }}" class="form-label">Manufacture Year</label>
+        {{ form.manufacture_year }}
+    </div>
+    
+    <div class="form-group mb-4">
+        <label for="{{ form.condition.id_for_label }}" class="form-label">Condition</label>
+        {{ form.condition }}
+    </div>
+    
+    <div class="form-group mb-4">
+        <label for="{{ form.fuel_option.id_for_label }}" class="form-label">Fuel Option</label>
+        {{ form.fuel_option }}
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="{{ form.color.id_for_label }}" class="form-label">Color</label>
+        {{ form.color }}
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="{{ form.inner_color.id_for_label }}" class="form-label">Inner Color</label>
+        {{ form.inner_color }}
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="{{ form.engine_type.id_for_label }}" class="form-label">Engine Type</label>
+        {{ form.engine_type }}
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="{{ form.drive_terrain.id_for_label }}" class="form-label">Drive Terrain</label>
+        {{ form.drive_terrain }}
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="{{ form.state.id_for_label }}" class="form-label">State</label>
+        <select id="{{ form.state.id_for_label }}" name="{{ form.state.name }}" class="form-select rounded-lg"
+                hx-get="/get_towns/{this.value}/"
+                hx-target="#div_id_town"
+                hx-swap="outerHTML"
+                hx-trigger="change">
+            <option value="">---------</option>
+            {% for state in states %}
+                <option value="{{ state.id }}" {% if form.state.value == state.id %}selected{% endif %}>
+                    {{ state.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group mb-4" id="div_id_town">
+        {% include "myapp/partials/_dynamic_towns.html" with towns=form.town.field.queryset %}
+    </div>
+
+
+
+    <div class="form-group mb-4">
+        <label for="{{ form.mileage.id_for_label }}" class="form-label">Mileage</label>
+        {{ form.mileage }}
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="{{ form.price.id_for_label }}" class="form-label">Price</label>
+        {{ form.price }}
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="{{ form.transmission.id_for_label }}" class="form-label">Transmission</label>
+        {{ form.transmission }}
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="{{ form.no_of_tyres.id_for_label }}" class="form-label">Number of Tyres</label>
+        {{ form.no_of_tyres }}
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="{{ form.seat.id_for_label }}" class="form-label">Number of Seats</label>
+        {{ form.seat }}
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="{{ form.number_cylinder.id_for_label }}" class="form-label">Number of Cylinders</label>
+        {{ form.number_cylinder }}
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="{{ form.horsepower.id_for_label }}" class="form-label">Horsepower</label>
+        {{ form.horsepower }}
+    </div>
+    
+    <div class="form-group mb-4">
+        <label for="{{ form.exchange_option.id_for_label }}" class="form-label">Exchange Option</label>
+        {{ form.exchange_option }}
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="{{ form.registered.id_for_label }}" class="form-label">Registered</label>
+        {{ form.registered }}
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="{{ form.negotiable.id_for_label }}" class="form-label">Negotiable</label>
+        {{ form.negotiable }}
+    </div>
+    
+</div>
+
+<!-- Full-width fields -->
+<div class="form-group mb-4">
+    <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+    {{ form.description }}
+</div>
+
+<div class="form-group mb-4">
+    <label for="{{ form.social_media.id_for_label }}" class="form-label">Social Media</label>
+    {{ form.social_media }}
+</div>
+
+<div class="form-group mb-4">
+    <label for="{{ form.vas.id_for_label }}" class="form-label">Value Added Services</label>
+    {{ form.vas }}
+</div>
+
+<!-- Image fields -->
+<div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="form-group mb-4">
+        <label for="{{ form.image.id_for_label }}" class="form-label">Image 1 <span class="text-gray-500">(Required)</span></label>
+        {{ form.image }}
+    </div>
+    <div class="form-group mb-4">
+        <label for="{{ form.image2.id_for_label }}" class="form-label">Image 2 <span class="text-gray-500">(Required)</span></label>
+        {{ form.image2 }}
+    </div>
+    <div class="form-group mb-4">
+        <label for="{{ form.image3.id_for_label }}" class="form-label">Image 3 <span class="text-gray-500">(Required)</span></label>
+        {{ form.image3 }}
+    </div>
+    <div class="form-group mb-4">
+        <label for="{{ form.image4.id_for_label }}" class="form-label">Image 4 <span class="text-gray-500">(Required)</span></label>
+        {{ form.image4 }}
+    </div>
+    <div class="form-group mb-4">
+        <label for="{{ form.image5.id_for_label }}" class="form-label">Image 5 <span class="text-gray-500">(Required)</span></label>
+        {{ form.image5 }}
+    </div>
+    <div class="form-group mb-4">
+        <label for="{{ form.image6.id_for_label }}" class="form-label">Image 6 <span class="text-gray-500">(Optional)</span></label>
+        {{ form.image6 }}
+    </div>
+    <div class="form-group mb-4">
+        <label for="{{ form.image7.id_for_label }}" class="form-label">Image 7 <span class="text-gray-500">(Optional)</span></label>
+        {{ form.image7 }}
+    </div>
+    <div class="form-group mb-4">
+        <label for="{{ form.image8.id_for_label }}" class="form-label">Image 8 <span class="text-gray-500">(Optional)</span></label>
+        {{ form.image8 }}
+    </div>
+    <div class="form-group mb-4">
+        <label for="{{ form.image9.id_for_label }}" class="form-label">Image 9 <span class="text-gray-500">(Optional)</span></label>
+        {{ form.image9 }}
+    </div>
+    <div class="form-group mb-4">
+        <label for="{{ form.image10.id_for_label }}" class="form-label">Image 10 <span class="text-gray-500">(Optional)</span></label>
+        {{ form.image10 }}
+    </div>
+</div>
+
+<button type="submit" class="btn btn-primary w-full rounded-lg shadow-md mt-6">Upload Vehicle</button>
+
+</form>
+
+</div>
+
+</div>
+
+
+<script>
+console.log("Debug: Template loaded");
+
+// Debug HTMX requests
+document.body.addEventListener('htmx:beforeRequest', function(evt) {
+    console.log('HTMX request:', evt.detail);
+});
+
+document.body.addEventListener('htmx:responseError', function(evt) {
+    console.log('HTMX error:', evt.detail);
+});
+
+// Debug form submission
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            console.log('Form submitted');
+            console.log('Form data:', new FormData(form));
+        });
+    }
+});
+</script>
+{% endblock %}

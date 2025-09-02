@@ -255,7 +255,8 @@ class Vas(models.Model):
         verbose_name = "Value Added Service"
         verbose_name_plural = "Value Added Services"
 
-        ordering = ['name'] 
+        ordering = ['name']
+
 
 
     def __str__(self):

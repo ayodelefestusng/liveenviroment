@@ -1,0 +1,7 @@
+<label for="id_trim" class="form-label">Trim</label>
+<select id="id_trim" name="trim" class="form-select rounded-lg">
+<option value="">---------</option>
+{% for trim in trims %}
+<option value="{{ trim.pk }}">{{ trim.name }}</option>
+{% endfor %}
+</select>

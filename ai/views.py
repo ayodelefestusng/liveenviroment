@@ -1228,7 +1228,7 @@ for pkg in required_nltk:
     try:
         nltk.data.find(pkg)
     except LookupError:
-        print(f"⚠️ NLTK package '{pkg}' not found. Please run 'nltk.download()' to install it.")
+        print(f"NLTK package '{pkg}' not found. Please run 'nltk.download()' to install it.")
 
 # Initialize spaCy
 try:

@@ -1,0 +1,9 @@
+<label for="{{ form.vehicle_model.id_for_label }}" class="form-label">Vehicle Model</label>
+
+<select name="model" id="model" class="form-select">
+
+<option value="">---------</option>
+{% for model in models %}
+<option value="{{ model.pk }}">{{ model.name }}</option>
+{% endfor %}
+</select>

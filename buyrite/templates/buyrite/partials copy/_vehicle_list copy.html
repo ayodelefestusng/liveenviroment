@@ -1,0 +1,58 @@
+{% load static %}
+{% load humanize %}
+
+<!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"> -->
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
+
+<!-- <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"></div> -->
+{% for vehicle in vehicles %} 
+<div class="bg-white rounded-xl shadow-lg overflow-hidden">
+<div class="relative">
+{% if vehicle.image %}
+<img src="{{ vehicle.image.url }}" alt="{{ vehicle.brand.name }} {{ vehicle.vehicle_model.name }}" class="w-full h-64 object-cover">
+{% else %}
+<img src="https://www.google.com/search?q=https://placehold.co/600x400/D1D5DB/4B5563%3Ftext%3DNo%2BImage" alt="No image available" class="w-full h-64 object-cover">
+{% endif %}
+<span class="absolute top-4 right-4 bg-primary-600 text-white font-bold py-1 px-3 rounded-full">
+₦{{ vehicle.price|floatformat:2|intcomma }}
+</span>
+</div>
+<div class="p-6">
+<h3 class="text-2xl font-bold text-gray-900 mb-2">{{ vehicle.brand.name }} {{ vehicle.vehicle_model.name }}</h3>
+<p class="text-gray-500 mb-4">{{ vehicle.manufacture_year.year }} | {{ vehicle.condition }}</p>
+
+            <!-- Action buttons -->
+            {% if vehicle.is_available %}
+                <div class="flex items-center gap-2 mt-4">
+                    <button class="flex-1 btn btn-primary rounded-lg text-white"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editModal"
+                            hx-get="{% url 'edit_vehicle' vehicle.pk %}"
+                            hx-target="#modal-content">
+                        Edit
+                    </button>
+                    <button class="flex-1 btn btn-success rounded-lg text-white"
+                            hx-post="{% url 'mark_as_sold' vehicle.pk %}"
+                            hx-target="closest .bg-white"
+                            hx-swap="outerHTML"
+                            hx-confirm="Are you sure you want to mark this vehicle as sold? This cannot be undone.{{ vehicle.pk }}"
+                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                            hx-on::after-request="this.classList.add('d-none'); alert('Vehicle marked as sold!');">
+                        Mark as Sold
+                    </button>
+                </div>
+            {% else %}
+                <p class="text-gray-400 text-center font-semibold text-lg mt-4">
+                    <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full">SOLD</span>
+                </p>
+            {% endif %}
+        </div>
+    </div>
+{% empty %}
+    <div class="col-span-3 text-center py-10 bg-gray-50 rounded-lg shadow-inner">
+        <h4 class="text-lg font-semibold text-gray-700">No vehicles found.</h4>
+        <p class="text-gray-500">Looks like you don't have any listings for this status yet.</p>
+    </div>
+{% endfor %}
+
+</div>
