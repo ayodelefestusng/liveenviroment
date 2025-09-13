@@ -12,9 +12,13 @@ from .views import (
 
 urlpatterns = [
     # Home & Vehicle
-    path('tope/', HomeView.as_view(), name='home'),
+    path('', HomeView.as_view(), name='home'),
     path('vehicle_detail/<slug:slug>/', VehicleDetailView.as_view(), name='vehicle_detail'),
 
+  # Dashboard & Vehicle Actions
+    path('dashboard/', DashboardView.as_view(), name='dashboard'),
+    path('vehicle/<int:pk>/mark-as-sold/', mark_as_sold, name='mark_as_sold'),
+    path('vehicle/<int:pk>/edit/', edit_vehicle, name='edit_vehicle'),
 
     # Upload Operations
     path('upload/', upload_vehicle, name='upload_vehicle'),
@@ -23,20 +27,16 @@ urlpatterns = [
     # HTMX Endpoints
     path('load-models/', load_models, name='load_models'),
     path('load-trims/', load_trims, name='load_trims'),
-    # path('load_trims/', load_trims, name='load_trims'),
     path('load-towns/', load_towns, name='load_towns'),
     path('load-years/', load_years, name='load_years'),
-  
+    # Load years html yet to be created
+#   'buyrite/partials/_vehicle_card.html'
 
     # path('get-models-by-brand/<int:brand_id>/', get_models_by_brand, name='get_models_by_brand'),
     # path('get-trims/<int:model_id>/', get_trims_by_model, name='get_trims_by_model'),
     # path('get-towns-by-state/<int:state_id>/', get_towns_by_state, name='get_towns_by_state'),
 
-    # Dashboard & Vehicle Actions
-    path('dashboard/', DashboardView.as_view(), name='dashboard'),
-    path('vehicle/<int:pk>/mark-as-sold/', mark_as_sold, name='mark_as_sold'),
-    path('vehicle/<int:pk>/edit/', edit_vehicle, name='edit_vehicle'),
-
+  
     # Dealer Registration & Admin Tools
     path('dealer/register/', dealer_registration, name='dealer_registration'),
     path('operations/', operations_view, name='operations'),

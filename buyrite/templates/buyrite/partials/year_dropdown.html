@@ -1,0 +1,9 @@
+<label for="{{ form.manufacture_year.id_for_label }}" class="form-label">Manufacture Year</label>
+<select id="{{ form.manufacture_year.id_for_label }}" name="manufacture_year" class="form-select rounded-lg">
+<option value="">Choose Year</option>
+{% for year in years %}
+<option value="{{ year }}" {% if form.manufacture_year.value == year %}selected{% endif %}>
+{{ year }}
+</option>
+{% endfor %}
+</select>

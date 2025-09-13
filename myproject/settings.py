@@ -42,7 +42,8 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
 
 # DEBUG = os.getenv("DEBUG") == 'True'
 # ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(',')
@@ -64,6 +65,7 @@ INSTALLED_APPS = [
     'crossborder',
     "ai",
     "buyrite",
+    'laundry',
       'django.contrib.humanize',
 
     
@@ -81,12 +83,16 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -207,3 +213,37 @@ LOGOUT_REDIRECT_URL = 'login'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+
+# ==============================================================================
+#  Default
+# ==============================================================================
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+SITE_ID = 1
+
+STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+# Base URL of your application, used for absolute URL generation.
+# Replace with your actual domain when deploying.
+SITE_URL = 'http://localhost:8000'
+
+
+
+# settings.py
+# ... other settings
+
+# PayPal API Settings
+
+
+# Use 'https://api.sandbox.paypal.com' for testing
+# Use 'https://api.paypal.com' for production
+PAYPAL_BASE_URL = 'https://api.sandbox.paypal.com'
+PAYPAL_MODE = 'sandbox' # Use 'live' for production
+PAYPAL_CLIENT_ID = os.getenv("PAYPAL_CLIENT_ID")
+PAYPAL_CLIENT_SECRET = os.getenv("PAYPAL_CLIENT_SECRET")
+
+# Base URL of your application, used for absolute URL generation.
+SITE_URL = 'http://localhost:8000'
+

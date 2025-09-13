@@ -1,11 +1,12 @@
 {% load static %}
-{% load humanize %}
-KAMBA
+
 <div class="modal-header">
-<h5 class="modal-title" id="editModalLabel">Edit {{ vehicle.brand.name }} {{ vehicle.vehicle_model.name }}</h5>
+<h5 class="modal-title" id="adminToolModalLabel">Add/Edit {{ model_name }}</h5>
 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
-<form hx-post="{% url 'edit_vehicle' vehicle.pk %}" hx-swap="outerHTML" hx-target="#vehicle-{{ vehicle.pk }}">
+<form hx-post="{% url 'handle_admin_tool_form' model_name %}"
+hx-target="#admin-modal-body"
+hx-swap="innerHTML">
 {% csrf_token %}
 <div class="modal-body">
 {% for field in form %}
@@ -19,7 +20,6 @@ KAMBA
 {% endfor %}
 </div>
 <div class="modal-footer">
-<button type="button" class="btn btn-secondary rounded-lg" data-bs-dismiss="modal">Close</button>
-<button type="submit" class="btn btn-primary rounded-lg">Save changes</button>
+<button type="submit" class="btn btn-primary rounded-lg">Save</button>
 </div>
 </form>

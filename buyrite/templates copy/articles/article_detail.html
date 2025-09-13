@@ -1,0 +1,42 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ article.title }}</title>
+    <link rel="stylesheet" href="{% static 'css/article.css' %}">
+</head>
+<body>
+    <div class="article-container">
+        <header>
+            <h1>{{ article.title }}</h1>
+            <p class="meta">
+                By {{ article.author }} |
+                Published on {{ article.published_date|date:"F j, Y" }}
+            </p>
+        </header>
+
+        <section class="tags">
+            <strong>Tags:</strong>
+            {% if article.tags.exists %}
+                <ul>
+                    {% for tag in article.tags.all %}
+                        <li>{{ tag.name }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No tags associated with this article.</p>
+            {% endif %}
+        </section>
+
+        <article class="content">
+            {{ article.content|linebreaks }}
+        </article>
+
+        <footer>
+            <a href="{% url 'list' %}">← Back to Articles</a>
+        </footer>
+    </div>
+</body>
+</html>

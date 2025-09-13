@@ -5,21 +5,16 @@
 {% block title %}Dashboard | Your Listings{% endblock %}
 
 {% block content %}
-KAMBA
-<div class=" ayo container mx-auto px-4 py-8">
-<h3 class="text-4xl font-extrabold text-gray-900 mb-8">
-Your Dashboards
-</h3>
-    <!-- New: Vehicle Filter Button -->
-        <button class="btn btn-dark rounded-lg shadow-md" type="button" data-bs-toggle="offcanvas" data-bs-target="#vehicleFilterOffcanvas" aria-controls="vehicleFilterOffcanvas">
-            Vehicle Filter
-        </button>
+
+<div class="container mx-auto px-4 py-8">
+<h1 class="text-4xl font-extrabold text-gray-900 mb-8">
+Your Dashboard
+</h1>
 
 <!-- Stats & Icon Section -->
-<div class="grid grid-cols-2 md:grid-cols-3 gap-1 mb-8">
+<div class=" grid grid-cols-3 md:grid-cols-3 gap-6 mb-8">
 
-
-    <div class=" lame bg-gray-100 rounded-xl p-6 text-center shadow-lg transition-transform hover:scale-105"
+    <div class="bg-gray-100 rounded-xl p-6 text-center shadow-lg transition-transform hover:scale-105"
         hx-get="{% url 'dashboard' %}?status=unsold"
         hx-target="#vehicle-list-container"
         hx-swap="innerHTML"
@@ -28,7 +23,7 @@ Your Dashboards
         <h2 class="text-5xl font-bold text-primary-600 mb-2">{{ unsold_count }}</h2>
         <p class="text-gray-600 font-semibold">Unsold</p>
     </div>
-    <div class="lame bg-gray-100 rounded-xl p-6 text-center shadow-lg transition-transform hover:scale-105"
+    <div class="bg-gray-100 rounded-xl p-6 text-center shadow-lg transition-transform hover:scale-105"
         hx-get="{% url 'dashboard' %}?status=sold"
         hx-target="#vehicle-list-container"
         hx-swap="innerHTML"
@@ -37,7 +32,7 @@ Your Dashboards
         <h2 class="text-5xl font-bold text-gray-600 mb-2">{{ sold_count }}</h2>
         <p class="text-gray-600 font-semibold">Sold</p>
     </div>
-    <div class=" lame bg-gray-100 rounded-xl p-6 text-center shadow-lg transition-transform hover:scale-105"
+    <div class="bg-gray-100 rounded-xl p-6 text-center shadow-lg transition-transform hover:scale-105"
         hx-get="{% url 'dashboard' %}?status=all"
         hx-target="#vehicle-list-container"
         hx-swap="innerHTML"
@@ -48,11 +43,6 @@ Your Dashboards
     </div>
 </div>
 
-
-<!-- Ajadi gemini offcanvas -->
- 
-
-<!-- end Ajadi -->
 <!-- Loading indicator for HTMX requests -->
 <div id="loading-indicator" class="htmx-indicator text-center text-gray-500 my-4">
     <p>Loading...</p>
@@ -75,9 +65,5 @@ Your Dashboards
     </div>
 </div>
 
-</div>
-<!-- New: Offcanvas markup -->
-<div class="offcanvas offcanvas-start bg-gray-50 rounded-r-2xl" tabindex="-1" id="vehicleFilterOffcanvas" aria-labelledby="vehicleFilterOffcanvasLabel">
-    {% include 'myapp/partials/_vehicle_filter_offcanvas.html' %}
 </div>
 {% endblock %}

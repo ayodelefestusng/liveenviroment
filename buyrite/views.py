@@ -30,10 +30,10 @@ from rest_framework import status
 from .models import (
     Vehicle, Category, State, Town, Brand, VehicleModel, Trim, DealerProfile,
     InnerColor, ManufactureYear, FuelOption, Color, EngineType, DriveTerrain,
-    Vas, Condition, Carousel, Post, Article
+    Vas, Condition, Carousel, Post, 
 )
 from .forms import (
-    VehicleForm, DealerRegistrationForm, AdminToolForm, PostForm, VehicleForm1
+    VehicleForm, DealerRegistrationForm, AdminToolForm, PostForm
 )
 
 # Auth user model
@@ -163,7 +163,7 @@ class HomeView(ListView):
 
 class VehicleDetailView(DetailView):
     model = Vehicle
-    template_name = 'vehicle_detail.html'
+    template_name = 'buyrite/vehicle_detail.html'
     slug_url_kwarg = 'slug'
     # pk_url_kwarg = 'pk' 
     slug_field = 'slug'
@@ -325,6 +325,47 @@ class DashboardView(ListView):
         return context
 
 
+@login_required
+def mark_as_sold(request, pk):
+    """Marks a vehicle as sold and returns the updated vehicle list."""
+    if request.method == 'POST':
+        vehicle = get_object_or_404(Vehicle, pk=pk)
+        
+        # Security check: Only allow the owner or a superuser to mark as sold
+        if request.user == vehicle.seller or request.user.is_superuser:
+            print ("Auo",pk)
+            vehicle.is_available = False
+            vehicle.save()
+            return HttpResponse(status=200) # HTMX expects a success response
+        
+        return HttpResponse('Unauthorized', status=403)
+    return HttpResponse('Invalid Request', status=400)
+
+
+
+@login_required
+def edit_vehicle(request, pk):
+    """Handles vehicle editing via a form in a modal."""
+    vehicle = get_object_or_404(Vehicle, pk=pk)
+    
+    # Security check: Only allow the owner or a superuser to edit
+    if request.user != vehicle.seller and not request.user.is_superuser:
+        return HttpResponse('Unauthorized', status=403)
+        
+    if request.method == 'POST':
+        form = VehicleForm(request.POST, request.FILES, instance=vehicle)
+        if form.is_valid():
+            form.save()
+            # On successful edit, return a new rendered vehicle card for HTMX swap
+            return render(request, 'buyrite/partials/_vehicle_card.html', {'vehicle': vehicle})
+        else:
+            # If form is invalid, return the form with errors for HTMX to re-render
+            return render(request, 'buyrite/partials/_edit_vehicle_modal.html', {'form': form, 'vehicle': vehicle})
+    else:
+        form = VehicleForm(instance=vehicle)
+
+    return render(request, 'buyrite/partials/_edit_vehicle_modal.html', {'form': form, 'vehicle': vehicle})
+
 
 @login_required
 def upload_vehicle(request):
@@ -419,6 +460,11 @@ def upload_vehicle(request):
     }
     return render(request, 'buyrite/upload_vehicle.html', context)
 
+
+@login_required
+def upload_vehicle_success(request):
+    return render(request, 'buyrite/upload_success.html')
+
 # my_app/views.py
 def load_models(request):
     brand_id = request.GET.get('brand')
@@ -459,38 +505,6 @@ def load_towns(request):
     return render(request, 'buyrite/partials/town_dropdown.html', {'towns': towns})
 
 
-# HTMX views for dynamic dropdowns
-# def get_models_by_brand(request, brand_id):
-#     """
-#     Returns the HTML for the vehicle model dropdown based on the selected brand.
-#     This view is called via an HTMX GET request.
-#     """
-#     brand = get_object_or_404(Brand, pk=brand_id)
-#     vehicle_models = VehicleModel.objects.filter(brand=brand).order_by('name')
-#     context = {
-#         'vehicle_models': vehicle_models,
-#     }
-#     return render(request, 'buyrite/partials/_dynamic_models.html', context)
-
-
-# def get_trims_by_model(request, model_id):
-#     """
-#     Returns the HTML for the trim dropdown based on the selected vehicle model.
-#     This view is called via an HTMX GET request.
-#     """
-#     vehicle_model = get_object_or_404(VehicleModel, pk=model_id)
-#     trims = Trim.objects.filter(vehicle_model=vehicle_model).order_by('name')
-#     context = {
-#         'trims': trims,
-#     }
-#     return render(request, 'buyrite/partials/_dynamic_trims.html', context)
-
-
-
-# def get_towns_by_state(request, state_id):
-#     """Returns a partial HTML for towns based on the selected state."""
-#     towns = Town.objects.filter(state_id=state_id).order_by('name')
-#     return render(request, 'buyrite/partials/_dynamic_towns.html', {'towns': towns})
 
 def get_models_by_brandv101(request, brand_id):
     """Returns a partial HTML for models based on the selected brand."""
@@ -503,52 +517,7 @@ def load_years(request):
     return render(request, 'buyrite/partials/year_dropdown.html', {'years': years, 'year_type': year_type})
 
 
-@login_required
-def upload_vehicle_success(request):
-    return render(request, 'buyrite/upload_success.html')
 
-@login_required
-def mark_as_sold(request, pk):
-    """Marks a vehicle as sold and returns the updated vehicle list."""
-    if request.method == 'POST':
-        vehicle = get_object_or_404(Vehicle, pk=pk)
-        
-        # Security check: Only allow the owner or a superuser to mark as sold
-        if request.user == vehicle.seller or request.user.is_superuser:
-            print ("Auo",pk)
-            vehicle.is_available = False
-            vehicle.save()
-            return HttpResponse(status=200) # HTMX expects a success response
-        
-        return HttpResponse('Unauthorized', status=403)
-    return HttpResponse('Invalid Request', status=400)
-
-
-
-
-
-@login_required
-def edit_vehicle(request, pk):
-    """Handles vehicle editing via a form in a modal."""
-    vehicle = get_object_or_404(Vehicle, pk=pk)
-    
-    # Security check: Only allow the owner or a superuser to edit
-    if request.user != vehicle.seller and not request.user.is_superuser:
-        return HttpResponse('Unauthorized', status=403)
-        
-    if request.method == 'POST':
-        form = VehicleForm1(request.POST, request.FILES, instance=vehicle)
-        if form.is_valid():
-            form.save()
-            # On successful edit, return a new rendered vehicle card for HTMX swap
-            return render(request, 'buyrite/partials/_vehicle_card.html', {'vehicle': vehicle})
-        else:
-            # If form is invalid, return the form with errors for HTMX to re-render
-            return render(request, 'buyrite/partials/_edit_vehicle_modal.html', {'form': form, 'vehicle': vehicle})
-    else:
-        form = VehicleForm1(instance=vehicle)
-
-    return render(request, 'buyrite/partials/_edit_vehicle_modal.html', {'form': form, 'vehicle': vehicle})
 
 
 @login_required

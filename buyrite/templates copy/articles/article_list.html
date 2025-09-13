@@ -1,0 +1,23 @@
+<h1>All Articles</h1>
+
+{% for article in articles %}
+  <div class="article-preview">
+    <h2><a href="{% url 'detail' slug=article.slug %}">{{ article.title }}</a></h2>
+    <p>{{ article.excerpt }}</p>
+    <small>Published on {{ article.published_date|date:"F j, Y" }}</small>
+  </div>
+{% empty %}
+  <p>No articles found.</p>
+{% endfor %}
+
+{% if is_paginated %}
+  <div class="pagination">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    {% endif %}
+    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">Next</a>
+    {% endif %}
+  </div>
+{% endif %}
