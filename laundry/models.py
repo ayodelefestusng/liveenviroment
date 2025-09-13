@@ -10,7 +10,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 
 # Auth user model instance
-User = get_user_model()
+CustomUser = get_user_model()
 
 
 # from .managers import CustomUserManager
@@ -81,7 +81,7 @@ class Service(models.Model):
 class Order(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.SET_DEFAULT, default="missing_id",related_name='orders')
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_DEFAULT, default="missing_id",related_name='orders')
     status = models.CharField(max_length=20, choices=ORDER_STATUS, default='pending')
     customer_name = models.CharField(max_length=100, blank=True, null=True)
     customer_email = models.EmailField(blank=True, null=True)

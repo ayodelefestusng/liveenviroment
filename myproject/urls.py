@@ -27,6 +27,7 @@ urlpatterns = [
     path("payments/", include("crossborder.urls")),
      path("ai/", include("ai.urls")),
      path("buyrite/", include("buyrite.urls")),
+     path("laundry/", include("laundry.urls")),
 
     
    

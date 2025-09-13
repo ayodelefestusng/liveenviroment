@@ -1,0 +1,76 @@
+<tr hx-target="this" hx-swap="outerHTML">
+    <td>
+        <!-- Category selection with HTMX to dynamically load services -->
+        <select 
+            name="category" 
+            id="edit-category-{{ item.id }}"
+            hx-get="{% url 'htmx_get_services' %}"
+            hx-target="#edit-service-{{ item.id }}"
+            hx-trigger="change"
+            hx-swap="innerHTML"
+            class="form-select"
+        >
+            <option value="">---------</option>
+            {% for category in all_categories %}
+                <option value="{{ category.id }}" {% if item.service.category.id == category.id %}selected{% endif %}>{{ category.name }}</option>
+            {% endfor %}
+        </select>
+    </td>
+    <td>
+        <!-- Service selection, dynamically loaded -->
+        <select 
+            name="service" 
+            id="edit-service-{{ item.id }}"
+            hx-get="{% url 'htmx_get_service_details' %}"
+            hx-target="#edit-price-delivery-details-{{ item.id }}"
+            hx-trigger="change"
+            hx-swap="innerHTML"
+            hx-include="#edit-category-{{ item.id }}, #edit-service-{{ item.id }}"
+            class="form-select"
+        >
+            <option value="{{ item.service.id }}">{{ item.service.name }}</option>
+        </select>
+    </td>
+    <td>
+        <!-- Item name input -->
+        <input 
+            type="text" 
+            name="name" 
+            value="{{ item.name }}"
+            class="form-control"
+        >
+    </td>
+    <td>
+        <!-- Item color input -->
+        <input 
+            type="text" 
+            name="color" 
+            value="{{ item.color }}"
+            class="form-control"
+        >
+    </td>
+    <td colspan="2" id="edit-price-delivery-details-{{ item.id }}">
+        <!-- Price and delivery details, dynamically loaded -->
+        </strong> &#8358;{{ item.price|floatformat:2 }}<br>{{ item.delivery_time_days }} days
+    </td>
+    <td>
+        <!-- Action buttons to save or cancel the edit -->
+        <button 
+            type="submit" 
+            class="btn btn-primary btn-sm"
+            hx-post="{% url 'htmx_edit_item' item.id %}"
+            hx-include="closest tr"
+            _="on htmx:afterRequest if event.detail.xhr.status == 200 trigger refresh-summary from:body"
+        >
+            Save
+        </button>
+        <button 
+            class="btn btn-secondary btn-sm"
+            hx-get="{% url 'htmx_edit_item' item.id %}"
+            hx-target="closest tr"
+            hx-swap="outerHTML"
+        >
+            Cancel
+        </button>
+    </td>
+</tr>

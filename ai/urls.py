@@ -73,9 +73,9 @@ urlpatterns = [
     # Processes text from URL path and returns JSON
     path('chatbot/', chatbot, name='chatbot'),
     # Translates text from URL path and returns JSON
-    path('word_translate/', word_translate, name='word_translate'),
+    # path('word_translate/', word_translate, name='word_translate'),
     # --- END NEW API ENDPOINTS ---
-     path('word_process/', word_process, name='word_process'),
+    #  path('word_process/', word_process, name='word_process'),
 
     path('variance/', variance, name='variance'),  # New endpoint for variance calculation
 

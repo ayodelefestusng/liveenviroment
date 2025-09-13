@@ -1718,60 +1718,60 @@ def chatbot(request):
 
 
 
-@csrf_exempt
-def word_process(request):
-    """
-    API endpoint to process text submitted via form-data
-    and return analysis results as JSON.
-    """
-    if request.method != 'POST':
-        return JsonResponse({'error': 'Method not allowed. Use POST for this API endpoint.'}, status=405)
+# @csrf_exempt
+# def word_process(request):
+#     """
+#     API endpoint to process text submitted via form-data
+#     and return analysis results as JSON.
+#     """
+#     if request.method != 'POST':
+#         return JsonResponse({'error': 'Method not allowed. Use POST for this API endpoint.'}, status=405)
 
-    # Get the 'word' from form-data
-    word = request.POST.get('word', '').strip()
+#     # Get the 'word' from form-data
+#     word = request.POST.get('word', '').strip()
 
-    if not word:
-        return JsonResponse({'error': 'No text provided for processing'}, status=400)
+#     if not word:
+#         return JsonResponse({'error': 'No text provided for processing'}, status=400)
 
-    try:
-        results = _get_text_analysis_results(word)
-        return JsonResponse(results)
-    except Exception as e:
-        return JsonResponse({'error': f'Text processing failed: {str(e)}'}, status=500)
+#     try:
+#         results = _get_text_analysis_results(word)
+#         return JsonResponse(results)
+#     except Exception as e:
+#         return JsonResponse({'error': f'Text processing failed: {str(e)}'}, status=500)
 
 
-@csrf_exempt
-def word_translate(request):
-    """
-    API endpoint to translate text to a target language.
-    Accepts form-data or x-www-form-urlencoded.
-    Defaults target language to French ('fr').
-    """
-    if request.method != 'POST':
-        return JsonResponse({'status': 'error', 'response': 'Invalid request method'}, status=405)
+# @csrf_exempt
+# def word_translate(request):
+#     """
+#     API endpoint to translate text to a target language.
+#     Accepts form-data or x-www-form-urlencoded.
+#     Defaults target language to French ('fr').
+#     """
+#     if request.method != 'POST':
+#         return JsonResponse({'status': 'error', 'response': 'Invalid request method'}, status=405)
 
-    # Extract POST values safely
-    word = request.POST.get('word', '').strip()
-    target_language = request.POST.get('lang', 'fr').strip()
+#     # Extract POST values safely
+#     word = request.POST.get('word', '').strip()
+#     target_language = request.POST.get('lang', 'fr').strip()
 
-    if not word:
-        return JsonResponse({'error': 'No text provided for translation'}, status=400)
+#     if not word:
+#         return JsonResponse({'error': 'No text provided for translation'}, status=400)
 
-    if not target_language:
-        return JsonResponse({'error': 'No target language specified'}, status=400)
+#     if not target_language:
+#         return JsonResponse({'error': 'No target language specified'}, status=400)
 
-    # Confirm translation engine is set
-    if 'translator' not in globals() or not translator:
-        logging.error("Translation service not initialized.")
-        return JsonResponse({'error': 'Translation service not initialized. Check server logs.'}, status=500)
+#     # Confirm translation engine is set
+#     if 'translator' not in globals() or not translator:
+#         logging.error("Translation service not initialized.")
+#         return JsonResponse({'error': 'Translation service not initialized. Check server logs.'}, status=500)
 
-    # Perform translation
-    try:
-        translated = translator.translate(word, dest=target_language)
-        return JsonResponse({'translated_text': translated.text})
-    except Exception as e:
-        logging.error(f"Translation error for '{word}': {e}")
-        return JsonResponse({'error': f"Translation API Error: {str(e)}"}, status=500)
+#     # Perform translation
+#     try:
+#         translated = translator.translate(word, dest=target_language)
+#         return JsonResponse({'translated_text': translated.text})
+#     except Exception as e:
+#         logging.error(f"Translation error for '{word}': {e}")
+#         return JsonResponse({'error': f"Translation API Error: {str(e)}"}, status=500)
     
 
 @csrf_exempt
