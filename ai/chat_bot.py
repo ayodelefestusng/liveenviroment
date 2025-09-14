@@ -18,6 +18,11 @@ from io import BytesIO
 import base64
 
 
+
+import io
+from PIL import Image
+
+
 from pydantic import BaseModel, Field
 from typing import List
 import matplotlib.pyplot as plt
@@ -28,15 +33,14 @@ from matplotlib.ticker import FuncFormatter
 # # 📦 Third-Party Core
 # ==========================
 from dotenv import load_dotenv
-from PIL import Image
 # from pydantic import BaseModel, Field
 from typing import Any, Dict, List, Optional, Literal
 
 # # ==========================
 # # 🧠 Google Generative AI
 # # ==========================
-import google.generativeai as genai
-from google.generativeai import GenerativeModel, configure
+# import google.generativeai as genai
+# from google.generativeai import GenerativeModel, configure
 # from google.generativeai.types import HarmCategory, HarmBlockThreshold
 
 # # # ==========================
@@ -50,6 +54,7 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.utilities import SQLDatabase
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_tavily import TavilySearch
+# from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
 from langchain_community.agent_toolkits import SQLDatabaseToolkit
 from langchain_groq import ChatGroq # For Groq LLM
@@ -65,6 +70,8 @@ from langgraph.prebuilt import ToolNode, tools_condition, create_react_agent
 from langgraph.checkpoint.sqlite import SqliteSaver # Using SqliteSaver as preferred
 from langchain_community.tools.sql_database.tool import QuerySQLDatabaseTool
 from langgraph.checkpoint.memory import InMemorySaver
+
+from langchain.chat_models import init_chat_model
 
 
 from django.conf import settings
@@ -168,7 +175,7 @@ if chatbot_model =="gpt":
 elif chatbot_model == "deepseek":
     llm = ChatDeepSeek(model="deepseek-chat", temperature=0, max_tokens=None, timeout=None, max_retries=2)
 elif chatbot_model == "gemini":
-    llm = ChatGoogleGenerativeAI(model=google_model, temperature=0, google_api_key=GOOGLE_API_KEY)    
+    llm = init_chat_model("google_genai:gemini-2.0-flash")
 elif chatbot_model == "groq":
     llm = ChatGroq(model="deepseek-r1-distill-llama-70b", temperature=0, max_tokens=None, timeout=None, max_retries=2)
 
@@ -176,10 +183,10 @@ elif chatbot_model == "groq":
 
 
 
-
+llm = init_chat_model("google_genai:gemini-2.0-flash")
 # llms= ChatGroq( model="deepseek-r1-distill-llama-70b",temperature=0, max_tokens=None,timeout=None, max_retries=2,)
 # llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0,google_api_key=GOOGLE_API_KEY)
-llm = ChatGoogleGenerativeAI(model=google_model, temperature=0,google_api_key=GOOGLE_API_KEY)
+# llm = ChatGoogleGenerativeAI(model=google_model, temperature=0,google_api_key=GOOGLE_API_KEY)
 # llm = ChatDeepSeek( model="deepseek-chat",  temperature=0, max_tokens=None, timeout=None,max_retries=2,)
 # llm = ChatOpenAI(model="gpt-4o-mini", temperature=0, openai_api_key=OPENAI_API_KEY)
 
@@ -1217,15 +1224,56 @@ def process_message(message_content: str, session_id: str, file_path: Optional[s
         try:
             image = Image.open(file_path)
             image.thumbnail([512, 512]) # Resize for efficiency
-            # prompt = "Describe the content of the picture in detail."
-            prompt = "Generate the message in the content of the picture."
-            configure(api_key=GOOGLE_API_KEY)
+            
+             # Detect format and set MIME type
+            image_format = image.format.upper()
+            if image_format not in ["PNG", "JPEG", "JPG"]:
+                raise ValueError(f"Unsupported image format: {image_format}")
+
+            mime_type = "jpeg" if image_format in ["JPEG", "JPG"] else "png"
+
+            # Convert image to base64
+            buffered = io.BytesIO()
+            image.save(buffered, format=image_format)
+            
+            img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+            image_uri = f"data:image/{mime_type};base64,{img_str}"
+            
+            if image_uri:
+                # prompt = "Describe the content of the picture in detail."
+                os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY
+                llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash-latest")
+                
+                prompt = "Generate the message in the content of the picture."
+                message = HumanMessage(
+                content=[
+                {"type": "text", "text": prompt, },
+                { "type": "image_url","image_url": {"url": image_uri}},])
+                # Invoke the model with the message
+                response = llm.invoke([message])
+                
+     
+            # configure(api_key=GOOGLE_API_KEY)
             # genai.configure(api_key=GOOGLE_API_KEY)  # Configure the API key
             # modelT = genai.GenerativeModel('gemini-pro-vision') # Specify the vision model
-            modelT = GenerativeModel(model_name="gemini-2.0-flash", generation_config={"temperature": 0.7,"max_output_tokens": 512 })
-            response = modelT.generate_content([image, prompt])
-            attached_content = response.text
-            print ("Attached content from image:", attached_content)
+            # modelT = GenerativeModel(model_name="gemini-2.0-flash", generation_config={"temperature": 0.7,"max_output_tokens": 512 })
+            # response = modelT.generate_content([image, prompt])
+            # attached_content = response.text
+            # Extract the text content from the response
+        
+                # Invoke the model
+                response = llm.invoke([message])
+                attached_content = response.content
+
+                print("Attached content from image:", attached_content)
+
+# except FileNotFoundError:
+#     print(f"Error: File not found at {file_path}")
+
+# except Exception as e:
+#     print(f"Error processing image: {e}")
+            
+
         except Exception as e:
             print(f"Error processing image attachment: {e}")
             attached_content = f"Error: Could not process attached file ({e})"
