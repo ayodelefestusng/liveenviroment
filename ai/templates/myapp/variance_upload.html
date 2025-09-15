@@ -1,87 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Payroll Variance Upload</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to right, #0078D7, #00B4DB);
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
 
-        .container {
-            max-width: 600px;
-            margin: 60px auto;
-            background: #fff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #0078D7;
-        }
+{% extends "base1.html" %}
+{% load static  %}
 
-        label {
-            display: block;
-            margin-top: 20px;
-            font-weight: 600;
-        }
+{% block title %}
+  <title>Payroll Variance Upload</title>
+{% endblock title %}
 
-        input[type="file"] {
-            margin-top: 8px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            width: 100%;
-        }
 
-        button {
-            margin-top: 30px;
-            width: 100%;
-            padding: 12px;
-            background-color: #0078D7;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
 
-        button:hover {
-            background-color: #005fa3;
-        }
 
-        .note {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #666;
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Upload Payroll Files</h2>
-        <form action="{% url 'ai:variance' %}?format=html" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <label for="old">Old Payroll File (.json)</label>
-            <input type="file" name="old" id="old" accept=".json" required>
+{% block content %}
+  <div class="d-flex justify-content-center my-5">
+    <div class="w-50 p-4 border rounded shadow">
+      <h2 class="text-center">Upload Payroll Files</h2>
+      <form action="{% url 'ai:variance' %}?format=html" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+          <label for="old" class="form-label">Old Payroll File (.json)</label>
+          <input type="file" name="old" id="old" accept=".json" class="form-control" required>
+        </div>
 
-            <label for="new">New Payroll File (.json)</label>
-            <input type="file" name="new" id="new" accept=".json" required>
+        <div class="mb-3">
+          <label for="new" class="form-label">New Payroll File (.json)</label>
+          <input type="file" name="new" id="new" accept=".json" class="form-control" required>
+        </div>
 
-            <button type="submit">Compare Variance</button>
-        </form>
-        <div class="note">Ensure both files are in valid JSON format.</div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-success btn-sm mt-2" style="background-color: #00B140;">
+            Compare Variance
+          </button>
+        </div>
+      </form>
+      <p class="mt-3 text-muted text-center">Ensure both files are in valid JSON format.</p>
     </div>
-</body>
-</html>
+  </div>
+{% endblock content %}

@@ -1,16 +1,11 @@
+{% extends 'base1.html' %}
 
-
-{% extends "base1.html" %}
-{% load static  %}
-
-{% block title %}
-  <title>Summary </title>
-{% endblock title %}
-
+{% block title %}Report{% endblock %}
 
 
 {% block content %}
 
+{{yemi}}
 <table class="table caption-top">
   <thead>
     <tr>
@@ -37,4 +32,25 @@
     {% endfor %}
   </tbody>
 </table>
-{% endblock content %}
+      
+
+{% endblock %}
+
+
+
+
+
+<body>
+ {% for i in insight %}
+    <h6>{{ i.session_id }}</h6>
+    <h6>{{ i.sentimentAnswer }}</h6>
+    <h6>{{ i.answer }}</h6>
+    <h6>{{ i.source }}</h6>
+    <h6>{{ i.ticket }}</h6>
+    <h6>{{ i.summary }}</h6>
+    <h6>{{ i.sentiment }}</h6>
+    <h6>{{ i.created_at }}</h6>
+    {% endfor %}
+    
+</body>
+</html>
