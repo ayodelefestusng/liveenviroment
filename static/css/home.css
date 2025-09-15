@@ -132,13 +132,12 @@ color: #DD6E0F;
   
 }
 
-
-#carouselExampleInterval {
+.carouselExampleInterval {
   height: 200px;
   
 }
 
-#carouselExampleInterval img {
+.carouselExampleInterval img {
   height: 200px;
   object-fit: cover;
 
@@ -149,3 +148,6 @@ color: #DD6E0F;
   object-fit: cover;
 }
 
+.font-color {
+  color: #000080;
+}

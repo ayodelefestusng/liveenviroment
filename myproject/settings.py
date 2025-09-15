@@ -60,7 +60,7 @@ INSTALLED_APPS = [
 
 
        # Local apps
-    'myapp',
+    # 'myapp',
     "users",
     'crossborder',
     "ai",

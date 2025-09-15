@@ -97,7 +97,7 @@
 
 <div class="row">
     <div class="col-md-8 offset-md-2">
-        <h2 class="text-center mb-4">ATB Bank Customer Service BOT</h2>
+        <h2 class="text-center mb-4">DMC Bank Customer Service BOT</h2>
         
         <div id="chat-container">
             {% for message in messages %}
@@ -226,7 +226,7 @@
             fileInfo.textContent = '';
 
             // Send to server
-            const response = await fetch('{% url "send_message" %}', { {# Ensure this URL matches your actual send_message endpoint #}
+            const response = await fetch('{% url "ai:send_message" %}', { {# Ensure this URL matches your actual send_message endpoint #}
                 method: 'POST',
                 body: formData,
             });

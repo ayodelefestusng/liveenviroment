@@ -12,19 +12,19 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'chat_home' %}">ChatBot</a>
+            <a class="navbar-brand" href="{% url 'ai:chat_home' %}" >ChatBot</a>
             <div class="navbar-nav">
-                <a class="nav-link" href="{% url 'chat_home' %}">ChatBot</a>
-                <a class="nav-link" href="{% url 'summary' %}">Summary</a>
-                <a class="nav-link" href="{% url 'chat_home2' %}">Analyst</a>
-                <a class="nav-link" href="{% url 'send_message3' 'hello' '1' %}">API</a>
+                <a class="nav-link" href="{% url 'ai:chat_home' %}" >ChatBot</a>
+                <a class="nav-link" href="{% url 'ai:summary' %}">Summary</a>
+                <a class="nav-link" href="{% url 'ai:chat_home2' %}">Analyst</a>
+                <a class="nav-link" href="{% url 'ai:send_message3' 'hello' '1' %}">API</a>
                 <a class="nav-link" href="#">HR</a>
                 
                 
-                <!-- <a class="nav-link" href="{% url 'chat_history' %}">History</a> -->
+                <!-- <a class="nav-link" href="{% url 'ai:chat_history' %}">History</a> -->
                 {% comment %} <a class="nav-link" href="{% url 'custom_logout' %}">Logouts</a> {% endcomment %}
 
-                <form id="autoSubmitForm" action="{% url 'edit_currency'%}" method="post" class ='mt-1 col-4'>
+                <form id="autoSubmitForm" action="{% url 'ai:edit_currency'%}" method="post" class ='mt-1 col-4'>
 	{% csrf_token %}
 	{% comment %} <select class="form-select" name="currency" id="autoSubmitSelect">
 	<option value='NGN'> Gemini </option>

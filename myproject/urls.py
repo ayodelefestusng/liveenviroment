@@ -21,15 +21,11 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-   
     path("", include("users.urls")),
     path("payments/", include("crossborder.urls")),
      path("ai/", include("ai.urls")),
      path("buyrite/", include("buyrite.urls")),
      path("laundry/", include("laundry.urls")),
-
-    
    
 ]
 

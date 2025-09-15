@@ -2,6 +2,10 @@
 from django.urls import path
 from .views import *
 
+app_name = 'ai'  # ✅ This defines the namespace
+
+
+
 urlpatterns = [
      path('', chat_home, name='chat_home'),
      path('analytics/', chat_home2, name='chat_home2'),
