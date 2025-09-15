@@ -29,8 +29,8 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
 <div class="container-fluid" style="box-shadow: 0 4px 8px rgba(0,0,0,0.2); background: linear-gradient(90deg, #00B140 0%, #0072CE 100%);">
   <a class="navbar-brand d-flex align-items-center" href="{% url 'users:home' %}">
-    <img src="{% static 'images/kupay12.png' %}" alt="TaskMate" width="100" height="30" class="rounded shadow-sm me-2">
-    <span class="" style="color:white">DMC Technologies</span>
+    <img src="{% static 'images/dmc2.jpg' %}" alt="TaskMate" width="100" height="30" class="rounded shadow-sm me-2">
+    <span class="" style="color:white ">DMC Technologies</span>
   </a>
 {% block nav_links %}
 
@@ -51,19 +51,21 @@
             <a class="nav-link active text-white" aria-current="page" href="#">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="#">Link</a>
+            <a class="nav-link text-white" href="#">About Us</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle"   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle text-white"   role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Services
             </a>
+
+           
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" >Artificial Intelligence</a></li>
+              <li><a class="dropdown-item"  style="color:green">Artificial Intelligence</a></li>
               <li class="nav-item dropdown">
               <a class="nav-link" href="{% url 'ai:chat_home' %}">Chatbot</a>
               <a class="nav-link" href="{% url 'ai:chat_home' %}">HR</a>
        
-                    <li><a class="dropdown-item" >Payments</a></li>
+                    <li><a class="dropdown-item" style="color:green">Payments</a></li>
               <li class="nav-item dropdown">
             <a class="nav-link " href="{% url 'ai:chat_home' %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Cross Border
@@ -72,12 +74,12 @@
               Loan Manager
             </a>
 
-            <li><a class="dropdown-item" >Ecommerce</a></li>
+            <li><a class="dropdown-item" style="color:green">Ecommerce</a></li>
               <li class="nav-item dropdown">
               <a class="nav-link" href="{% url 'laundry:customer_order' %}">Laundry</a>
               <a class="nav-link" href="{% url 'ai:chat_home' %}">Automotive</a>
         {% if user.is_authenticated and user.is_superuser %}
-       <li><a class="dropdown-item" >Ecommerce Operations</a></li>
+       <li><a class="dropdown-item" style="color:green ">Ecommerce Operations</a></li>
               <li class="nav-item dropdown">
               <a class="nav-link" href="{% url 'laundry:admin_dashboard' %}">Laundry Operation</a>
               <a class="nav-link" href="{% url 'ai:chat_home' %}">Automotive Operation</a>
