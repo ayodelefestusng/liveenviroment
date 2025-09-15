@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'laundry_base.html' %}
 {% load static %}
 
 {% block content %}
@@ -7,7 +7,7 @@
 
     <!-- HTMX-powered Order Summary Section -->
     <div id="order-summary-section" class="card shadow p-4 mb-4" 
-        hx-get="{% url 'htmx_get_order_summary' order.id %}" 
+        hx-get="{% url 'laundry:htmx_get_order_summary' order.id %}" 
         hx-trigger="load, refresh-summary from:body"
         hx-swap="innerHTML"
     >
@@ -19,7 +19,7 @@
     
     <!-- Form to add a new item -->
     <form id="add-item-form" method="post" 
-        hx-post="{% url 'htmx_add_item' order.id %}" 
+        hx-post="{% url 'laundry:htmx_add_item' order.id %}" 
         hx-target="#item-list" 
         hx-swap="beforeend" 
         _="on htmx:afterRequest if event.detail.xhr.status == 200 window.location.reload()"
@@ -77,7 +77,7 @@
     <div class="d-grid gap-2">
         <button class="btn btn-primary btn-lg" 
                 id="send-invoice-button"
-                hx-post="{% url 'htmx_send_invoice' order.id %}"
+                hx-post="{% url 'laundry:htmx_send_invoice' order.id %}"
                 hx-target="#invoice-message"
                 hx-swap="innerHTML"
                 hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'

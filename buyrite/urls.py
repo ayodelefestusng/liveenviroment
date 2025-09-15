@@ -9,6 +9,7 @@ from .views import (
     reject_dealer, handle_admin_tool_form,
     VehicleImageView, VINImageSearchView, VINImageDrive
 )
+app_name = 'buyrite'
 
 urlpatterns = [
     # Home & Vehicle
