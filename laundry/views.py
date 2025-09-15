@@ -55,7 +55,7 @@ def custom_logout(request):
     """
     auth.logout(request)
     messages.info(request, "You have been logged out successfully.")
-    return redirect('homepage')
+    return redirect('users:home')
 
 @login_required
 @require_http_methods(["GET", "POST"])
@@ -80,7 +80,7 @@ def customer_order1(request):
                     [request.user.email],
                     fail_silently=False,
                 )
-                return redirect('admin_dashboard')
+                return redirect('laundry:admin_dashboard')
             except IntegrityError:
                 messages.error(
                     request, "An error occurred while placing the order. Please try again.")    
@@ -114,7 +114,7 @@ def customer_order(request):
                 [request.user.email],
                 fail_silently=False,
             )
-                return redirect('order_detail', order_id=order.id)
+                return redirect('laundry:order_detail', order_id=order.id)
             except IntegrityError:
                 messages.error(
                     request, "An error occurred while placing the order. Please try again.")
@@ -161,7 +161,7 @@ def accept_order(request, order_id):
     order.status = 'accepted'
     order.save()
     messages.success(request, "Your order has been accepted. Thank you!")
-    return redirect('customer_dashboard')
+    return redirect('laundry:customer_dashboard')
 
 @login_required
 def comment_order(request, order_id):
@@ -178,7 +178,7 @@ def comment_order(request, order_id):
             comment.save()
             order.has_comment = True
             order.save()
-            return redirect('comment_success')
+            return redirect('laundry:comment_success')
     else:
         form = CommentForm()
     context = {'order': order, 'form': form}
@@ -241,7 +241,7 @@ def admin_approve_comment(request, order_id):
         order.has_comment = False
         order.save()
     messages.success(request, "Comment approved successfully.")
-    return redirect('admin_dashboard')
+    return redirect('laundry:admin_dashboard')
 
 # HTMX endpoints
 @require_http_methods(["GET"])
@@ -415,8 +415,8 @@ def htmx_send_invoice(request, order_id):
     order.save()
 
     # Generate absolute URLs for the email links
-    paypal_url = request.build_absolute_uri(reverse('paypal_checkout', args=[order.id]))
-    comment_url = request.build_absolute_uri(reverse('comment_order', args=[order.id]))
+    paypal_url = request.build_absolute_uri(reverse('laundry:paypal_checkout', args=[order.id]))
+    comment_url = request.build_absolute_uri(reverse('laundry:comment_order', args=[order.id]))
 
     # Render email template as a string
     email_html_content = render_to_string('htmx/invoice_email.html', {
@@ -466,7 +466,7 @@ def create_paypal_payment(request, order_id):
     items = order.items.all()
     if not items:
         messages.error(request, "Cannot create a payment for an empty order.")
-        return redirect('order_detail', order_id=order.id)
+        return redirect('laundry:order_detail', order_id=order.id)
     
     # Calculate total price
     # total_price = sum(item.service.price for item in items)
@@ -476,7 +476,7 @@ def create_paypal_payment(request, order_id):
     access_token = get_paypal_access_token()
     if not access_token:
         messages.error(request, "Failed to connect to PayPal. Please try again later.")
-        return redirect('order_detail', order_id=order.id)
+        return redirect('laundry:order_detail', order_id=order.id)
 
     headers = {
         "Content-Type": "application/json",
@@ -493,8 +493,8 @@ def create_paypal_payment(request, order_id):
             }
         }],
         "application_context": {
-            "return_url": request.build_absolute_uri(reverse('paypal_success')),
-            "cancel_url": request.build_absolute_uri(reverse('paypal_cancel')),
+            "return_url": request.build_absolute_uri(reverse('laundry:paypal_success')),
+            "cancel_url": request.build_absolute_uri(reverse('laundry:paypal_cancel')),
         }
     }
 
@@ -514,7 +514,7 @@ def create_paypal_payment(request, order_id):
         logging.error(f"Error creating PayPal order: {e}")
         messages.error(request, "Failed to create a PayPal payment. Please try again.")
 
-    return redirect('order_detail', order_id=order.id)
+    return redirect('laundry:order_detail', order_id=order.id)
 
 
 def paypal_success(request):
@@ -524,7 +524,7 @@ def paypal_success(request):
     access_token = get_paypal_access_token()
     if not access_token:
         messages.error(request, "Failed to confirm payment. Please contact support.")
-        return redirect('homepage')
+        return redirect('user:home')
 
     headers = {
         "Content-Type": "application/json",
@@ -546,7 +546,7 @@ def paypal_success(request):
         order_id_from_paypal = response.json()['purchase_units'][0].get('reference_id')
         if not order_id_from_paypal:
             messages.error(request, "Order reference not found in PayPal response.")
-            return redirect('homepage')
+            return redirect('users:home')
         
         
         # Validate that the reference_id is a valid UUID before trying to look it up
@@ -565,7 +565,7 @@ def paypal_success(request):
     except requests.exceptions.RequestException as e:
         logging.error(f"Error capturing PayPal payment: {e}")
         messages.error(request, "There was an issue processing your payment. Please contact support.")
-        return redirect('homepage')
+        return redirect('users:home')
 
 
 def paypal_cancel(request):

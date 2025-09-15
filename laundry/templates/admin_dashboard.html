@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'laundry_base.html' %}
 {% load static %}
 
 {% block content %}
@@ -13,7 +13,7 @@
                     {% for request in pending_requests %}
                     <li class="list-group-item">
                         Request #{{ request.id }} - {{ request.user.email }}
-                        <a href="{% url 'admin_review_request' request.id %}" class="btn btn-primary btn-sm float-end">Review</a>
+                        <a href="{% url 'laundry:admin_review_request' request.id %}" class="btn btn-primary btn-sm float-end">Review</a>
                     </li>
                     {% endfor %}
                 </ul>
@@ -29,7 +29,7 @@
                     {% for order in in_progress_orders %}
                     <li class="list-group-item">
                         Order #{{ order.id }} - {{ order.user.username }}
-                        <a href="{% url 'order_detail' order.id %}" class="btn btn-info btn-sm float-end">View Order</a>
+                        <a href="{% url 'laundry:order_detail' order.id %}" class="btn btn-info btn-sm float-end">View Order</a>
                     </li>
                     {% endfor %}
                 </ul>
@@ -45,7 +45,7 @@
                     {% for order in commented_orders %}
                     <li class="list-group-item">
                         Order #{{ order.id }} - {{ order.user.username }}
-                        <a href="{% url 'admin_approve_comment' order.id %}" class="btn btn-success btn-sm float-end">Approve Comment</a>
+                        <a href="{% url 'laundry:admin_approve_comment' order.id %}" class="btn btn-success btn-sm float-end">Approve Comment</a>
                     </li>
                     {% endfor %}
                 </ul>
