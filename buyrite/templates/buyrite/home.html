@@ -44,7 +44,7 @@ kamba
         <div class="row row-cols-2 row-cols-sm-4 row-cols-lg-5 g-2 flex-grow-1">
             {% for category in categories %}
             <div class="col text-center">
-                <a href="{% url 'home' %}?category={{ category.id }}" class="category-link">
+                <a href="{% url 'buyrite:home' %}?category={{ category.id }}" class="category-link">
                     <div class="image-wrapper">
                         <img src="{{ category.image.url }}" alt="{{ category.name }}" class="car-image">
                     </div>
@@ -107,7 +107,7 @@ kamba
 
                                 <p class="card-text text-muted">{{ vehicle.manufacture_year.year }} | {{ vehicle.condition.name }}</p>
                                 <h4 class="card-subtitle mb-2 text-primary fw-bold">₦{{ vehicle.price|floatformat:2|intcomma }}</h4>
-                                <a href="{% url 'vehicle_detail' slug=vehicle.slug %}" class="btn btn-outline-primary btn-sm mt-3">View Details</a>
+                                <a href="{% url 'buyrite:vehicle_detail' slug=vehicle.slug %}" class="btn btn-outline-primary btn-sm mt-3">View Details</a>
                             
                             
                               </div>
@@ -135,7 +135,7 @@ kamba
                 <div class="col-md-12">
                     <label for="brand" class="form-label">Brand</label>
                     <select name="brand" id="brand" class="form-select" 
-                        hx-get="{% url 'load_models' %}"
+                        hx-get="{% url 'buyrite:load_models' %}"
                         hx-target="#model-container"
                         hx-swap="innerHTML"
                         hx-trigger="change">
@@ -151,7 +151,7 @@ kamba
                 <div class="col-md-12" id="model-container">
                     <label for="model" class="form-label">Model</label>
                     <select name="model" id="model" class="form-select" 
-                        hx-get="{% url 'load_trims' %}"
+                        hx-get="{% url 'buyrite:load_trims' %}"
                         hx-target="#trim-container"
                         hx-swap="innerHTML"
                         hx-trigger="change">
@@ -181,7 +181,7 @@ kamba
                 <div class="col-md-12">
                     <label for="state" class="form-label">State</label>
                     <select name="state" id="state" class="form-select"
-                            hx-get="{% url 'load_towns' %}"
+                            hx-get="{% url 'buyrite:load_towns' %}"
                             hx-target="#town-container"
                             hx-swap="innerHTML"
                             hx-trigger="change">
@@ -263,7 +263,7 @@ kamba
                 </div>
 
                 <div class="col-12 d-flex justify-content-end gap-2">
-                    <a href="{% url 'home' %}" class="btn btn-outline-secondary px-4">
+                    <a href="{% url 'buyrite:home' %}" class="btn btn-outline-secondary px-4">
                         Clear Filters
                     </a>
                     <button type="submit" class="btn btn-primary px-4">

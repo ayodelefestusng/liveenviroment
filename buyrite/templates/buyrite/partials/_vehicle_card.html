@@ -9,7 +9,7 @@
 <p><i class="fas fa-cogs"></i> {{ vehicle.get_transmission_display }}</p>
 <p><i class="fas fa-map-marker-alt"></i> {{ vehicle.town }}, {{ vehicle.state }}</p>
 </div>
-<a href="{% url 'vehicle_detail' vehicle.id %}" class="mt-4 inline-block w-full bg-blue-600 text-white text-center py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200">
+<a href="{% url 'buyrite:vehicle_detail' vehicle.id %}" class="mt-4 inline-block w-full bg-blue-600 text-white text-center py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200">
 View Details
 </a>
 </div>

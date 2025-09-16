@@ -27,12 +27,12 @@
                     <button class="flex-1 btn btn-primary rounded-lg text-white"
                             data-bs-toggle="modal"
                             data-bs-target="#editModal"
-                            hx-get="{% url 'edit_vehicle' vehicle.pk %}"
+                            hx-get="{% url 'buyrite:edit_vehicle' vehicle.pk %}"
                             hx-target="#modal-content">
                         Edit
                     </button>
                     <button class="flex-1 btn btn-success rounded-lg text-white"
-                            hx-post="{% url 'mark_as_sold' vehicle.pk %}"
+                            hx-post="{% url 'buyrite:mark_as_sold' vehicle.pk %}"
                             hx-target="closest .bg-white"
                             hx-swap="outerHTML"
                             hx-confirm="Are you sure you want to mark this vehicle as sold? This cannot be undone.{{ vehicle.pk }}"

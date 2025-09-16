@@ -77,12 +77,12 @@
             <li><a class="dropdown-item" style="color:green">Ecommerce</a></li>
               <li class="nav-item dropdown">
               <a class="nav-link" href="{% url 'laundry:customer_order' %}">Laundry</a>
-              <a class="nav-link" href="{% url 'ai:chat_home' %}">Automotive</a>
+              <a class="nav-link" href="{% url 'buyrite:home' %}">Automotive</a>
         {% if user.is_authenticated and user.is_superuser %}
        <li><a class="dropdown-item" style="color:green ">Ecommerce Operations</a></li>
               <li class="nav-item dropdown">
               <a class="nav-link" href="{% url 'laundry:admin_dashboard' %}">Laundry Operation</a>
-              <a class="nav-link" href="{% url 'ai:chat_home' %}">Automotive Operation</a>
+              <a class="nav-link" href="{% url 'buyrite:home' %}">Automotive Operation</a>
         {% endif %}
        
        
@@ -118,7 +118,7 @@
                 <button class="btn btn-warning"  type="submit">Logout</button>
               </form>
             {% else %}
-              <a href="{% url 'login' %}">
+              <a href="{% url 'users:login' %}">
                 <button class="btn btn-primary" type="button">Login</button>
               </a>
             {% endif %}

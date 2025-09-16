@@ -3,7 +3,7 @@
 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 </div>
 <div class="offcanvas-body">
-<form hx-get="{% url 'dashboard' %}"
+<form hx-get="{% url 'buyrite:dashboard' %}"
 hx-target="#vehicle-list-container"
 hx-swap="innerHTML"
 hx-indicator="#loading-indicator"
@@ -35,7 +35,7 @@ hx-on::after-request="this.closest('.offcanvas').bs.offcanvas('hide');">
 <div class="form-group mb-4">
     <label for="id_state" class="form-label">State</label>
     <select id="id_state" name="state" class="form-select rounded-lg"
-            hx-get="{% url 'load_towns' %}"
+            hx-get="{% url 'buyrite:load_towns' %}"
             hx-target="#div_id_town"
             hx-swap="outerHTML"
             hx-trigger="change">
@@ -66,7 +66,7 @@ hx-on::after-request="this.closest('.offcanvas').bs.offcanvas('hide');">
 <div class="form-group mb-4">
             <label for="id_brand" class="form-label">Brand</label>
             <select id="id_brand" name="brand" class="form-select rounded-lg"
-                    hx-get="{% url 'load_models' %}"
+                    hx-get="{% url 'buyrite:load_models' %}"
                     hx-target="#div_id_vehicle_model"
                     hx-swap="outerHTML"
                     hx-trigger="change">

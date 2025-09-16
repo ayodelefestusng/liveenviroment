@@ -31,12 +31,12 @@
 <body>
     <nav class="navbar navbar-expand-sm navbar-dark bg-primary sticky-top" >
         <div class="container bg-black ">
-            <a class="navbar-brand" href="{% url 'home' %}">My Vehicle App</a>
+            <a class="navbar-brand" href="{% url 'buyrite:home' %}">My Vehicle App</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated and not user.is_dealer %}
     <li class="nav-item">
-        <a class="nav-link text-white hover:text-gray-300" href="{% url 'dealer_registration' %}">Become a Dealer</a>
+        <a class="nav-link text-white hover:text-gray-300" href="{% url 'buyrite:dealer_registration' %}">Become a Dealer</a>
     </li>
 {% endif %}
                     {% if user.is_authenticated %}

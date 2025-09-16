@@ -4,7 +4,7 @@ kamba
 <h5 class="modal-title" id="adminToolModalLabel">Add/Edit {{ model_name }}</h5>
 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
-<form hx-post="{% url 'handle_admin_tool_form' model_name %}"
+<form hx-post="{% url 'buyrite:handle_admin_tool_form' model_name %}"
 hx-target="#admin-modal-body"
 hx-swap="innerHTML">
 {% csrf_token %}

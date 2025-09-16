@@ -205,8 +205,8 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
 
 LOGIN_REDIRECT_URL = 'home'
-LOGIN_URL = 'login'
-LOGOUT_REDIRECT_URL = 'login'
+LOGIN_URL = 'users:login'
+LOGOUT_REDIRECT_URL = 'users:login'
 
 
 
@@ -228,6 +228,7 @@ STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
 # Base URL of your application, used for absolute URL generation.
 # Replace with your actual domain when deploying.
 SITE_URL = 'http://localhost:8000'
+SITE_DOMAIN = "https://demos.kupiansolutions.com"
 
 
 
