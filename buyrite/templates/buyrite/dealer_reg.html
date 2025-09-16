@@ -25,7 +25,7 @@ KAMBA
     {% endif %}
 
     <form method="post" enctype="multipart/form-data" 
-          hx-post="{% url 'dealer_registration' %}"
+          hx-post="{% url 'buyrite:dealer_registration' %}"
           hx-target="#form-container"
           hx-swap="outerHTML"
           id="form-container">
@@ -51,7 +51,7 @@ KAMBA
             <label for="id_state" class="form-label">State</label>
             <!-- The key to dynamic loading: HTMX attributes on the select field -->
             <select id="id_state" name="state" class="form-select rounded-lg"
-                    hx-get="{% url 'get_towns_by_state' 1 %}"
+                    hx-get="{% url 'buyrite:get_towns_by_state' 1 %}"
                     hx-target="#town_container"
                     hx-swap="innerHTML"
                     hx-trigger="change"

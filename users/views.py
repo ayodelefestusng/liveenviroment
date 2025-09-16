@@ -9,6 +9,7 @@ from django.http import (
     HttpResponseRedirect,
     HttpResponseServerError
 )
+from django.conf import settings
 from django.urls import reverse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.tokens import default_token_generator
@@ -69,12 +70,13 @@ def register(request):
             user.save()
 
             token = default_token_generator.make_token(user)
-            link = request.build_absolute_uri(reverse("setup_password", args=[user.pk, token]))
+            link = request.build_absolute_uri(reverse("users:setup_password", args=[user.pk, token]))
+            # link = f"{settings.SITE_DOMAIN}{reverse('users:setup_password', args=[user.pk, token])}"
 
             send_mail(
                 "Set Your Password",
                 f"Click the link to set your password: {link}",
-                "admin@example.com",
+                settings.DEFAULT_FROM_EMAIL,
                 [user.email],
             )
 
@@ -92,7 +94,7 @@ def setup_password(request, user_id, token):
             form = PasswordSetupForm(user, request.POST)
             if form.is_valid():
                 form.save()
-                return redirect("login")
+                return redirect("users:login")
                 # return HttpResponseRedirect("login")
         else:
             form = PasswordSetupForm(user)
@@ -110,7 +112,7 @@ def password_reset_request(request):
             user = User.objects.filter(email=email).first()
             if user:
                 token = default_token_generator.make_token(user)
-                link = request.build_absolute_uri(reverse("setup_password", args=[user.pk, token]))
+                link = request.build_absolute_uri(reverse("users:setup_password", args=[user.pk, token]))
                 
                 send_mail(
                     "Reset Your Password",
@@ -134,7 +136,7 @@ def change_password(request):
                 user.set_password(form.cleaned_data["new_password"])
                 user.save()
                 logout(request)
-                return redirect("login")
+                return redirect("users:login")
             else:
                 return render(request, "myapp/change_password.html", {"form": form, "error": "Incorrect password"})
     else:
@@ -158,7 +160,7 @@ def user_login(request):
 
                 otp_uri = pyotp.totp.TOTP(user.mfa_secret).provisioning_uri(
                     name=user.email,
-                    issuer_name="RELUCENT"
+                    issuer_name="DMC Technologies"
                 )
 
                 qr = qrcode.make(otp_uri)
@@ -193,7 +195,7 @@ def profile_view(request):
 
         otp_uri = pyotp.totp.TOTP(user.mfa_secret).provisioning_uri(
             name=user.email,
-            issuer_name="AGOBA DIGNITY"
+            issuer_name="DMC Technologies"
         )
 
         qr = qrcode.make(otp_uri)
@@ -240,7 +242,7 @@ def verify_mfa(request):
         if verify_2fa_otp(user, otp):
             login(request, user)  # ✅ Only log in after successful OTP
             messages.success(request, 'Login successful with 2FA!')
-            return redirect('home')
+            return redirect('users:home')
         else:
             messages.error(request, 'Invalid OTP code. Please try again.')
             return render(request, 'registration/otp_verify.html', {'email': email})
@@ -285,4 +287,4 @@ def reset_qr(request):
 def user_logout(request):
     logout(request)
     messages.success(request, "You have been logged out successfully.")
-    return redirect("login")  # Redirect to login page after logout
+    return redirect("users:login")  # Redirect to login page after logout

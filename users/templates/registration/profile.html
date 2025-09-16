@@ -23,7 +23,7 @@
                     </div>
 
                                     <!-- <form method="POST"> -->
-                                    <form method="POST" action="{% url 'verify_mfa' %}" class="form text-center">
+                                    <form method="POST" action="{% url 'users:verify_mfa' %}" class="form text-center">
                                           {% csrf_token %}
                                         <div>
                                           <input type="text" id="otp_code" name="otp_code" maxlength="6" required 

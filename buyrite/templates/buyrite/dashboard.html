@@ -20,7 +20,7 @@ Your Dashboards
 
 
     <div class=" lame bg-gray-100 rounded-xl p-6 text-center shadow-lg transition-transform hover:scale-105"
-        hx-get="{% url 'dashboard' %}?status=unsold"
+        hx-get="{% url 'buyrite:dashboard' %}?status=unsold"
         hx-target="#vehicle-list-container"
         hx-swap="innerHTML"
         hx-indicator="#loading-indicator"
@@ -29,7 +29,7 @@ Your Dashboards
         <p class="text-gray-600 font-semibold">Unsold</p>
     </div>
     <div class="lame bg-gray-100 rounded-xl p-6 text-center shadow-lg transition-transform hover:scale-105"
-        hx-get="{% url 'dashboard' %}?status=sold"
+        hx-get="{% url 'buyrite:dashboard' %}?status=sold"
         hx-target="#vehicle-list-container"
         hx-swap="innerHTML"
         hx-indicator="#loading-indicator"
@@ -38,7 +38,7 @@ Your Dashboards
         <p class="text-gray-600 font-semibold">Sold</p>
     </div>
     <div class=" lame bg-gray-100 rounded-xl p-6 text-center shadow-lg transition-transform hover:scale-105"
-        hx-get="{% url 'dashboard' %}?status=all"
+        hx-get="{% url 'buyrite:dashboard' %}?status=all"
         hx-target="#vehicle-list-container"
         hx-swap="innerHTML"
         hx-indicator="#loading-indicator"

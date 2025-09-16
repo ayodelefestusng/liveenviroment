@@ -5,7 +5,7 @@ KAMBA
 <h5 class="modal-title" id="editModalLabel">Edit {{ vehicle.brand.name }} {{ vehicle.vehicle_model.name }}</h5>
 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
-<form hx-post="{% url 'edit_vehicle' vehicle.pk %}" hx-swap="outerHTML" hx-target="#vehicle-{{ vehicle.pk }}">
+<form hx-post="{% url 'buyrite:edit_vehicle' vehicle.pk %}" hx-swap="outerHTML" hx-target="#vehicle-{{ vehicle.pk }}">
 {% csrf_token %}
 <div class="modal-body">
 {% for field in form %}

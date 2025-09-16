@@ -15,14 +15,14 @@
 {% endif %}
 </div>
 <div class="modal-footer">
-<form hx-post="{% url 'approve_dealer' dealer.pk %}"
+<form hx-post="{% url 'buyrite:approve_dealer' dealer.pk %}"
 hx-confirm="Are you sure you want to approve this dealer?"
 hx-target="#main-content"
 hx-swap="outerHTML">
 {% csrf_token %}
 <button type="submit" class="btn btn-success rounded-lg">Approve</button>
 </form>
-<form hx-post="{% url 'reject_dealer' dealer.pk %}"
+<form hx-post="{% url 'buyrite:reject_dealer' dealer.pk %}"
 hx-confirm="Are you sure you want to reject this dealer?"
 hx-target="#main-content"
 hx-swap="outerHTML">

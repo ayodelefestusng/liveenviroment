@@ -30,7 +30,7 @@ class RegistrationForm(forms.ModelForm):
         fields = ["email", "full_name" ]
         widgets = {
             'email': forms.EmailInput(attrs={
-                'hx-post': reverse_lazy('check_username'),
+                'hx-post': reverse_lazy('users:check_username'),
                 'hx-trigger': 'keyup',
                 'hx-target': '#username-err'
             }),
@@ -40,16 +40,16 @@ class RegistrationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_action = reverse_lazy('register')
+        self.helper.form_action = reverse_lazy('users:register')
         self.helper.form_method = ('POST')
-        self.helper.add_input(Submit('submit', 'Register'))
+        self.helper.add_input(Submit('submit', 'users:Register'))
         self.helper.layout = Layout(
         
             Field('email'),
             # This is the custom div with id "ayo"
-            HTML('<div class="text-danger mt-2" id="username-err">This is the extra div content!</div>'),
-             HTML('<div class="custom-divider">-- Divider Between Names --</div>'),
-             HTML('<p>More content inside the "ayo" div.</p>'),
+            HTML('<div class="text-danger mt-2" id="username-err"></div>'),
+             HTML('<div class="custom-divider"></div>'),
+             HTML('<p></p>'),
             Field('full_name'),
         )
 
@@ -70,7 +70,7 @@ class RegistrationForm6666(forms.ModelForm):
         fields = ["email", "full_name" ]
         widgets = {
             'email': forms.EmailInput(attrs={
-                'hx-post': reverse_lazy('check_username'),
+                'hx-post': reverse_lazy('users:check_username'),
                 'hx-trigger': 'keyup',
                 'hx-target': '#username-err'
             }),
@@ -87,9 +87,9 @@ class RegistrationForm6666(forms.ModelForm):
         
             Field('email'),
             # This is the custom div with id "ayo"
-            HTML('<div class="text-danger mt-2" id="username-err">This is the extra div content!</div>'),
-             HTML('<div class="custom-divider">-- Divider Between Names --</div>'),
-             HTML('<p>More content inside the "ayo" div.</p>'),
+            HTML('<div class="text-danger mt-2" id="username-err"></div>'),
+             HTML('<div class="custom-divider"></div>'),
+             HTML('<p> div.</p>'),
             Field('full_name'),
         )
 
