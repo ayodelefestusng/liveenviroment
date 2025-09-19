@@ -538,7 +538,7 @@ def dealer_registration(request):
             dealer_profile.save()
             
             messages.success(request, "You have successfully registered as a dealer! You can now list vehicles.")
-            return redirect('dashboard')
+            return redirect('buyrite:dashboard')
     else:
         form = DealerRegistrationForm()
 

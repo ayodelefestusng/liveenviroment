@@ -30,15 +30,15 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-sm navbar-dark bg-primary sticky-top" >
-        <div class="container bg-black ">
+       
             <a class="navbar-brand" href="{% url 'buyrite:home' %}">My Vehicle App</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated and not user.is_dealer %}
-    <li class="nav-item">
-        <a class="nav-link text-white hover:text-gray-300" href="{% url 'buyrite:dealer_registration' %}">Become a Dealer</a>
-    </li>
-{% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link text-white hover:text-gray-300" href="{% url 'buyrite:dealer_registration' %}">Become a Dealer</a>
+                        </li>
+                    {% endif %}
                     {% if user.is_authenticated %}
                         <li class="nav-item">
                             <span class="nav-link">Welcome, {{ user.full_name }}</span>
@@ -48,7 +48,7 @@
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                            <a class="nav-link" href="{% url 'users:login' %}">Login</a>
                         </li>
                     {% endif %}
                 </ul>

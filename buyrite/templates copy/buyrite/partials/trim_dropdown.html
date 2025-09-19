@@ -1,9 +1,0 @@
-<div class="form-group mb-4" id="div_id_trim">
-    <label for="id_trim" class="form-label">Trim</label>
-    <select name="trim" id="id_trim" class="form-select rounded-lg">
-        <option value="">---------</option>
-        {% for trim in trims %}
-            <option value="{{ trim.pk }}">{{ trim.name }}</option>
-        {% endfor %}
-    </select>
-</div>
