@@ -1,45 +1,109 @@
-# Standard library
+# ─── Standard Library ───────────────────────────────────────────────────────────
 import hashlib
 import requests
 
-# Django core
-from django.shortcuts import render, redirect, get_object_or_404
+# ─── Django Core ────────────────────────────────────────────────────────────────
+from django import forms
+from django.apps import apps
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.models import Group, Permission
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q, F
 from django.http import (
     HttpResponse, JsonResponse, HttpResponseRedirect, HttpResponseServerError
 )
-from django.views import View
-from django.views.generic import ListView, DetailView
-from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.models import Group, Permission
-from django.utils.decorators import method_decorator
-from django.utils.timezone import now
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse
-from django.apps import apps
-from django.db.models import Q, F
-from django.contrib import messages
-from django.contrib.auth import get_user_model
+from django.utils.decorators import method_decorator
+from django.utils.timezone import now
+from django.views import View
+from django.views.generic import ListView, DetailView
 
-# Django REST Framework
-from rest_framework.views import APIView
-from rest_framework.response import Response
+# ─── Django REST Framework ──────────────────────────────────────────────────────
 from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-# Local apps
+# ─── Local Apps ─────────────────────────────────────────────────────────────────
 from .models import (
     Vehicle, Category, State, Town, Brand, VehicleModel, Trim, DealerProfile,
     InnerColor, ManufactureYear, FuelOption, Color, EngineType, DriveTerrain,
-    Vas, Condition, Carousel, Post, 
+    Vas, Condition, Carousel, Post
 )
-from .forms import (
-    VehicleForm, DealerRegistrationForm, AdminToolForm, PostForm
-)
+from .forms import VehicleForm, DealerRegistrationForm, PostForm
 
-# Auth user model
+# ─── Auth User Model ────────────────────────────────────────────────────────────
 User = get_user_model()
 
+# A dictionary mapping model names to their actual classes
+MODEL_MAPPING = {
+    'category': Category,
+    'brand': Brand,
+    'vehiclemodel': VehicleModel,
+    'trim': Trim,
+    'manufactureyear': ManufactureYear,
+    'fueloption': FuelOption,
+    'color': Color,
+    'innercolor': InnerColor,
+    'enginetype': EngineType,
+    'driveterrain': DriveTerrain,
+    'vas': Vas,
+    'state': State,
+    'town': Town,
+    'condition': Condition,
+}
 
+# ---
+# Form Factory Function to create a dynamic Admin Form
+# This is the correct pattern for dynamic ModelForms in Django.
+# ---
+# ---
+# Form Factory Function to create a dynamic Admin Form
+# This is the correct pattern for dynamic ModelForms in Django.
+# ---
+
+def create_admin_tool_form(model):
+    """
+    Creates a dynamic ModelForm class for a given model.
+    """
+    class AdminToolForm1(forms.ModelForm):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            for field in self.fields.values():
+                field.widget.attrs.update({'class': 'form-control rounded-lg'})
+    
+    # Dynamically set the form's Meta class outside the inner class definition
+    # to avoid a NameError with the 'model' variable's scope.
+    class Meta:
+        model = model
+        fields = '__all__'
+        
+    AdminToolForm.Meta = Meta
+    
+    return AdminToolForm
+
+
+
+
+def create_admin_tool_form(model_class):
+    class AdminForm(forms.ModelForm):
+        class Meta:
+            model = model_class
+            fields = '__all__'
+    return AdminForm
+
+
+
+def yem(request):
+    try:
+        dealers = DealerProfile.objects.all().values()
+        return JsonResponse(list(dealers), safe=False)
+    except Exception as e:
+        return JsonResponse({'error': str(e)})
 
 
 class HomeView(ListView):
@@ -521,22 +585,32 @@ def load_years(request):
 
 
 @login_required
-def dealer_registration(request):
+def dealer_registration1(request):
     """
     Handles the dealer registration form submission.
     """
+    
+    
     # Check if the user is already a dealer
     if DealerProfile.objects.filter(user=request.user).exists():
         messages.info(request, "You are already registered as a dealer.")
-        return redirect('dashboard')
+        return redirect('buyrite:dashboard')
 
     if request.method == 'POST':
+        
         form = DealerRegistrationForm(request.POST, request.FILES)
+        print("=jdjdjdj",request.user)
+        
+
         if form.is_valid():
+            # This line will show you the exact validation errors in your console
+            print("Form validation errors:", form.errors)
             dealer_profile = form.save(commit=False)
+           
             dealer_profile.user = request.user
             dealer_profile.save()
-            
+            user=DealerProfile.objects.get(user=request.user)
+            print("=dddd",user)
             messages.success(request, "You have successfully registered as a dealer! You can now list vehicles.")
             return redirect('buyrite:dashboard')
     else:
@@ -549,9 +623,72 @@ def dealer_registration(request):
     return render(request, 'buyrite/dealer_reg.html', context)
 
 
+
+
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+from .models import DealerProfile, State
+from .forms import DealerRegistrationForm
+
+@login_required
+def dealer_registration(request):
+    """
+    Handles the dealer registration form submission.
+    """
+    
+    
+    # Check if the user is already a dealer
+    if DealerProfile.objects.filter(user=request.user).exists():
+        messages.info(request, "You are already registered as a dealer.")
+        return redirect('buyrite:dashboard')
+
+    if request.method == 'POST':
+        
+       
+        form = DealerRegistrationForm(request.POST, request.FILES)
+        print("Form validation errors:", form.errors)
+   
+        
+
+        if form.is_valid():
+            
+            dealer_profile = form.save(commit=False)
+            dealer_profile.user = request.user
+            dealer_profile.save()
+            
+            messages.success(request, "You have successfully registered as a dealer! You can now list vehicles.")
+            
+            # --- HTMX-SPECIFIC REDIRECT ---
+            # Check if the request is from HTMX
+            if request.headers.get('HX-Request'):
+                # Return a response with the special HTMX-Redirect header
+                return HttpResponse(headers={'HX-Redirect': reverse('buyrite:dashboard')})
+            else:
+                # Fallback for standard browser requests
+                return redirect('buyrite:dashboard')
+        else:
+            # Re-render the form with errors for HTMX to swap in
+            return render(request, 'buyrite/partials/dealer_reg.html', {'form': form, 'states': State.objects.all()})
+
+    else:
+        form = DealerRegistrationForm()
+
+    context = {
+        'form': form,
+        'states': State.objects.all(),
+    }
+    return render(request, 'buyrite/dealer_reg.html', context)
+
+
+
+
+
 @login_required
 @permission_required('auth.add_user', raise_exception=True)
-def operations_view(request):
+def operations_view1(request):
     """
     Displays the Operations dashboard for Managers and Superusers.
     
@@ -599,6 +736,104 @@ def operations_view(request):
     }
     return render(request, 'buyrite/operations.html', context)
 
+
+@login_required
+@permission_required('auth.add_user', raise_exception=True)
+def operations_view(request):
+    """
+    Displays the Operations dashboard for Managers and Superusers.
+    
+    This view lists dealers who are pending approval, rejected, and approved.
+    It also provides access to admin tools based on user permissions.
+    """
+    unconfirmed_dealers = DealerProfile.objects.filter(is_confirmed=False)
+    rejected_dealers = DealerProfile.objects.filter(is_confirmed=False, is_rejected=True)
+    approved_dealers = DealerProfile.objects.filter(is_confirmed=True)
+
+    models_to_manage = [
+        ('Category', Category),
+        ('Brand', Brand),
+        ('VehicleModel', VehicleModel),
+        ('Trim', Trim),
+        ('ManufactureYear', ManufactureYear),
+        ('FuelOption', FuelOption),
+        ('Color', Color),
+        ('InnerColor', InnerColor),
+        ('EngineType', EngineType),
+        ('DriveTerrain', DriveTerrain),
+        ('VAS', Vas),
+        ('State', State),
+        ('Town', Town),
+        ('Condition', Condition),
+    ]
+    
+    user_permissions = request.user.get_all_permissions()
+    allowed_models = []
+    
+    for name, model in models_to_manage:
+        # Check for change/add permissions on the model
+        has_permission = any((
+            f'buyrite.change_{model.__name__.lower()}' in user_permissions,
+            f'buyrite.add_{model.__name__.lower()}' in user_permissions
+        ))
+        if has_permission:
+            allowed_models.append({'name': name, 'model_name': model.__name__})
+    
+    context = {
+        'unconfirmed_dealers': unconfirmed_dealers,
+        'rejected_dealers': rejected_dealers,
+        'approved_dealers': approved_dealers,
+        'allowed_models': allowed_models,
+    }
+    return render(request, 'buyrite/operations.html', context)
+
+
+
+
+@login_required
+@permission_required('auth.add_user', raise_exception=True)
+def handle_admin_tool_form(request, model_name, pk=None):
+    """
+    A view to handle the creation and editing of various models dynamically.
+    """
+    
+    
+    model_class = MODEL_MAPPING.get(model_name.lower())
+   
+    
+    if not model_class:
+        messages.error(request, "Invalid model specified.")
+        return HttpResponseRedirect(reverse('buyrite:operations'))
+
+    instance = None
+    if pk:
+        instance = get_object_or_404(model_class, pk=pk)
+    
+    # Use the form factory function to create a dynamic form
+    AdminForm = create_admin_tool_form(model_class)
+
+    if request.method == 'POST':
+        form = AdminForm(request.POST, request.FILES, instance=instance)
+        print("Form validation errors:", form.errors)
+        if form.is_valid():
+            
+            form.save()
+            messages.success(request, f"{model_name} saved successfully!")
+            return HttpResponseRedirect(reverse('buyrite:operations'))
+        else:
+            # Re-render the form with errors
+            return render(request, 'buyrite/admin_tool_form.html', {'form': form, 'model_name': model_name})
+    else:
+        form = AdminForm(instance=instance)
+
+    context = {
+        'form': form,
+        'model_name': model_name.capitalize(),
+        'instance': instance,
+    }
+    return render(request, 'buyrite/admin_tool_form.html', context)
+
+
 @login_required
 @permission_required('buyrite.change_dealerprofile', raise_exception=True)
 def approve_dealer(request, pk):
@@ -610,11 +845,11 @@ def approve_dealer(request, pk):
             dealer_profile.user.is_seller = True
             dealer_profile.user.save()
             dealer_profile.save()
-            messages.success(request, f"Dealer {dealer_profile.user.username} has been approved.")
-            return HttpResponseRedirect(reverse('operations'))
+            messages.success(request, f"Dealer {dealer_profile.user.email} has been approved.")
+            return HttpResponseRedirect(reverse('buyrite:operations'))
         except DealerProfile.DoesNotExist:
             messages.error(request, "Dealer profile not found.")
-            return HttpResponseRedirect(reverse('operations'))
+            return HttpResponseRedirect(reverse('buyrite:operations'))
     return HttpResponse('Invalid request', status=400)
 
 @login_required
@@ -627,14 +862,14 @@ def reject_dealer(request, pk):
             dealer_profile.is_rejected = True
             dealer_profile.save()
             messages.info(request, f"Dealer {dealer_profile.user.username}'s request has been rejected.")
-            return HttpResponseRedirect(reverse('operations'))
+            return HttpResponseRedirect(reverse('buyrite:operations'))
         except DealerProfile.DoesNotExist:
             messages.error(request, "Dealer profile not found.")
-            return HttpResponseRedirect(reverse('operations'))
+            return HttpResponseRedirect(reverse('buyrite:operations'))
     return HttpResponse('Invalid request', status=400)
 
 @login_required
-def handle_admin_tool_form(request, model_name):
+def handle_admin_tool_form1(request, model_name):
     """
     Handles form submission for creating/modifying models.
     """
@@ -668,7 +903,7 @@ def handle_admin_tool_form(request, model_name):
         if form.is_valid():
             form.save()
             messages.success(request, f"{model_name} added/updated successfully.")
-            return HttpResponseRedirect(reverse('operations'))
+            return HttpResponseRedirect(reverse('buyrite:operations'))
         else:
             html = render_to_string('buyrite/partials/_admin_tools_forms.html', {'form': form, 'model_name': model_name}, request=request)
             return HttpResponse(html)

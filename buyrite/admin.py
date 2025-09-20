@@ -7,7 +7,7 @@ from .models import (
     User, Category, Carousel, Tag, Post, Article,
     Categorys, Brand, VehicleModel, Trim, ManufactureYear,
     Condition, FuelOption, Color, EngineType, DriveTerrain,
-    Vas, State, Town,InnerColor
+    Vas, State, Town,InnerColor,DealerProfile
 )
 
 from .models import Vehicle
@@ -18,8 +18,9 @@ admin.site.register(Carousel)
 admin.site.register(Post)
 admin.site.register(Tag)
 admin.site.register(Article)
-admin.site.register(Trim)
 
+admin.site.register(Trim)
+admin.site.register(DealerProfile)
 
 
 admin.site.register(Categorys)

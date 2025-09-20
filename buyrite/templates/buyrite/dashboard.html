@@ -60,7 +60,7 @@ Your Dashboards
 
 <!-- Product List Section -->
 <div id="vehicle-list-container">
-    {% include 'myapp/partials/_vehicle_list.html' with vehicles=vehicles %}
+    {% include 'buyrite/partials/_vehicle_list.html' with vehicles=vehicles %}
 </div>
 
 <!-- Edit Modal (empty initially, filled by HTMX) -->
@@ -78,6 +78,6 @@ Your Dashboards
 </div>
 <!-- New: Offcanvas markup -->
 <div class="offcanvas offcanvas-start bg-gray-50 rounded-r-2xl" tabindex="-1" id="vehicleFilterOffcanvas" aria-labelledby="vehicleFilterOffcanvasLabel">
-    {% include 'myapp/partials/_vehicle_filter_offcanvas.html' %}
+    {% include 'buyrite/partials/_vehicle_filter_offcanvas.html' %}
 </div>
 {% endblock %}
