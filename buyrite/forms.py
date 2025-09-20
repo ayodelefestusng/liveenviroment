@@ -178,3 +178,39 @@ class AdminToolForm1(forms.ModelForm):
         for field_name, field in self.fields.items():
             field.widget.attrs.update({'class': 'form-control rounded-lg'})
 
+
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.urls import reverse
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required, permission_required
+from .models import DealerProfile, State, Town, Category, Brand, VehicleModel, Trim, ManufactureYear, FuelOption, Color, InnerColor, EngineType, DriveTerrain, Vas, Condition
+from django import forms
+class AdminToolForm(forms.ModelForm):
+    """
+    A dynamic form to create/edit any specified model.
+    
+    This form is designed to be reusable. It automatically configures its
+    Meta class with the `model` and `fields` based on the model instance
+    passed during initialization in the view.
+    """
+    def __init__(self, model_class, *args, **kwargs):
+        # Dynamically set the form's model and fields
+        class Meta:
+            model = model_class
+            fields = '__all__'
+        self.Meta = Meta
+        super().__init__(*args, **kwargs)
+        
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'form-control rounded-lg'})
+
+
+
+
+class RejectionForm(forms.Form):
+    comment = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 4}),
+        label="Rejection Comment",
+        required=True
+    )

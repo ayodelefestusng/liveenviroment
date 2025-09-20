@@ -466,9 +466,13 @@ class Article(models.Model):
 
 
 
+from django.db import models
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 # New: DealerProfile model to store dealer-specific info
 class DealerProfile(models.Model):
-    # user = models.OneToOneField(User, on_delete=models.CASCADE)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     business_logo = models.ImageField(upload_to='dealer_logos/', null=True, blank=True)
     business_address = models.CharField(max_length=255)
@@ -476,6 +480,18 @@ class DealerProfile(models.Model):
     town = models.ForeignKey(Town, on_delete=models.SET_NULL, null=True)
     is_confirmed = models.BooleanField(default=False)
     is_rejected = models.BooleanField(default=False)
+    rejected_count = models.IntegerField(default=0)
+    rejection_comment = models.TextField(blank=True, null=True) # Added field
 
     def __str__(self):
-        return self.user.email
+        return str(self.user.email)
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_dealer_profile(sender, instance, created, **kwargs):
+    if created and instance.groups.filter(name='Dealers').exists():
+        DealerProfile.objects.create(user=instance)
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def save_dealer_profile(sender, instance, **kwargs):
+    if instance.groups.filter(name='Dealers').exists():
+        instance.dealer_profile.save()

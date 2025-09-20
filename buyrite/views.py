@@ -34,7 +34,26 @@ from .models import (
     InnerColor, ManufactureYear, FuelOption, Color, EngineType, DriveTerrain,
     Vas, Condition, Carousel, Post
 )
-from .forms import VehicleForm, DealerRegistrationForm, PostForm
+from .forms import VehicleForm, DealerRegistrationForm, PostForm, AdminToolForm, RejectionForm
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib import messages
+from django.urls import reverse
+from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.conf import settings
+from .forms import  RejectionForm
+from .models import DealerProfile, Category, Brand, VehicleModel, Trim, ManufactureYear, FuelOption, Color, InnerColor, EngineType, DriveTerrain, Vas, State, Town, Condition
+
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+from .models import DealerProfile, State
+from .forms import DealerRegistrationForm
 
 # ─── Auth User Model ────────────────────────────────────────────────────────────
 User = get_user_model()
@@ -56,35 +75,6 @@ MODEL_MAPPING = {
     'town': Town,
     'condition': Condition,
 }
-
-# ---
-# Form Factory Function to create a dynamic Admin Form
-# This is the correct pattern for dynamic ModelForms in Django.
-# ---
-# ---
-# Form Factory Function to create a dynamic Admin Form
-# This is the correct pattern for dynamic ModelForms in Django.
-# ---
-
-def create_admin_tool_form(model):
-    """
-    Creates a dynamic ModelForm class for a given model.
-    """
-    class AdminToolForm1(forms.ModelForm):
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            for field in self.fields.values():
-                field.widget.attrs.update({'class': 'form-control rounded-lg'})
-    
-    # Dynamically set the form's Meta class outside the inner class definition
-    # to avoid a NameError with the 'model' variable's scope.
-    class Meta:
-        model = model
-        fields = '__all__'
-        
-    AdminToolForm.Meta = Meta
-    
-    return AdminToolForm
 
 
 
@@ -625,14 +615,6 @@ def dealer_registration1(request):
 
 
 
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.urls import reverse
-from .models import DealerProfile, State
-from .forms import DealerRegistrationForm
-
 @login_required
 def dealer_registration(request):
     """
@@ -852,66 +834,63 @@ def approve_dealer(request, pk):
             return HttpResponseRedirect(reverse('buyrite:operations'))
     return HttpResponse('Invalid request', status=400)
 
-@login_required
-@permission_required('buyrite.change_dealerprofile', raise_exception=True)
-def reject_dealer(request, pk):
-    """Rejects a dealer's registration request."""
-    if request.method == 'POST':
-        try:
-            dealer_profile = DealerProfile.objects.get(pk=pk)
-            dealer_profile.is_rejected = True
-            dealer_profile.save()
-            messages.info(request, f"Dealer {dealer_profile.user.username}'s request has been rejected.")
-            return HttpResponseRedirect(reverse('buyrite:operations'))
-        except DealerProfile.DoesNotExist:
-            messages.error(request, "Dealer profile not found.")
-            return HttpResponseRedirect(reverse('buyrite:operations'))
-    return HttpResponse('Invalid request', status=400)
+
+
 
 @login_required
-def handle_admin_tool_form1(request, model_name):
+def reject_dealer_view(request, user_id):
     """
-    Handles form submission for creating/modifying models.
-    """
-    model_map = {
-        'Category': Category,
-        'Brand': Brand,
-        'VehicleModel': VehicleModel,
-        'Trim': Trim,
-        'ManufactureYear': ManufactureYear,
-        'FuelOption': FuelOption,
-        'Color': Color,
-        'InnerColor': InnerColor,
-        'EngineType': EngineType,
-        'DriveTerrain': DriveTerrain,
-        'VAS': Vas,
-        'State': State,
-        'Town': Town,
-        'Condition': Condition,
-    }
-
-    model = model_map.get(model_name)
-    if not model:
-        return HttpResponse("Model not found.", status=404)
-
-    if not request.user.has_perm(f'buyrite.add_{model.__name__.lower()}') and \
-       not request.user.has_perm(f'buyrite.change_{model.__name__.lower()}'):
-        return HttpResponse('You do not have permission to perform this action.', status=403)
-
-    if request.method == 'POST':
-        form = AdminToolForm(model, request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, f"{model_name} added/updated successfully.")
-            return HttpResponseRedirect(reverse('buyrite:operations'))
-        else:
-            html = render_to_string('buyrite/partials/_admin_tools_forms.html', {'form': form, 'model_name': model_name}, request=request)
-            return HttpResponse(html)
+    View to handle the rejection of a dealer with a comment and email notification.
     
-    form = AdminToolForm(model)
-    html = render_to_string('buyrite/partials/_admin_tools_forms.html', {'form': form, 'model_name': model_name}, request=request)
-    return HttpResponse(html)
+    """
+    User = get_user_model()
+    user = get_object_or_404(User, pk=user_id)
+    
+    # user = get_object_or_404(settings.AUTH_USER_MODEL, pk=user_id)
+    try:
+        # dealer_profile = user.dealer_profile
+        dealer_profile = user.dealerprofile
+        
+        
+    # except DealerProfile.DoesNotExist:
+    except DealerProfile.DoesNotExist:
+        # messages.error(request, "Dealer profile not found.")
+        
+        messages.error(request, f'No dealer profile found for user {user.email}.')
+        return redirect('buyrite:operations')
 
+    if request.method == 'POST':
+        form = RejectionForm(request.POST)
+        if form.is_valid():
+            comment = form.cleaned_data['comment']
+
+            # Update the dealer profile
+            dealer_profile.is_rejected = True
+            dealer_profile.is_confirmed = False
+            dealer_profile.rejected_count += 1
+            dealer_profile.rejection_comment = comment
+            dealer_profile.save()
+
+            # Prepare and send the rejection email
+            registration_url = request.build_absolute_uri(reverse('dealer_registration_page')) # Replace with the correct URL name
+            subject = 'Your BuyRite Dealer Application Has Been Rejected'
+            message = f"Hello {user.username},\n\nYour recent application to become a BuyRite dealer has been rejected for the following reason:\n\n'{comment}'\n\nYou can reapply by visiting our registration page: {registration_url}"
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_email = [user.email]
+            
+            send_mail(subject, message, from_email, to_email, fail_silently=False)
+
+            messages.success(request, f"Dealer {user.username} has been rejected and notified. Rejected count: {dealer_profile.rejected_count}")
+            return redirect('buyrite:operations')
+    else:
+        form = RejectionForm()
+
+    context = {
+        'form': form,
+        'dealer': user,
+    }
+    
+    return render(request, 'buyrite/reject_dealer_form.html', context)
 
 
 

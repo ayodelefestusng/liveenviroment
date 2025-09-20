@@ -58,11 +58,12 @@
             <div class="card">
                 <h2 class="text-3xl font-bold text-gray-800 mb-6">Pending Dealers ({{ unconfirmed_dealers|length|intcomma }})</h2>
                 <div class="overflow-x-auto rounded-xl">
-                    <table class="w-full">
-                        <thead>
+<table class="table">
+                            <thead>
                             <tr>
                                 <th class="py-4 px-6 rounded-tl-xl">Email</th>
                                 <th class="py-4 px-6">Business Address</th>
+                                <th scope="col">Rejected Count</th>
                                 <th class="py-4 px-6 text-center rounded-tr-xl">Approve</th>
                                 <th class="py-4 px-6 text-center rounded-tr-xl">Reject</th>
                             </tr>
@@ -72,6 +73,8 @@
                                 <tr class="border-t border-gray-200 hover:bg-gray-50">
                                     <td class="py-4 px-6 text-left whitespace-nowrap">{{ dealer.user.email }}</td>
                                     <td class="py-4 px-6 text-left">{{ dealer.business_address }}</td>
+                                    <td>{{ dealer.rejected_count }}</td> <!-- Display the rejected count -->
+
                                     <td class="py-4 px-6 text-center flex items-center justify-center space-x-2">
                                         <button class="btn btn-primary"
                                             data-bs-toggle="modal"
@@ -111,8 +114,8 @@
             <div class="card">
                 <h2 class="text-3xl font-bold text-gray-800 mb-6">Approved Dealers ({{ approved_dealers|length|intcomma }})</h2>
                 <div class="overflow-x-auto rounded-xl">
-                    <table class="w-full">
-                        <thead>
+                    <table class="table">       
+                            <thead>
                             <tr>
                                 <th class="py-4 px-6 rounded-tl-xl">Email</th>
                                 <th class="py-4 px-6">Business Address</th>
@@ -142,7 +145,7 @@
             <div class="card">
                 <h2 class="text-3xl font-bold text-gray-800 mb-6">Rejected Dealers ({{ rejected_dealers|length|intcomma }})</h2>
                 <div class="overflow-x-auto rounded-xl">
-                    <table class="w-full">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th class="py-4 px-6 rounded-tl-xl">Email</th>
