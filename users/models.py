@@ -68,7 +68,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return self.emai
+        return self.email
     username = None
     email = models.EmailField(unique=True)
     full_name = models.CharField(('full name'), max_length=255)

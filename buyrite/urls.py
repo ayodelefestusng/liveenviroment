@@ -10,7 +10,7 @@ from .views import (
     dealer_registration,
     operations_view,
     approve_dealer,
-    reject_dealer,
+    reject_dealer_view, # Updated import to include the new view
     handle_admin_tool_form,
     load_models,
     load_trims,
@@ -42,7 +42,8 @@ urlpatterns = [
     # Admin & Operations
     path('operations/', operations_view, name='operations'),
     path('operations/approve/<int:pk>/', approve_dealer, name='approve_dealer'),
-    path('operations/reject/<int:pk>/', reject_dealer, name='reject_dealer'),
+    # This URL has been updated to use the reject_dealer_view
+    path('operations/reject/<int:user_id>/', reject_dealer_view, name='reject_dealer'),
     path('operations/admin-tool/<str:model_name>/', handle_admin_tool_form, name='handle_admin_tool_form'),
 
     # HTMX Endpoints for Dynamic Forms
@@ -56,8 +57,6 @@ urlpatterns = [
     path('api/vin-image-search/', VINImageSearchView.as_view(), name='vin_image_search'),
     path('api/vin-image-drive/<str:vin>/', VINImageDrive, name='vin_image_drive'),
     
-        # Additional Features
+    # Additional Features
     path('yem/', yem, name='yem'),
-    
 ]
-
