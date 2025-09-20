@@ -161,7 +161,7 @@ class Brand(models.Model):
     logo = models.ImageField(upload_to='vehicles/logo')
 
     def __str__(self):
-        return str(self.pk)
+        return str(self.name)
     class Meta:
         ordering = ['pk']  # Orders categories alphabetically by name
 
@@ -478,4 +478,4 @@ class DealerProfile(models.Model):
     is_rejected = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user.username
+        return self.user.email

@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<div class="container mx-auto">
+    <h1 class="text-4xl font-bold text-gray-800 text-center mb-8">Operations Dashboard</h1>
+    
+    <!-- Dealer Sections -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        <!-- Unconfirmed Dealers -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Pending Dealers ({{ unconfirmed_dealers|length|intcomma }})</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full leading-normal">
+                    <thead>
+                        <tr class="text-xs font-semibold tracking-wider text-left text-gray-600 uppercase bg-gray-200">
+                            <th class="py-3 px-6">Email</th>
+                            <th class="py-3 px-6">Business Address</th>
+                            <th class="py-3 px-6 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dealer in unconfirmed_dealers %}
+                            <tr class="border-b border-gray-200 hover:bg-gray-100">
+                                <td class="py-3 px-6 text-left whitespace-nowrap">{{ dealer.user.email }}</td>
+                                <td class="py-3 px-6 text-left">{{ dealer.business_address }}</td>
+                                <td class="py-3 px-6 text-center">
+                                    <button class="btn btn-primary rounded-lg"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#dealerModal"
+                                        hx-post="{% url 'buyrite:approve_dealer' dealer.pk %}"
+                                        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                        hx-target="#modal-body"
+                                        hx-swap="innerHTML">
+                                        View
+                                    </button>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3" class="py-3 px-6 text-center text-gray-500">No pending dealers.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Approved Dealers -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Approved Dealers ({{ approved_dealers|length|intcomma }})</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full leading-normal">
+                    <thead>
+                        <tr class="text-xs font-semibold tracking-wider text-left text-gray-600 uppercase bg-gray-200">
+                            <th class="py-3 px-6">Email</th>
+                            <th class="py-3 px-6">Business Address</th>
+                            <th class="py-3 px-6 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dealer in approved_dealers %}
+                            <tr class="border-b border-gray-200 hover:bg-gray-100">
+                                <td class="py-3 px-6 text-left whitespace-nowrap">{{ dealer.user.email }}</td>
+                                <td class="py-3 px-6 text-left">{{ dealer.business_address }}</td>
+                                <td class="py-3 px-6 text-center">
+                                    <button class="btn btn-primary rounded-lg">View</button>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3" class="py-3 px-6 text-center text-gray-500">No approved dealers.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Rejected Dealers -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Rejected Dealers ({{ rejected_dealers|length|intcomma }})</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full leading-normal">
+                    <thead>
+                        <tr class="text-xs font-semibold tracking-wider text-left text-gray-600 uppercase bg-gray-200">
+                            <th class="py-3 px-6">Email</th>
+                            <th class="py-3 px-6">Business Address</th>
+                            <th class="py-3 px-6 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dealer in rejected_dealers %}
+                            <tr class="border-b border-gray-200 hover:bg-gray-100">
+                                <td class="py-3 px-6 text-left whitespace-nowrap">{{ dealer.user.email }}</td>
+                                <td class="py-3 px-6 text-left">{{ dealer.business_address }}</td>
+                                <td class="py-3 px-6 text-center">
+                                    <button class="btn btn-danger rounded-lg">View</button>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3" class="py-3 px-6 text-center text-gray-500">No rejected dealers.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Tool Forms Section -->
+    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Admin Tools</h2>
+        <div class="flex flex-wrap gap-2">
+            {% for model in allowed_models %}
+                <a href="{% url 'buyrite:handle_admin_tool_form' model_name=model.model_name %}" 
+                    class="btn btn-primary">
+                    Add/Edit {{ model.name }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Modal for displaying dealer details -->
+<div id="dealerModal" class="modal fade" tabindex="-1" aria-labelledby="dealerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dealerModalLabel">Dealer Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="modal-body" class="modal-body">
+                <!-- HTMX will load content here -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

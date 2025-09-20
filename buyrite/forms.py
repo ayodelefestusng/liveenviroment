@@ -136,23 +136,30 @@ class DealerRegistrationForm(forms.ModelForm):
         fields = ['business_logo', 'business_address', 'state', 'town']
 
     def __init__(self, *args, **kwargs):
+        # Call the parent's __init__ first
         super().__init__(*args, **kwargs)
+
         for field_name, field in self.fields.items():
             field.widget.attrs.update({
                 'class': 'form-control rounded-lg'
             })
+
+        # Dynamically filter towns based on the submitted state on POST,
+        # or the initial state on GET.
         
-        # Dynamically filter the towns based on the initial state
-        # This is for pre-populating on GET request
-        if 'state' in self.initial:
-            state_id = self.initial['state']
-            self.fields['town'].queryset = Town.objects.filter(state_id=state_id).order_by('name')
+        # Check if state data is available (either from POST or initial data)
+        if 'state' in self.data:
+            try:
+                state_id = int(self.data.get('state'))
+                self.fields['town'].queryset = Town.objects.filter(state_id=state_id).order_by('name')
+            except (ValueError, TypeError):
+                self.fields['town'].queryset = Town.objects.none()
+        elif self.initial.get('state'):
+            self.fields['town'].queryset = Town.objects.filter(state=self.initial['state']).order_by('name')
         else:
             self.fields['town'].queryset = Town.objects.none()
 
-
-
-class AdminToolForm(forms.ModelForm):
+class AdminToolForm1(forms.ModelForm):
     """
     A dynamic form to create/edit any specified model.
     
@@ -160,13 +167,14 @@ class AdminToolForm(forms.ModelForm):
     Meta class with the `model` and `fields` based on the model instance
     passed during initialization in the view.
     """
-    def __init__(self, model, *args, **kwargs):
+    def __init__(self, model_class, *args, **kwargs):
         # Dynamically set the form's model and fields
         class Meta:
-            model = model
+            model = model_class
             fields = '__all__'
         self.Meta = Meta
         super().__init__(*args, **kwargs)
         
         for field_name, field in self.fields.items():
             field.widget.attrs.update({'class': 'form-control rounded-lg'})
+
