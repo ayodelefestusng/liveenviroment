@@ -1,75 +1,75 @@
 # ==========================
 # 🌐 Django & Project Settings
 # ==========================
-from seaborn import colors
-from django.conf import settings
-# from .models import Prompt
-import matplotlib.pyplot as plt
 import base64
-from io import BytesIO
-# import matplotlib.pyplot as plt
-
-
-from io import StringIO
-import pandas as pd
-
+# import sys
+# import uuid
+import json
 # ==========================
 # 📦 Standard Library
 # ==========================
 import os
-# import sys
-# import uuid
-import json
 # import random
 from datetime import datetime
+from io import BytesIO, StringIO
 from pprint import pprint
-
-# ==========================
-# 📦 Third-Party Core
-# ==========================
-from dotenv import load_dotenv
-from PIL import Image
-from pydantic import BaseModel, Field
-from typing import Any, Dict, List, Optional, Literal
-# from typing_extensions import TypedDict
+from typing import Any, Dict, List, Literal, Optional
 
 # ==========================
 # 🧠 Google Generative AI
 # ==========================
 import google.generativeai as genai
+# from .models import Prompt
+import matplotlib.pyplot as plt
+import pandas as pd
+from django.conf import settings
+# ==========================
+# 📦 Third-Party Core
+# ==========================
+from dotenv import load_dotenv
 from google.generativeai import GenerativeModel, configure
-from google.generativeai.types import HarmCategory, HarmBlockThreshold
-
-# ==========================
-# 🤖 LangChain Core & Community
-# ==========================
-# from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
-from langchain_core.messages import (
-    AIMessage, HumanMessage, SystemMessage
-)
-# from langchain_core.documents import Document
-# from langchain_core.output_parsers import JsonOutputParser
-# from langchain_core.runnables import RunnableConfig
-from langchain_core.vectorstores import InMemoryVectorStore
-
+from google.generativeai.types import HarmBlockThreshold, HarmCategory
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.tools.sql_database.tool import QuerySQLDatabaseTool
 # from langchain_community.vectorstores import Chroma
 from langchain_community.utilities import SQLDatabase
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+# ==========================
+# 🤖 LangChain Core & Community
+# ==========================
+# from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+# from langchain_core.documents import Document
+# from langchain_core.output_parsers import JsonOutputParser
+# from langchain_core.runnables import RunnableConfig
+from langchain_core.vectorstores import InMemoryVectorStore
+from langchain_google_genai import (ChatGoogleGenerativeAI,
+                                    GoogleGenerativeAIEmbeddings)
 from langchain_tavily import TavilySearch
-
-from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
-
-# ==========================
-# 🔁 LangGraph Imports
-# ==========================
-from langgraph.graph import StateGraph, START, END, MessagesState
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 # from langgraph.graph.message import add_messages
 # from langgraph.prebuilt import ToolNode, tools_condition
 # from langgraph.checkpoint.memory import MemorySaver
 # from langgraph_checkpoint.postgres import PostgresSaver
 from langgraph.checkpoint.postgres import PostgresSaver
+# ==========================
+# 🔁 LangGraph Imports
+# ==========================
+from langgraph.graph import END, START, MessagesState, StateGraph
+from PIL import Image
+from pydantic import BaseModel, Field
+from seaborn import colors
+
+# import matplotlib.pyplot as plt
+
+
+
+
+# from typing_extensions import TypedDict
+
+
+
+
+
 
 # from langgraph.errors import NodeInterrupt
 
@@ -426,8 +426,8 @@ print(f"Using x_column: {x_column}, y_column: {y_column}")
     
 
 import matplotlib.pyplot as plt
-from matplotlib.ticker import FuncFormatter
 import pandas as pd
+from matplotlib.ticker import FuncFormatter
 
 # Chart mapping
 chart_map = {

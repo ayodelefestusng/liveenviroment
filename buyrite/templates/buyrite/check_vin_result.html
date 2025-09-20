@@ -1,0 +1,31 @@
+{% extends "bases.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mx-auto py-8 max-w-xl">
+    <h2 class="text-2xl font-bold mb-6 text-center">Check VIN Result</h2>
+
+    <form method="post" action="{% url 'buyrite:check_vin' %}" class="space-y-4">
+        {% csrf_token %}
+        <div>
+            <label for="{{ form.vin.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                Enter 17-character VIN
+            </label>
+            {{ form.vin }}
+            {% if form.vin.errors %}
+                <p class="text-red-500 text-sm mt-1">{{ form.vin.errors|join:", " }}</p>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+            Check Result
+        </button>
+    </form>
+
+    {% if message %}
+        <div class="mt-6 text-center text-red-600 font-semibold">
+            {{ message }}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

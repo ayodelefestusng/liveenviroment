@@ -1,13 +1,16 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required, permission_required
-from django.template.loader import render_to_string
-from .models import DealerProfile, State, Town, Category, Brand, VehicleModel, Trim, ManufactureYear, FuelOption, Color, InnerColor, EngineType, DriveTerrain, VAS, Condition
 from django import forms
 from django.apps import apps
 from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required, permission_required
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
+from django.urls import reverse
+
+from .models import (VAS, Brand, Category, Color, Condition, DealerProfile,
+                     DriveTerrain, EngineType, FuelOption, InnerColor,
+                     ManufactureYear, State, Town, Trim, VehicleModel)
 
 # A dictionary mapping model names to their actual classes
 MODEL_MAPPING = {

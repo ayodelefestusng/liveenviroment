@@ -1,7 +1,11 @@
 import csv
+
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from myapp.models import Category, Brand, VehicleModel, Trim # Replace 'your_app_name'
+
+from myapp.models import (Brand, Category, Trim,  # Replace 'your_app_name'
+                          VehicleModel)
+
 
 class Command(BaseCommand):
     help = 'Populates Category, Brand, VehicleModel, and Trim models from a CSV file.'

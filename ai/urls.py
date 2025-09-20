@@ -1,5 +1,6 @@
 # myproject/myapp/urls.py
 from django.urls import path
+
 from .views import *
 
 app_name = 'ai'  # ✅ This defines the namespace

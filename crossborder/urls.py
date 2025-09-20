@@ -1,10 +1,7 @@
 from django.urls import path
 
 from . import views
-
-from django.urls import path
-
-from . import views
+from .views import *
 
 # urlpatterns = [
 #     # ex: /polls/
@@ -18,8 +15,6 @@ from . import views
 # ]
 
 
-from django.urls import path
-from .views import *
 app_name = 'crossborder'
 
 urlpatterns = [

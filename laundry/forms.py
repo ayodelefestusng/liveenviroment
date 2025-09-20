@@ -1,6 +1,8 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser, Order, OrderItem, Comment, ServiceCategory, Service
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+
+from .models import (Comment, CustomUser, Order, OrderItem, Service,
+                     ServiceCategory)
 
 
 # class CustomUserCreationForm1(UserCreationForm):

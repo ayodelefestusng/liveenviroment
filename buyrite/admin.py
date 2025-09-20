@@ -1,16 +1,9 @@
 from django.contrib import admin
 
-
-
-
-from .models import (
-    User, Category, Carousel, Tag, Post, Article,
-    Categorys, Brand, VehicleModel, Trim, ManufactureYear,
-    Condition, FuelOption, Color, EngineType, DriveTerrain,
-    Vas, State, Town,InnerColor,DealerProfile
-)
-
-from .models import Vehicle
+from .models import (Article, Brand, Carousel, Category, Categorys, Color,
+                     Condition, DealerProfile, DriveTerrain, EngineType,
+                     FuelOption, InnerColor, ManufactureYear, Post, State, Tag,
+                     Town, Trim, User, Vas, Vehicle, VehicleModel)
 
 # admin.site.register(User)
 admin.site.register(Category)

@@ -224,17 +224,17 @@
 
 import os
 import random
+
+from django.conf import settings
+from django.contrib.auth.hashers import make_password
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
-from django.contrib.auth.hashers import make_password
-from myapp.models import (
-    Brand, Category, ManufactureYear, VehicleModel, Trim, Vehicle,
-    FuelOption, Color, EngineType, DriveTerrain, State, Town, Vas
-)
-from users.models import User
-from myapp.models import Condition
 from django.utils.text import slugify
-from django.conf import settings
+
+from myapp.models import (Brand, Category, Color, Condition, DriveTerrain,
+                          EngineType, FuelOption, ManufactureYear, State, Town,
+                          Trim, Vas, Vehicle, VehicleModel)
+from users.models import User
 
 
 class Command(BaseCommand):

@@ -1,8 +1,8 @@
 # mcp_server.py
 
-from fastmcp import FastMCP
 # from myapp.client_streamable_http import stream_data  # Import your function
 from client_streamable_http import stream_data
+from fastmcp import FastMCP
 
 # Create MCP server instance
 mcp = FastMCP("MyProject MCP Server")

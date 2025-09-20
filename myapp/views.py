@@ -1,19 +1,15 @@
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import (
-    HttpResponse,
-    JsonResponse,
-    HttpResponseRedirect,
-    HttpResponseServerError
-)
-from django.urls import reverse
-from django.contrib.auth import login, logout, authenticate
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
-from django.contrib import messages
+from django.http import (HttpResponse, HttpResponseRedirect,
+                         HttpResponseServerError, JsonResponse)
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 
-
-from .forms import RegistrationForm,CustomUser,PasswordChangeForm,PasswordResetForm,PasswordSetupForm
+from .forms import (CustomUser, PasswordChangeForm, PasswordResetForm,
+                    PasswordSetupForm, RegistrationForm)
 
 
 def register(request):

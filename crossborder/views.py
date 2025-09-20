@@ -2,40 +2,25 @@
 
 # Create your views here.
 
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from django.utils import timezone
-from datetime import timedelta
-import random
 import io
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.utils import timezone
-from django.db import transaction as db_transaction
-from decimal import Decimal
-from datetime import timedelta
 import random
-from .models import Customer, Transaction, AccountTransactionT, TellerDetails
-from .forms import TransactionWithAccountForm,TransactionWithoutAccountForm
-from django.contrib.auth.decorators import login_required
-
-
-
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponse, JsonResponse
-from .models import Customer
-
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
+from datetime import timedelta
 from decimal import Decimal
 
-from django.contrib.auth import  get_user_model
-from .forms import CurencyForm,SenderAccountLookupForm,TransactionWithAccountForm
-from .models import Customer,Transaction,TellerDetails,AccountTransactionT
+from django.contrib import messages
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.db import transaction as db_transaction
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+
+from .forms import (CurencyForm, SenderAccountLookupForm,
+                    TransactionWithAccountForm, TransactionWithoutAccountForm)
+from .models import AccountTransactionT, Customer, TellerDetails, Transaction
+
 User = get_user_model
 
 

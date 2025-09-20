@@ -1,29 +1,30 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.db.models import Sum, F, ExpressionWrapper, DecimalField
-from django.template.loader import render_to_string
-from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse, HttpResponseRedirect
-from django.urls import reverse
-from .models import Order, OrderItem, Service, ServiceCategory, Comment
-from .forms import OrderForm, OrderItemForm, CommentForm, AddItemForm
-from django.contrib import messages, auth
-from django.views.decorators.http import require_http_methods
-from .utils import is_admin
-from django.core.mail import send_mail
 import json
-from uuid import UUID
-from uuid import UUID
-from django.db import IntegrityError
-from django.contrib.auth.decorators import user_passes_test
 import logging
 from datetime import timedelta
-from django.utils import timezone
-from django.core.mail import EmailMessage
+from uuid import UUID
+
 from django.conf import settings
+from django.contrib import auth, messages
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import ValidationError
+from django.core.mail import EmailMessage, send_mail
+from django.db import IntegrityError
+from django.db.models import DecimalField, ExpressionWrapper, F, Sum
+from django.http import (HttpResponse, HttpResponseBadRequest,
+                         HttpResponseRedirect, JsonResponse)
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils import timezone
+from django.views.decorators.http import require_http_methods
+
+from .forms import AddItemForm, CommentForm, OrderForm, OrderItemForm
+from .models import Comment, Order, OrderItem, Service, ServiceCategory
+from .utils import is_admin
 
 logger = logging.getLogger(__name__)
 import requests
+
 # User-facing views
 
 def homepage(request):

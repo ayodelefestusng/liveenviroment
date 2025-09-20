@@ -1,8 +1,7 @@
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_ollama.llms import OllamaLLM
 from datetime import datetime
 
-
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_ollama.llms import OllamaLLM
 
 start_time = datetime.now()
 print(f"Start Time: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
