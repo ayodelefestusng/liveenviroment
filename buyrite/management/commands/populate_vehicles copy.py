@@ -1,9 +1,14 @@
 import os
 import random
-from django.core.management.base import BaseCommand
-from django.core.files import File
+
 from django.contrib.auth.hashers import make_password
-from myapp.models import Brand, Category, ManufactureYear, Trim, VehicleModel, Vehicle, User
+from django.core.files import File
+from django.core.management.base import BaseCommand
+from django.utils.text import slugify
+
+from myapp.models import (Brand, Category, Color, Condition, DriveTerrain,
+                          EngineType, FuelOption, ManufactureYear, State, Town,
+                          Trim, User, Vas, Vehicle, VehicleModel)
 
 # class Command(BaseCommand):
 #     help = 'Auto-populate vehicle eCommerce database with images'
@@ -86,26 +91,8 @@ from myapp.models import Brand, Category, ManufactureYear, Trim, VehicleModel, V
 #         self.stdout.write(self.style.SUCCESS('✅ Vehicle database populated successfully with images.'))
 
 
-from django.core.management.base import BaseCommand
-from django.core.files import File
-from django.contrib.auth.hashers import make_password
-from myapp.models import (
-    Brand, Category, ManufactureYear, Trim, VehicleModel, Vehicle, User,
-    Condition, FuelOption, Color, EngineType, DriveTerrain, State, Town, Vas
-)
-import os
-import random
 
-from django.core.management.base import BaseCommand
-from django.core.files import File
-from django.contrib.auth.hashers import make_password
-from django.utils.text import slugify
-from myapp.models import (
-    Vehicle, Brand, Category, ManufactureYear, VehicleModel, Trim,
-    Condition, FuelOption, Color, EngineType, DriveTerrain, State, Town, Vas,User
-)
 
-import os, random
 
 class Command(BaseCommand):
     help = 'Auto-populate vehicle eCommerce database with images and randomized attributes'

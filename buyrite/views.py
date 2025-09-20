@@ -1,7 +1,7 @@
 # ─── Standard Library ───────────────────────────────────────────────────────────
 import hashlib
-import requests
 
+import requests
 # ─── Django Core ────────────────────────────────────────────────────────────────
 from django import forms
 from django.apps import apps
@@ -9,51 +9,31 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.models import Group, Permission
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Q, F
-from django.http import (
-    HttpResponse, JsonResponse, HttpResponseRedirect, HttpResponseServerError
-)
-from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import Group, Permission, User
+from django.core.mail import send_mail
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import F, Q
+from django.http import (HttpResponse, HttpResponseRedirect,
+                         HttpResponseServerError, JsonResponse)
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.utils.timezone import now
 from django.views import View
-from django.views.generic import ListView, DetailView
-
+from django.views.generic import DetailView, ListView
 # ─── Django REST Framework ──────────────────────────────────────────────────────
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from .forms import ( DealerRegistrationForm,
+                    RejectionForm, VehicleForm)
 # ─── Local Apps ─────────────────────────────────────────────────────────────────
-from .models import (
-    Vehicle, Category, State, Town, Brand, VehicleModel, Trim, DealerProfile,
-    InnerColor, ManufactureYear, FuelOption, Color, EngineType, DriveTerrain,
-    Vas, Condition, Carousel, Post
-)
-from .forms import VehicleForm, DealerRegistrationForm, PostForm, AdminToolForm, RejectionForm
-
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib import messages
-from django.urls import reverse
-from django.http import HttpResponseRedirect
-from django.contrib.auth.models import User
-from django.core.mail import send_mail
-from django.conf import settings
-from .forms import  RejectionForm
-from .models import DealerProfile, Category, Brand, VehicleModel, Trim, ManufactureYear, FuelOption, Color, InnerColor, EngineType, DriveTerrain, Vas, State, Town, Condition
-
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.urls import reverse
-from .models import DealerProfile, State
-from .forms import DealerRegistrationForm
+from .models import (Brand, Carousel, Category, Color, Condition,
+                     DealerProfile, DriveTerrain, EngineType, FuelOption,
+                     InnerColor, ManufactureYear, Post, State, Town, Trim, Vas,
+                     Vehicle, VehicleModel)
 
 # ─── Auth User Model ────────────────────────────────────────────────────────────
 User = get_user_model()
@@ -664,10 +644,6 @@ def dealer_registration(request):
     }
     return render(request, 'buyrite/dealer_reg.html', context)
 
-
-
-
-
 @login_required
 @permission_required('auth.add_user', raise_exception=True)
 def operations_view1(request):
@@ -838,30 +814,35 @@ def approve_dealer(request, pk):
 
 
 @login_required
-def reject_dealer_view(request, user_id):
+def reject_dealer_view1(request, user_id):
     """
     View to handle the rejection of a dealer with a comment and email notification.
     
     """
     User = get_user_model()
-    user = get_object_or_404(User, pk=user_id)
+    user = get_object_or_404(DealerProfile, pk=user_id)
+    
     
     # user = get_object_or_404(settings.AUTH_USER_MODEL, pk=user_id)
     try:
         # dealer_profile = user.dealer_profile
-        dealer_profile = user.dealerprofile
+        dealer_profile = user.user.dealerprofile
+        print ("=dealer_profile",dealer_profile)
         
         
     # except DealerProfile.DoesNotExist:
     except DealerProfile.DoesNotExist:
         # messages.error(request, "Dealer profile not found.")
         
-        messages.error(request, f'No dealer profile found for user {user.email}.')
+        messages.error(request, f'No dealer profile found for user {user.user}.')
         return redirect('buyrite:operations')
 
     if request.method == 'POST':
+        
         form = RejectionForm(request.POST)
         if form.is_valid():
+            # print ("=Kule",user.user.email)
+            print ( form.errors)
             comment = form.cleaned_data['comment']
 
             # Update the dealer profile
@@ -872,11 +853,12 @@ def reject_dealer_view(request, user_id):
             dealer_profile.save()
 
             # Prepare and send the rejection email
-            registration_url = request.build_absolute_uri(reverse('dealer_registration_page')) # Replace with the correct URL name
+            registration_url = request.build_absolute_uri(reverse('buyrite:dealer_registration')) # Replace with the correct URL name
             subject = 'Your BuyRite Dealer Application Has Been Rejected'
-            message = f"Hello {user.username},\n\nYour recent application to become a BuyRite dealer has been rejected for the following reason:\n\n'{comment}'\n\nYou can reapply by visiting our registration page: {registration_url}"
+            message = f"Hello {user.email},\n\nYour recent application to become a BuyRite dealer has been rejected for the following reason:\n\n'{comment}'\n\nYou can reapply by visiting our registration page: {registration_url}"
             from_email = settings.DEFAULT_FROM_EMAIL
-            to_email = [user.email]
+            # to_email = [user.email]
+            to_email=[user.user.email]
             
             send_mail(subject, message, from_email, to_email, fail_silently=False)
 
@@ -892,7 +874,66 @@ def reject_dealer_view(request, user_id):
     
     return render(request, 'buyrite/reject_dealer_form.html', context)
 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.urls import reverse
+from django.core.mail import send_mail
+from django.conf import settings
 
+from .models import DealerProfile
+from .forms import RejectionForm
+
+@login_required
+def reject_dealer_view(request, user_id):
+    """
+    View to handle the rejection of a dealer with a comment and email notification.
+    """
+    dealer_profile = get_object_or_404(DealerProfile, pk=user_id)
+
+    try:
+        user = dealer_profile.user
+    except AttributeError:
+        messages.error(request, "Associated user not found for this dealer profile.")
+        return redirect('buyrite:operations')
+
+    if request.method == 'POST':
+        form = RejectionForm(request.POST)
+        print("Helloe",form.errors)
+        if form.is_valid():
+            print("hhd",form.errors)
+            print("dkdkdkd",form)
+            comment = form.cleaned_data['comment']
+
+            # Update dealer profile
+            dealer_profile.is_rejected = True
+            dealer_profile.is_confirmed = False
+            dealer_profile.rejected_count += 1
+            dealer_profile.rejection_comment = comment
+            dealer_profile.save()
+
+            # Send rejection email
+            registration_url = request.build_absolute_uri(reverse('buyrite:dealer_registration'))
+            subject = 'Your BuyRite Dealer Application Has Been Rejected'
+            message = (
+                f"Hello {user},\n\n"
+                f"Your application to become a BuyRite dealer has been rejected for the following reason:\n\n"
+                f"'{comment}'\n\n"
+                f"You may reapply by visiting: {registration_url}"
+            )
+            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email], fail_silently=False)
+
+            messages.success(request, f"Dealer {user.username} has been rejected and notified.")
+            return redirect('buyrite:operations')
+    else:
+        form = RejectionForm()
+
+    context = {
+        'form': form,
+        'dealer': dealer_profile,
+    }
+
+    return render(request, 'buyrite/reject_dealer_form.html', context)
 
 def fetch_vehicle_image(vin, image_size):
     url = "https://zylalabs.com/api/9168/vin+image+capture+for+vehicles+api/16576/get+image"
@@ -908,9 +949,6 @@ def fetch_vehicle_image(vin, image_size):
     else:
         raise Exception(f"API request failed with status {response.status_code}: {response.text}")
     
-
-
-
 class VehicleImageView(View):
     def get(self, request):
         vin = request.GET.get("vin")
@@ -959,8 +997,6 @@ class VINImageSearchView(APIView):
         except requests.exceptions.RequestException as e:
             return Response({"error": str(e)}, status=status.HTTP_502_BAD_GATEWAY)
         
-
-
 def VINImageDrive(request, vin):
     image_size = 300
 
@@ -975,7 +1011,7 @@ def VINImageDrive(request, vin):
 
 
     headers = {
-        "Authorization": "Bearer YOUR_API_KEY"
+        "Authorization": "10147|eRCWhoVKpneZTzq0GeAziaFW8gj9PlzBfj03iIbW"
     }
 
 
@@ -995,3 +1031,37 @@ def VINImageDrive(request, vin):
 
     except requests.exceptions.RequestException as e:
         return JsonResponse({"error": str(e)}, status=502)
+    
+    
+    # views.py
+from django.shortcuts import render, redirect
+from django.http import FileResponse
+from django.conf import settings
+from .forms import VINCheckForm
+import os
+
+VALID_VIN = "19VDE1F75CE000001"
+PDF_FILENAME = "Nigeria Custom Paper.pdf"
+PDF_PATH = os.path.join(settings.MEDIA_ROOT, "pdfs", PDF_FILENAME)
+
+def check_vin_view(request):
+    form = VINCheckForm(request.POST or None)
+    message = ""
+
+    if request.method == "POST":
+        if form.is_valid():
+            vin = form.cleaned_data['vin']
+            if vin == VALID_VIN:
+                if os.path.exists(PDF_PATH):
+                    return FileResponse(open(PDF_PATH, 'rb'), as_attachment=True, filename=PDF_FILENAME)
+                else:
+                    message = "The PDF file could not be found on the server."
+            else:
+                message = "Invalid VIN code. Please check and try again."
+        else:
+            message = "VIN must be exactly 17 characters."
+
+    return render(request, "buyrite/check_vin_result.html", {
+        "form": form,
+        "message": message
+    })

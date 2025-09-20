@@ -1,36 +1,33 @@
-from django.shortcuts import render
-
-# Create your views here.
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import (
-    HttpResponse,
-    JsonResponse,
-    HttpResponseRedirect,
-    HttpResponseServerError
-)
-from django.conf import settings
-from django.urls import reverse
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.tokens import default_token_generator
-from django.core.mail import send_mail
-from django.contrib import messages
+import base64
+import io
+import random
+from io import BytesIO
 
 import pyotp
 import qrcode
-import random
-import io
-from io import BytesIO
-import base64
-
-from django.contrib.auth import get_user_model
-
-
-from .forms import RegistrationForm,User,PasswordChangeForm,PasswordResetForm,PasswordSetupForm
-
-
-from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+from django.http import (HttpResponse, HttpResponseRedirect,
+                         HttpResponseServerError, JsonResponse)
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+
+from .forms import (PasswordChangeForm, PasswordResetForm, PasswordSetupForm,
+                    RegistrationForm, User)
+
+# Create your views here.
+
+
+
+
+
+
+
 
 
 def about(request):

@@ -2,14 +2,10 @@ from django import forms
 from django.apps import apps
 from django.contrib.auth import get_user_model
 
-from .models import (
-    Post, Tag,
-    Vehicle, DealerProfile, InnerColor,
-    Category, Brand, VehicleModel, Trim,
-    ManufactureYear, FuelOption, Color,
-    EngineType, DriveTerrain, Vas,
-    State, Town, Condition
-)
+from .models import (Brand, Category, Color, Condition, DealerProfile,
+                     DriveTerrain, EngineType, FuelOption, InnerColor,
+                     ManufactureYear, Post, State, Tag, Town, Trim, Vas,
+                     Vehicle, VehicleModel)
 
 User = get_user_model()
 
@@ -179,13 +175,18 @@ class AdminToolForm1(forms.ModelForm):
             field.widget.attrs.update({'class': 'form-control rounded-lg'})
 
 
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.urls import reverse
+from django import forms
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
-from .models import DealerProfile, State, Town, Category, Brand, VehicleModel, Trim, ManufactureYear, FuelOption, Color, InnerColor, EngineType, DriveTerrain, Vas, Condition
-from django import forms
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
+from django.urls import reverse
+
+from .models import (Brand, Category, Color, Condition, DealerProfile,
+                     DriveTerrain, EngineType, FuelOption, InnerColor,
+                     ManufactureYear, State, Town, Trim, Vas, VehicleModel)
+
+
 class AdminToolForm(forms.ModelForm):
     """
     A dynamic form to create/edit any specified model.
@@ -213,4 +214,17 @@ class RejectionForm(forms.Form):
         widget=forms.Textarea(attrs={'rows': 4}),
         label="Rejection Comment",
         required=True
+    )
+    
+    
+    
+# forms.py
+from django import forms
+
+class VINCheckForm(forms.Form):
+    vin = forms.CharField(
+        max_length=17,
+        min_length=17,
+        label="Enter VIN",
+        widget=forms.TextInput(attrs={'placeholder': 'Enter 17-character VIN'})
     )

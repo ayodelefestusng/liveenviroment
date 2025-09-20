@@ -1,7 +1,9 @@
 
 # Register your models here.
 from django.contrib import admin
-from .models import Currency,Country,Client,BranchDetails,TellerDetails,Customer,Transaction,BranchAccountTill
+
+from .models import (BranchAccountTill, BranchDetails, Client, Country,
+                     Currency, Customer, TellerDetails, Transaction)
 
 # Register your models here.
 

@@ -1,8 +1,11 @@
 # my_app/management/commands/populate_data.py
 import csv
+
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from myapp.models import State, Town # Replace with your app name
+
+from myapp.models import State, Town  # Replace with your app name
+
 
 class Command(BaseCommand):
     help = 'Populates the State and Town models from a CSV file.'

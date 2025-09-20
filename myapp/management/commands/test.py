@@ -1,8 +1,7 @@
-from django.core.mail import send_mail
-
-
 import os
+
 import django
+from django.core.mail import send_mail
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "myproject.settings")
 django.setup()

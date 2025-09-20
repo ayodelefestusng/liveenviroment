@@ -1,9 +1,11 @@
+import datetime
 import random
 import uuid
 
-import datetime
 from django.core.management.base import BaseCommand
-from ai.models import NigerianName, Branch, Customer, Transaction, LoanReport, ComplianceRecord, BranchPerformance, Employee
+
+from ai.models import (Branch, BranchPerformance, ComplianceRecord, Customer,
+                       Employee, LoanReport, NigerianName, Transaction)
 
 NIGERIAN_FIRST_NAMES = ["Chinedu", "Emeka", "Abiola", "Uche", "Adebayo", "Ngozi", "Mary", "Tunde", "Hauwa", "Fatima"]
 NIGERIAN_LAST_NAMES = ["Okonkwo", "Adeyemi", "Mohammed", "Ibrahim", "Eze", "Osagie", "Umeh", "Bassey", "Olufemi", "Balogun"]

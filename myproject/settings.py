@@ -10,20 +10,19 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
-import os
 
-import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
 
 
-from pathlib import Path
-from dotenv import load_dotenv
 from os import getenv
+from pathlib import Path
 
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -111,6 +110,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'buyrite.context_processors.vin_form_processor',
+
             ],
         },
     },
@@ -192,26 +193,26 @@ SITE_ID = 1
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
-qDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-MAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "mail.kupiansolutions.com"
-EMAIL_PORT = 465
-EMAIL_USE_TLS = False  # TLS is typically used with port 587; port 465 uses SSL
-EMAIL_USE_SSL = True   # Add this line for SSL support
-EMAIL_HOST_USER = "demos@kupiansolutions.com"
-EMAIL_HOST_PASSWORD = "a1l)8~}};b][b{I&"
-DEFAULT_FROM_EMAIL = "demos@kupiansolutions.com"
+# qDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# MAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_HOST = "mail.kupiansolutions.com"
+# EMAIL_PORT = 465
+# EMAIL_USE_TLS = False  # TLS is typically used with port 587; port 465 uses SSL
+# EMAIL_USE_SSL = True   # Add this line for SSL support
+# EMAIL_HOST_USER = "demos@kupiansolutions.com"
+# EMAIL_HOST_PASSWORD = "a1l)8~}};b][b{I&"
+# DEFAULT_FROM_EMAIL = "demos@kupiansolutions.com"
 
 
 
 
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_HOST = "smtp.gmail.com"
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-# EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-# DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
 
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'users:login'

@@ -1,8 +1,9 @@
 # myapp/models.py
-from django.db import models
+from django.conf import \
+    settings  # Still needed if CustomUser remains primary for other features
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.conf import settings # Still needed if CustomUser remains primary for other features
 
 # --- END CustomUser ---
 
@@ -286,9 +287,10 @@ class Prompt7(models.Model):
 
     
     
-from django.db import models
 import random
 import string
+
+from django.db import models
 
 # Define choices for Nigerian States
 NIGERIAN_STATES = [

@@ -2,6 +2,7 @@
 
 import requests
 
+
 def stream_data():
     url = "https://example.com/stream"
     response = requests.get(url, stream=True)

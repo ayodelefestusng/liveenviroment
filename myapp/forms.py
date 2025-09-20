@@ -1,7 +1,9 @@
 # myproject/myapp/forms.py
 from django import forms
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
+
 from .models import CustomUser
+
 
 class RegistrationForm(forms.ModelForm):
     class Meta:
@@ -24,7 +26,9 @@ class PasswordChangeForm(forms.Form):
     
 
 from django import forms
+
 from .models import Prompt
+
 
 class PromptForm(forms.ModelForm):
     class Meta:
@@ -34,7 +38,9 @@ class PromptForm(forms.ModelForm):
         
 
 from django import forms
+
 from .models import Client
+
 
 class ClientForm(forms.ModelForm):
     class Meta:

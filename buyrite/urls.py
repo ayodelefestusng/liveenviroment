@@ -1,26 +1,12 @@
 from django.urls import path
-from .views import (
-    HomeView,
-    VehicleDetailView,
-    DashboardView,
-    upload_vehicle,
-    upload_vehicle_success,
-    edit_vehicle,
-    mark_as_sold,
-    dealer_registration,
-    operations_view,
-    approve_dealer,
-    reject_dealer_view, # Updated import to include the new view
-    handle_admin_tool_form,
-    load_models,
-    load_trims,
-    load_towns,
-    load_years,
-    VehicleImageView,
-    VINImageSearchView,
-    VINImageDrive,
-    yem
-)
+
+from .views import reject_dealer_view  # Updated import to include the new view
+from .views import (DashboardView, HomeView, VehicleDetailView,
+                    VehicleImageView, VINImageDrive, VINImageSearchView,
+                    approve_dealer, dealer_registration, edit_vehicle,
+                    handle_admin_tool_form, load_models, load_towns,
+                    load_trims, load_years, mark_as_sold, operations_view,
+                    upload_vehicle, upload_vehicle_success, yem,check_vin_view)
 
 app_name = 'buyrite'
 
@@ -59,4 +45,9 @@ urlpatterns = [
     
     # Additional Features
     path('yem/', yem, name='yem'),
+     path('check-vin/', check_vin_view, name='check_vin'),
+
+
 ]
+
+

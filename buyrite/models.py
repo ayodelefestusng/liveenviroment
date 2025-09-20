@@ -1,29 +1,24 @@
-from django.db import models
-
+import hashlib
 # Create your models here.
 # Standard library
 import os
 import uuid
-import hashlib
 
-# Third-party
-from PIL import Image
-
-# Django core
-from django.db import models
 from django.conf import settings
-from django.utils import timezone
-from django.utils.text import slugify
+from django.contrib.auth import get_user_model
+# Django auth
+from django.contrib.auth.models import (AbstractBaseUser, AbstractUser,
+                                        BaseUserManager, PermissionsMixin)
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator
+# Django core
+from django.db import models
 from django.urls import reverse
+from django.utils import timezone
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
-
-# Django auth
-from django.contrib.auth.models import (
-    AbstractUser, AbstractBaseUser, BaseUserManager, PermissionsMixin
-)
-from django.contrib.auth import get_user_model
+# Third-party
+from PIL import Image
 
 # Auth user model instance
 User = get_user_model()
@@ -466,23 +461,27 @@ class Article(models.Model):
 
 
 
-from django.db import models
 from django.conf import settings
+from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils.timezone import now
 
 # New: DealerProfile model to store dealer-specific info
 class DealerProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     business_logo = models.ImageField(upload_to='dealer_logos/', null=True, blank=True)
-    business_address = models.CharField(max_length=255)
+    # business_address = models.CharField(max_length=255)
+    business_address = models.CharField(max_length=255,verbose_name="Business Address",help_text="Enter the full business address of the dealer.")
+    # business_name = models.CharField(max_length=255,verbose_name="Business Name",help_text="Enter the registered name of the dealer's business.", default="")
     state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True)
     town = models.ForeignKey(Town, on_delete=models.SET_NULL, null=True)
     is_confirmed = models.BooleanField(default=False)
     is_rejected = models.BooleanField(default=False)
     rejected_count = models.IntegerField(default=0)
     rejection_comment = models.TextField(blank=True, null=True) # Added field
-
+    created_at = models.DateTimeField(default=now)
+    updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         return str(self.user.email)
 

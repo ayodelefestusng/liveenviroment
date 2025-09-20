@@ -1,27 +1,14 @@
 # myproject/myapp/forms.py
 
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import HTML, Div, Field, Fieldset, Layout, Submit
 from django import forms
-from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm, AuthenticationForm
+from django.contrib.auth.forms import (AuthenticationForm, PasswordResetForm,
+                                       SetPasswordForm)
 from django.urls import reverse_lazy
 
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, HTML, Div, Fieldset, Submit
-
-from .models import (
-    User,
-    # Currency,
-    # Country,
-    # Client,
-    # BranchDetails,
-    # TellerDetails,
-    # Customer,
-    # Transaction,
-    # BranchAccountTill,
-    # AccountTransactionT,
-    # Crispy,
-    # validate_nigerian_prefix,
-)
-
+from .models import \
+    User  # Currency,; Country,; Client,; BranchDetails,; TellerDetails,; Customer,; Transaction,; BranchAccountTill,; AccountTransactionT,; Crispy,; validate_nigerian_prefix,
 
 
 class RegistrationForm(forms.ModelForm):

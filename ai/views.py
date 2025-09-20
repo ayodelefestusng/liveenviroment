@@ -1,11 +1,13 @@
-from django.conf import settings
+import json
 # from .models import Prompt,Prompt7
 import os
-import json
-from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
+
+from django.conf import settings
+from dotenv import load_dotenv
+from langchain_google_genai import (ChatGoogleGenerativeAI,
+                                    GoogleGenerativeAIEmbeddings)
 from langchain_groq import ChatGroq
 
-from dotenv import load_dotenv
 load_dotenv()
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
@@ -40,75 +42,52 @@ llmv = ChatGoogleGenerativeAI(model=google_model, temperature=0, google_api_key=
 
 
 
-# Django Core
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import (
-    HttpResponse,
-    JsonResponse,
-    HttpResponseRedirect,
-    HttpResponseServerError
-)
-from django.contrib.auth.decorators import login_required
-from django.urls import reverse
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
-from django.contrib import messages
-from django.utils import timezone
-
-# Django Auth (if used)
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.forms import PasswordResetForm
-from django.contrib.auth.tokens import default_token_generator
-from django.core.mail import send_mail
-
-
-# Forms
-from .forms import (
-    # RegistrationForm,
-    PasswordSetupForm,
-    PasswordChangeForm,
-    PromptForm,
-    ClientForm
-)
-
-# Models
-from .models import (
-    # CustomUser,
-    Conversation,
-    Message,
-    Insight,
-    Ticket,
-    Post,
-    LLM,
-    Prompt,
-    Client
-)
-
-# NLP & AI Processing
-from .chat_bot import process_message, safe_json,atb, important,get_payslips_from_json,desire
-
-import pandas as pd
-
-# WhatsApp / External Integration
-import requests
-from django.conf import settings
-
-# NLP Libraries
-import nltk
-from nltk.corpus import wordnet
-from nltk.stem import WordNetLemmatizer
-import spacy
-import language_tool_python
-from googletrans import Translator
+import json
+import logging
+# Utilities
+import os
+import threading
+import uuid
 from collections import defaultdict
 from urllib.error import URLError
 
-# Utilities
-import os
-import json
-import logging
-import uuid
-import threading
+import language_tool_python
+# NLP Libraries
+import nltk
+import pandas as pd
+# WhatsApp / External Integration
+import requests
+import spacy
+from django.conf import settings
+from django.contrib import messages
+# Django Auth (if used)
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+from django.http import (HttpResponse, HttpResponseRedirect,
+                         HttpResponseServerError, JsonResponse)
+# Django Core
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from googletrans import Translator
+from nltk.corpus import wordnet
+from nltk.stem import WordNetLemmatizer
+
+# NLP & AI Processing
+from .chat_bot import (atb, desire, get_payslips_from_json, important,
+                       process_message, safe_json)
+# Forms
+from .forms import (ClientForm, PasswordChangeForm,  # RegistrationForm,
+                    PasswordSetupForm, PromptForm)
+# Models
+from .models import (LLM, Client, Conversation, Insight,  # CustomUser,
+                     Message, Post, Prompt, Ticket)
+
 # Optional: Unused but mentioned
 # import pandas as pd
 # import csv
@@ -1040,7 +1019,7 @@ def chart_view(request):
     try:
         # Import your kip.py function (you'll need to modify kip.py to return the data)
         from .kip import generate_chart  # You'll need to create this function
-        
+
         # Get chart data
         chart_data = generate_chart()  # This should return (text, image_base64)
         
@@ -1506,12 +1485,12 @@ def process_text(request):
         return JsonResponse({'error': 'Method not allowed'}, status=405)
 
 
-import json
 import asyncio
+import json
 import logging
 
 from django.http import JsonResponse
-from googletrans import Translator # Assuming googletrans is installed
+from googletrans import Translator  # Assuming googletrans is installed
 
 # Initialize the translator globally.
 # For googletrans, initializing it once is generally fine.
@@ -1520,14 +1499,14 @@ translator = Translator()
 # Configure logging (good practice for debugging)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-import json
 import asyncio
-import threading
+import json
 import logging
-from queue import Queue # Used to pass results back from the thread
+import threading
+from queue import Queue  # Used to pass results back from the thread
 
 from django.http import JsonResponse
-from googletrans import Translator # Assuming googletrans is installed
+from googletrans import Translator  # Assuming googletrans is installed
 
 # Initialize the translator globally.
 # For googletrans, initializing it once is generally fine.
@@ -1856,11 +1835,13 @@ def variance2(request):
 
 
 
-from django.http import JsonResponse, HttpResponse
+import json
+
+import pandas as pd
+from django.http import HttpResponse, JsonResponse
 from django.template import loader  # For rendering HTML templates
 from django.views.decorators.csrf import csrf_exempt
-import json
-import pandas as pd
+
 
 @csrf_exempt
 def variance1(request):
@@ -1916,10 +1897,13 @@ def variance1(request):
 
 
 from django.shortcuts import render
+
 desired_columns = desire()
 
 
 from .chat_bot import aluke
+
+
 @csrf_exempt
 def variance(request):
     print("Variance endpoint called")
@@ -1974,6 +1958,7 @@ def variance(request):
         return JsonResponse({'status': 'error', 'response': str(e)}, status=500)
     
 from django.shortcuts import render
+
 
 def variance_upload_form(request):
     return render(request, 'myapp/variance_upload.html')  # This matches your file path

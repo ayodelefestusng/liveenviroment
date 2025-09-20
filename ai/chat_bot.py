@@ -4,37 +4,65 @@
 # from django.conf import settings
 # from .models import Prompt,Prompt7
 
+import base64
+import io
+import json
 # # ==========================
 # # 📦 Standard Library
 # # ==========================
 import os
-import json
-from datetime import datetime
+# from langgraph.checkpoint.postgres import PostgresSaver
+# # --- Project-Specific Imports ---
+# # AJADI-2
+import re
 # from pprint import pprint
 import sqlite3
+from datetime import datetime
+from io import BytesIO
+# from pydantic import BaseModel, Field
+from typing import Any, Dict, List, Literal, Optional
+
+import matplotlib.pyplot as plt
 # # ==========================
 import pandas as pd
-from io import BytesIO
-import base64
-
-
-
-import io
-from PIL import Image
-
-
-from pydantic import BaseModel, Field
-from typing import List
-import matplotlib.pyplot as plt
-from matplotlib.ticker import FuncFormatter
-
-
+from django.conf import settings
 # # ==========================
 # # 📦 Third-Party Core
 # ==========================
 from dotenv import load_dotenv
-# from pydantic import BaseModel, Field
-from typing import Any, Dict, List, Optional, Literal
+from langchain.chat_models import init_chat_model
+from langchain_community.agent_toolkits import SQLDatabaseToolkit
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.tools.sql_database.tool import QuerySQLDatabaseTool
+from langchain_community.utilities import SQLDatabase
+# # # ==========================
+# # # 🤖 LangChain Core & Community
+# # # ==========================
+from langchain_core.messages import (AIMessage, HumanMessage, SystemMessage,
+                                     ToolMessage)
+from langchain_core.tools import Tool  # Explicitly import Tool
+# from langchain_core.output_parsers import JsonOutputParser
+from langchain_core.vectorstores import InMemoryVectorStore
+from langchain_deepseek import \
+    ChatDeepSeek  # Import ChatDeepSeek for DeepSeek LLM
+# from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
+from langchain_google_genai import (ChatGoogleGenerativeAI,
+                                    GoogleGenerativeAIEmbeddings)
+from langchain_groq import ChatGroq  # For Groq LLM
+from langchain_openai import ChatOpenAI
+from langchain_tavily import TavilySearch
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.checkpoint.sqlite import \
+    SqliteSaver  # Using SqliteSaver as preferred
+# # # ==========================
+# # # 🔁 LangGraph Imports
+# # # ==========================
+from langgraph.graph import END, START, MessagesState, StateGraph
+from langgraph.prebuilt import ToolNode, create_react_agent, tools_condition
+from matplotlib.ticker import FuncFormatter
+from PIL import Image
+from pydantic import BaseModel, Field
 
 # # ==========================
 # # 🧠 Google Generative AI
@@ -43,71 +71,34 @@ from typing import Any, Dict, List, Optional, Literal
 # from google.generativeai import GenerativeModel, configure
 # from google.generativeai.types import HarmCategory, HarmBlockThreshold
 
-# # # ==========================
-# # # 🤖 LangChain Core & Community
-# # # ==========================
-from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
-# from langchain_core.output_parsers import JsonOutputParser
-from langchain_core.vectorstores import InMemoryVectorStore
-from langchain_core.tools import Tool # Explicitly import Tool
-from langchain_community.document_loaders import PyPDFLoader
-from langchain_community.utilities import SQLDatabase
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_tavily import TavilySearch
-# from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
-from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
-from langchain_community.agent_toolkits import SQLDatabaseToolkit
-from langchain_groq import ChatGroq # For Groq LLM
-from langchain_deepseek import ChatDeepSeek # Import ChatDeepSeek for DeepSeek LLM
-from langchain_openai import ChatOpenAI
-
-# # # ==========================
-# # # 🔁 LangGraph Imports
-# # # ==========================
-from langgraph.graph import StateGraph, START, END, MessagesState
-
-from langgraph.prebuilt import ToolNode, tools_condition, create_react_agent
-from langgraph.checkpoint.sqlite import SqliteSaver # Using SqliteSaver as preferred
-from langchain_community.tools.sql_database.tool import QuerySQLDatabaseTool
-from langgraph.checkpoint.memory import InMemorySaver
-
-from langchain.chat_models import init_chat_model
 
 
-from django.conf import settings
-# from langgraph.checkpoint.postgres import PostgresSaver
-# # --- Project-Specific Imports ---
-# # AJADI-2
-import re
+
+
+
 
 # Load .env file
 load_dotenv()
 import matplotlib
+
 matplotlib.use('Agg') # This prevents Matplotlib from trying to open a GUI window
 
 import matplotlib
+
 # This must be done BEFORE importing pyplot
 matplotlib.use('Agg')
 
-from matplotlib.ticker import FuncFormatter
-import matplotlib.pyplot as plt
-import pandas as pd
-from sqlalchemy import create_engine
 import base64
-from io import BytesIO
-
-import logging
 import io
+import logging
 import re
-import base64
 from io import BytesIO
-import pandas as pd
+
 import matplotlib.pyplot as plt
+import pandas as pd
 from matplotlib.ticker import FuncFormatter
 from sqlalchemy import create_engine
 
-
-import logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
@@ -145,6 +136,7 @@ tavily_search = TavilySearch(max_results=2)
 # }
 
 from sqlalchemy import create_engine
+
 
 def safe_json(data):
     """Ensures safe JSON serialization to prevent errors."""
