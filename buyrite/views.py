@@ -195,6 +195,9 @@ class HomeView(ListView):
 
         return context
 
+
+
+@method_decorator(login_required, name='dispatch')
 class VehicleDetailView(DetailView):
     model = Vehicle
     template_name = 'buyrite/vehicle_detail.html'
