@@ -35,11 +35,11 @@
 <body>
 
     
-<nav class="navbar navbar-expand-sm navbar-dark bg-white sticky-top">
+<nav class="navbar navbar-expand navbar-dark bg-white sticky-top">
     <div class="container-fluid">
         <a class="navbar-brand d-flex align-items-center" href="{% url 'buyrite:home' %}">
-            <img src="{% static 'images/buyrite.png' %}" alt="BuyRite" width="100" height="30" class="rounded shadow-sm me-2">
-            <span style="color: #FF6A00; font-weight: bold;">Platform</span>
+            <img src="{% static 'images/buyrite.png' %}" alt="BuyRite" width="150" height="50" class="rounded shadow-sm me-2">
+            <span style="color: #FF6A00; font-weight: bold;"></span>
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
@@ -55,9 +55,7 @@
                 {% endif %}
 
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <span class="nav-link text-dark">Welcome, {{ user.full_name|first_name }}</span>
-                    </li>
+                   
                     <li class="nav-item">
                         <a class="nav-link text-dark btn btn-warning" href="{% url 'buyrite:check_vin' %}">Check Result</a>
                     </li>
