@@ -27,6 +27,9 @@ urlpatterns = [
      path("buyrite/", include("buyrite.urls")),
      path("laundry/", include("laundry.urls")),
    
+   
+    path('accounts/', include('django.contrib.auth.urls')),  # 👈 This line is key
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
