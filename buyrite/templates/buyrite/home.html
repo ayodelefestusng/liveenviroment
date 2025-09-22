@@ -71,8 +71,10 @@ Dealer
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card h-100 shadow-sm border-0">
                             {% if vehicle.image %}
-                                <img src="{{ vehicle.image.url }}" class="card-img-top vehicle-img" alt="{{ vehicle.brand.name }} {{ vehicle.vehicle_model.name }}">
-                            {% endif %}
+                                <a href="{% url 'buyrite:vehicle_detail' slug=vehicle.slug %}">
+                                    <img src="{{ vehicle.image.url }}" class="card-img-top vehicle-img" alt="{{ vehicle.brand.name }} {{ vehicle.vehicle_model.name }}">
+                                </a>                           
+                                 {% endif %}
                             <div class="card-body">
                                 <h5 class="card-title" style="margin-bottom: 1px;">{{ vehicle.brand.name }} {{ vehicle.vehicle_model.name }}</h5>
                                 <!-- <p class="card-text" style="margin: 0px;"><small class="text-body-secondary">Last updated 3 mins ago</small></p> -->
