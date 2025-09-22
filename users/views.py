@@ -141,7 +141,7 @@ def change_password(request):
     return render(request, "registration/change_password.html", {"form": form})
 
 @csrf_exempt
-def user_login(request):
+def user_login1(request):
  
     if request.method == "POST":
         email = request.POST.get("email")
@@ -180,7 +180,30 @@ def user_login(request):
     
     return render(request, "registration/login.html")
 
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.shortcuts import render
 
+@csrf_exempt
+def user_login(request):
+    next_url = request.GET.get("next") or reverse("users:home")  # Default to dashboard if no next
+    print("next_url", request.GET.get("next"))
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        user = authenticate(request, email=email, password=password)
+
+        if user is not None:
+            login(request, user)  # Log the user in
+            # return render(request, 'registration/profile.html', {"email": email})
+            # return redirect(reverse("users:home"))  # Redirect to home page after login     
+            return redirect(request.POST.get("next", next_url))  # Redirect to original destination
+
+        else:
+            messages.error(request, "Invalid email or password. Please try again.")
+
+    return render(request, "registration/login.html")
 @login_required
 def profile_view(request):
         email = request.POST.get("email")
