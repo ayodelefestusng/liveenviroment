@@ -197,6 +197,7 @@ class HomeView(ListView):
 
 
 
+
 # @method_decorator(login_required, name='dispatch')
 class VehicleDetailView(DetailView):
     model = Vehicle
