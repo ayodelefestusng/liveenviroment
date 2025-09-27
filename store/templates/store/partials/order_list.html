@@ -1,0 +1,33 @@
+<div class="card shadow-sm rounded-3">
+    <div class="card-header bg-secondary text-white">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Your Orders</h5>
+            <div hx-get="{% url 'store:home' %}" hx-target="#order-dashboard" hx-swap="innerHTML">
+                <button class="btn btn-sm btn-outline-light">
+                    <i class="bi bi-arrow-left"></i> Go Back
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        {% if orders %}
+        <div class="list-group list-group-flush">
+            {% for order in orders %}
+            <a href="#" 
+               hx-get="{% url 'store:order-dashboard' order.id %}" 
+               hx-target="#order-dashboard" 
+               hx-swap="innerHTML"
+               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <div>
+                    <strong class="text-primary">Order #{{ order.id }}</strong>
+                    <p class="text-muted mb-0">Created: {{ order.created_at|date:"M d, Y" }}</p>
+                </div>
+                <span class="badge bg-success rounded-pill">&#x20a6;{{ order.total_price|floatformat:2 }}</span>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-center text-muted py-3">You have no orders yet.</p>
+        {% endif %}
+    </div>
+</div>

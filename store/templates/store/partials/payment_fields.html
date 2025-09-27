@@ -1,0 +1,12 @@
+<div class="input-group mb-3 payment-row">
+    <select class="form-select payment-mode-select">
+        <option value="">Select payment mode</option>
+        {% for mode in payment_modes %}
+        <option value="{{ mode.id }}">{{ mode.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="number" class="form-control payment-amount-input" placeholder="Amount" min="0" step="0.01">
+    <button class="btn btn-outline-danger" type="button" onclick="removePaymentRow(this)">
+        <i class="bi bi-x-circle"></i>
+    </button>
+</div>

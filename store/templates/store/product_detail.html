@@ -1,0 +1,40 @@
+{% extends "hotel_base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid rounded shadow-sm" alt="{{ product.name }}">
+            {% else %}
+                <img src="https://placehold.co/600x400" class="img-fluid rounded shadow-sm" alt="No image available for {{ product.name }}">
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <h1 class="mb-3">{{ product.name }}</h1>
+            <h4 class="text-success mb-4">&#x20a6;{{ product.price|floatformat:2 }}</h4>
+            <p class="lead">{{ product.description|default:"No description provided." }}</p>
+            <hr>
+            <div class="d-flex flex-column">
+                <p><strong>SKU:</strong> {{ product.sku }}</p>
+                <p><strong>Category:</strong> {{ product.category.name }}</p>
+                <!-- Note: Expiry date is not a field on Product model. It is on Batch model. -->
+            </div>
+            <hr>
+            <form method="POST" hx-post="{% url 'store:add-to-cart' %}" 
+                  hx-target="#order-dashboard" 
+                  hx-swap="innerHTML"
+                  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                  _="on htmx:afterRequest if event.detail.xhr.status == 200 then alert('Product added to cart!') end">
+                {% csrf_token %}
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+                <button type="submit" class="btn btn-success btn-lg w-100 shadow-sm">Add to Cart</button>
+            </form>
+
+
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

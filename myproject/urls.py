@@ -26,6 +26,7 @@ urlpatterns = [
      path("ai/", include("ai.urls")),
      path("buyrite/", include("buyrite.urls")),
      path("laundry/", include("laundry.urls")),
+    path("store/", include("store.urls")),
    
    
     path('accounts/', include('django.contrib.auth.urls')),  # 👈 This line is key

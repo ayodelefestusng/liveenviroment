@@ -1,0 +1,192 @@
+{% extends 'hotel_base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="row g-4" hx-ext="response-targets">
+    <!-- Main Content Column -->
+    <div class="col-lg-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <!-- Order Off-canvas Button -->
+            <button class="btn btn-primary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#orderOffcanvas" aria-controls="orderOffcanvas">
+                <i class="bi bi-list-nested"></i> Orders
+            </button>
+            
+            <!-- Filter Off-canvas Button -->
+            <button class="btn btn-outline-secondary d-lg-none ms-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">
+                <i class="bi bi-funnel"></i> Filters
+            </button>
+        </div>
+
+        <div class="row g-4">
+            <!-- Left Panel for Larger Screens -->
+            <div class="col-lg-3 d-none d-lg-block">
+                <!-- Orders Section -->
+                <div class="card shadow-sm rounded-3">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h5 class="mb-0">Orders</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid mb-3">
+                            <button class="btn btn-success" 
+                                hx-post="{% url 'store:create-order' %}" 
+                                hx-target="#order-dashboard" 
+                                hx-swap="innerHTML"
+                                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                _="on htmx:afterRequest if event.detail.xhr.status == 200 then trigger refresh-orders from:body end"
+                            >
+                                Create New Order
+                            </button>
+                        </div>
+                        <div id="order-list-container" hx-get="{% url 'store:order-list' %}" hx-trigger="load, refresh-orders from:body" hx-swap="innerHTML">
+                             <div class="text-center text-muted">Loading orders...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Filters Section -->
+                <div class="card shadow-sm rounded-3 mt-4">
+                    <div class="card-header bg-secondary text-white text-center">
+                        <h5 class="mb-0">Filters</h5>
+                    </div>
+                    <div class="card-body">
+                        <form hx-get="{% url 'store:home' %}" hx-target="#product-list-container" hx-swap="innerHTML" hx-push-url="true">
+                            <div class="mb-3">
+                                <label for="search" class="form-label">Search Products</label>
+                                <input type="search" name="search" id="search" class="form-control" placeholder="e.g., Apple, Water" value="{{ request.GET.search }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Category</label>
+                                <select name="category" id="category" class="form-select">
+                                    <option value="">All Categories</option>
+                                    {% for category in categories %}
+                                    <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"d" %}selected{% endif %}>{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="sort_by" class="form-label">Sort By</label>
+                                <select name="sort_by" id="sort_by" class="form-select">
+                                    <option value="">Default</option>
+                                    <option value="price_asc" {% if request.GET.sort_by == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+                                    <option value="price_desc" {% if request.GET.sort_by == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+                                    <option value="name_asc" {% if request.GET.sort_by == 'name_asc' %}selected{% endif %}>Name: A-Z</option>
+                                    <option value="name_desc" {% if request.GET.sort_by == 'name_desc' %}selected{% endif %}>Name: Z-A</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel for Product List and Order Dashboard -->
+            <div class="col-lg-9" id="gamba-dashboard">
+                <!-- Order Dashboard -->
+                <div id="order-dashboard" class="mb-4">
+                    {% if active_order %}
+                        {% include "store/partials/order_dashboard.html" %}
+                    {% else %}
+                    <div class="card shadow-sm">
+                        <div class="card-body text-center p-5">
+                            <h4 class="text-muted">No Active Order</h4>
+                            <p class="text-muted">Please create an order from the Orders menu to begin.</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                  <!-- NEW DEDICATED LIVE SEARCH FORM -->
+                <div class="mb-4">
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                        <input 
+                            type="search" 
+                            name="search" 
+                            id="product-search-bar" 
+                            class="form-control border-start-0 shadow-sm rounded-pill" 
+                            placeholder="Search products by name or code (Type to filter...)" 
+                            value="{{ request.GET.search|default:'' }}"
+                            hx-get="{% url 'store:home' %}" 
+                            hx-target="#product-list-container" 
+                            hx-swap="innerHTML" 
+                            hx-trigger="keyup changed delay:300ms, search" 
+                            hx-push-url="true"
+                        >
+                    </div>
+                </div>
+                <!-- Product List -->
+                <div id="product-list-container" hx-get="{% url 'store:home' %}?{{ request.GET.urlencode }}" hx-trigger="load" hx-swap="innerHTML">
+                    <div class="text-center text-muted">Loading products...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Off-canvas for Orders (Mobile) -->
+<div class="offcanvas offcanvas-start bg-light" tabindex="-1" id="orderOffcanvas" aria-labelledby="orderOffcanvasLabel">
+    <div class="offcanvas-header bg-primary text-white">
+        <h5 class="offcanvas-title" id="orderOffcanvasLabel">Orders</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        
+    <div class="d-grid mb-3">
+    <button class="btn btn-success"
+        hx-post="{% url 'store:create-order' %}"
+        hx-target="#order-dashboard"
+        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+        hx-swap="innerHTML"
+        data-bs-dismiss="offcanvas"
+        _="on htmx:afterRequest if event.detail.xhr.status == 200 then trigger refresh-orders from body end"
+    >
+        Create New Order
+    </button>
+</div>
+
+<!-- Order list container that reloads on page load and when 'refresh-orders' is triggered -->
+<div id="order-list-container-mobile"
+     hx-get="{% url 'store:order-list' %}"
+     hx-trigger="load, refresh-orders from body"
+     hx-swap="innerHTML">
+    <div class="text-center text-muted">Loading orders...</div>
+</div>
+    </div>
+</div>
+
+<!-- Off-canvas for Filters (Mobile) -->
+<div class="offcanvas offcanvas-end bg-light" tabindex="-1" id="filterOffcanvas" aria-labelledby="filterOffcanvasLabel">
+    <div class="offcanvas-header bg-secondary text-white">
+        <h5 class="offcanvas-title" id="filterOffcanvasLabel">Filters</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <form hx-get="{% url 'store:home' %}" hx-target="#product-list-container" hx-swap="innerHTML" hx-push-url="true" data-bs-dismiss="offcanvas">
+            <div class="mb-3">
+                <label for="search" class="form-label">Search Products</label>
+                <input type="search" name="search" id="search" class="form-control" placeholder="e.g., Apple, Water" value="{{ request.GET.search }}">
+            </div>
+            <div class="mb-3">
+                <label for="category" class="form-label">Category</label>
+                <select name="category" id="category" class="form-select">
+                    <option value="">All Categories</option>
+                    {% for category in categories %}
+                    <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"d" %}selected{% endif %}>{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="sort_by" class="form-label">Sort By</label>
+                <select name="sort_by" id="sort_by" class="form-select">
+                    <option value="">Default</option>
+                    <option value="price_asc" {% if request.GET.sort_by == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+                    <option value="price_desc" {% if request.GET.sort_by == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+                    <option value="name_asc" {% if request.GET.sort_by == 'name_asc' %}selected{% endif %}>Name: A-Z</option>
+                    <option value="name_desc" {% if request.GET.sort_by == 'name_desc' %}selected{% endif %}>Name: Z-A</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

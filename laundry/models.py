@@ -76,10 +76,13 @@ class Service(models.Model):
         unique_together = ('category', 'service_type')
     def __str__(self):
         return f"{self.category.name} - {self.get_service_type_display()}"
+    
+    
+
 class Order(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    user = models.ForeignKey(CustomUser, on_delete=models.SET_DEFAULT, default="missing_id",related_name='orders')
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_DEFAULT, default="missing_id",related_name='laundry_orders')
     status = models.CharField(max_length=20, choices=ORDER_STATUS, default='pending')
     customer_name = models.CharField(max_length=100, blank=True, null=True)
     customer_email = models.EmailField(blank=True, null=True)

@@ -1,0 +1,28 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<main class="container mx-auto p-4">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-3xl font-bold">Checkout</h1>
+    </div>
+
+    <!--
+        This div is the main HTMX container for the checkout summary.
+        It uses hx-get to fetch the checkout content from the same URL,
+        which will then be rendered by the `checkout` view (which is now HTMX-aware).
+        The hx-trigger="load" ensures the content is loaded as soon as the page loads.
+    -->
+    <div id="checkout-summary" 
+         hx-get="{% url 'store:checkout' %}" 
+         hx-trigger="load" 
+         hx-swap="innerHTML"
+         class="grid grid-cols-1 md:grid-cols-2 gap-8"
+    >
+        <!-- A simple loading indicator while HTMX fetches the content -->
+        <p class="text-center text-gray-500">Loading checkout details...</p>
+    </div>
+
+</main>
+{% endblock %}

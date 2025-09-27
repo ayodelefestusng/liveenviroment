@@ -1,0 +1,13 @@
+<div class="alert alert-success" role="alert">
+    <h4 class="alert-heading">Order Completed Successfully!</h4>
+    <p>Thank you, {{ active_order.customer.name }}. Your order has been processed.</p>
+    <hr>
+    <p class="mb-0">
+        <strong>Order ID:</strong> {{ active_order.id }}<br>
+        <strong>Total Paid:</strong> ₦{{ active_order.total_price|floatformat:2 }}<br>
+        <strong>Payment Mode(s):</strong> {{ active_order.payment_summary }}
+    </p>
+</div>
+
+<!-- Optional: Trigger dashboard refresh -->
+=

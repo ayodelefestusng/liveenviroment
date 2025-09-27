@@ -1,0 +1,18 @@
+{% if products %}
+    {% for product in products %}
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ product.name }}</span>
+            <button 
+                class="btn btn-sm btn-primary rounded-pill"
+                hx-post="{% url 'store:add_order_item' order_pk=order.id product_pk=product.id %}"
+                hx-target="#order-dashboard"
+                hx-swap="outerHTML"
+                _="on htmx:afterRequest if event.detail.xhr.status == 200 trigger refresh-dashboard from:body"
+            >
+                Add
+            </button>
+        </div>
+    {% endfor %}
+{% else %}
+    <p class="text-muted text-center">No products found.</p>
+{% endif %}

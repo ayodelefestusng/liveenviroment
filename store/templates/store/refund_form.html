@@ -1,0 +1,56 @@
+{% extends 'hotel_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Process Refund for Order #{{ order.id }}</h2>
+    <hr>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_order_item" class="form-label">Select Order Item</label>
+            {{ form.order_item }}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_quantity" class="form-label">Quantity to Refund</label>
+            {{ form.quantity }}
+            <div class="form-text">
+                Max refundable: 
+                {% with item=form.initial.order_item %}
+                    {% if item %}
+                        {{ item.quantity|add:"-"}}
+                        {{ item.refunds.all|length }}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="id_comments" class="form-label">Comments (Optional)</label>
+            {{ form.comments }}
+        </div>
+
+        <button type="submit" class="btn btn-danger">Submit Refund</button>
+        <a href="{% url 'store:order-dashboard' order.id %}" class="btn btn-secondary">Cancel</a>
+    </form>
+
+    <hr>
+    <h4>Refund History</h4>
+    <ul class="list-group">
+        {% for item in order.items.all %}
+            {% for refund in item.refunds.all %}
+                <li class="list-group-item">
+                    <strong>{{ item.product.name }}</strong> — Refunded {{ refund.quantity }} on {{ refund.time|date:"M d, Y" }}
+                    {% if refund.comments %}
+                        <br><em>{{ refund.comments }}</em>
+                    {% endif %}
+                </li>
+            {% empty %}
+                <li class="list-group-item">No refunds recorded.</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

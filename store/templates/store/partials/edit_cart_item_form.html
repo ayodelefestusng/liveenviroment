@@ -1,0 +1,14 @@
+<form hx-post="{% url 'store:edit-cart-item' product_id %}"
+      hx-target="#order-item-{{ order_item_id }}"
+      
+      hx-swap="outerHTML"
+      class="d-flex align-items-center justify-content-between w-100">
+    {% csrf_token %}
+    <input type="number" name="quantity" value="{{ current_quantity }}" min="1" class="form-control form-control-sm me-2" style="width: 60px;">
+    <div class="btn-group">
+        <button type="submit" class="btn btn-sm btn-success">Save</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary" hx-get="{% url 'store:order-dashboard' order_item.order.pk %}" hx-target="#order-dashboard" hx-swap="outerHTML">
+            Cancel
+        </button>
+    </div>
+</form>

@@ -1,0 +1,66 @@
+<div class="card shadow-sm rounded-3">
+    <div class="card-header bg-primary text-white">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Current Order</h5>
+            <div>
+                <button class="btn btn-sm btn-outline-light" 
+                        hx-get="{% url 'store:order-list' %}" 
+                        hx-target="#order-dashboard" 
+                        hx-swap="innerHTML">
+                    <i class="bi bi-list-nested"></i> All Orders
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <h6 class="card-title">Order #{{ active_order.id }}</h6>
+        <p class="card-text text-muted">Created: {{ active_order.created_at|date:"M d, Y" }}</p>
+
+        <div class="list-group list-group-flush mb-3">
+            {% for item in active_order.items.all %}
+            <div id="order-item-{{ item.id }}" class="list-group-item d-flex justify-content-between align-items-center px-0">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-tag-fill text-muted me-2"></i>
+                    <span>{{ item.quantity }} x {{ item.product.name }}</span>
+                </div>
+                <span class="text-success">&#x20a6;{{ item.final_price|floatformat:2 }}</span>
+                <div class="btn-group" role="group">
+                     <button class="btn btn-sm btn-outline-primary"
+                        hx-get="{% url 'store:get-edit-cart-item-form' item.product.id %}"
+                        hx-swap="outerHTML"
+                        title="Edit Quantity">
+                        <i class="bi bi-pencil"> Edit</i>
+                        </button>
+                    <!-- "Remove from Cart" button -->
+                    <form hx-post="{% url 'store:remove-from-cart' item.product.id %}" 
+                          hx-target="#order-dashboard" 
+                          hx-swap="innerHTML" 
+                          class="d-inline-block"
+                          hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                          _="on htmx:afterRequest if event.detail.xhr.status == 200 then trigger refresh-orders from body end">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Remove Item">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            {% empty %}
+            <p class="text-center text-muted py-3">No items in this order.</p>
+            {% endfor %}
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center border-top pt-3">
+            <strong class="text-primary">Total:</strong>
+            <strong class="text-success fs-5">&#x20a6;{{ active_order.total_price|floatformat:2 }}</strong>
+        </div>
+    </div>
+    <div class="card-footer bg-light d-grid gap-2">
+        <button class="btn btn-success" 
+                hx-get="{% url 'store:checkout' %}" 
+                hx-target="#order-dashboard" 
+                hx-swap="innerHTML">Finalize Order</button>
+           
+    </div>
+</div>

@@ -1,0 +1,184 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block title %}Operational Dashboard{% endblock %}
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <h2 class="text-center text-primary mb-4">Operational Dashboard</h2>
+
+            <!-- Bootstrap Tabs for Navigation -->
+            <ul class="nav nav-tabs nav-justified" id="operationalTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="product-tab" data-bs-toggle="tab" data-bs-target="#product"
+                            type="button" role="tab" aria-controls="product" aria-selected="true">
+                        Create Product
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="category-tab" data-bs-toggle="tab" data-bs-target="#category"
+                            type="button" role="tab" aria-controls="category" aria-selected="false">
+                        Create Category
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="payment-tab" data-bs-toggle="tab" data-bs-target="#payment"
+                            type="button" role="tab" aria-controls="payment" aria-selected="false">
+                        Create Payment Mode
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="customer-tab" data-bs-toggle="tab" data-bs-target="#customer"
+                            type="button" role="tab" aria-controls="customer" aria-selected="false">
+                        Create Customer
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="refund-tab" data-bs-toggle="tab" data-bs-target="#refund"
+                            type="button" role="tab" aria-controls="refund" aria-selected="false">
+                        Process Refund
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content mt-3">
+                <!-- Product Creation Tab -->
+                <div class="tab-pane fade show active" id="product" role="tabpanel" aria-labelledby="product-tab">
+                    <div class="card shadow-sm rounded-3">
+                        <div class="card-body p-4">
+                            <form method="post" action="{% url 'store:create-product' %}">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="id_name" class="form-label">Product Name</label>
+                                    <input type="text" class="form-control" id="id_name" name="name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="id_description" name="description"
+                                              rows="3"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_price" class="form-label">Price</label>
+                                    <input type="number" step="0.01" class="form-control" id="id_price" name="price"
+                                           required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_category" class="form-label">Category</label>
+                                    <select class="form-select" id="id_category" name="category" required>
+                                        <option value="">Select a category</option>
+                                        <!-- Categories will be dynamically loaded -->
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_supplier" class="form-label">Supplier</label>
+                                    <select class="form-select" id="id_supplier" name="supplier" required>
+                                        <option value="">Select a supplier</option>
+                                        <!-- Suppliers will be dynamically loaded -->
+                                    </select>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success btn-lg">Create Product</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Creation Tab -->
+                <div class="tab-pane fade" id="category" role="tabpanel" aria-labelledby="category-tab">
+                    <div class="card shadow-sm rounded-3">
+                        <div class="card-body p-4">
+                            <form method="post" action="{% url 'store:create-category' %}">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="id_category_name" class="form-label">Category Name</label>
+                                    <input type="text" class="form-control" id="id_category_name" name="name" required>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success btn-lg">Create Category</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Mode Creation Tab -->
+                <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+                    <div class="card shadow-sm rounded-3">
+                        <div class="card-body p-4">
+                            <form method="post" action="{% url 'store:create-payment-mode' %}">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="id_payment_mode_name" class="form-label">Payment Mode Name</label>
+                                    <input type="text" class="form-control" id="id_payment_mode_name" name="name"
+                                           required>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success btn-lg">Create Payment Mode</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customer Creation Tab -->
+                <div class="tab-pane fade" id="customer" role="tabpanel" aria-labelledby="customer-tab">
+                    <div class="card shadow-sm rounded-3">
+                        <div class="card-body p-4">
+                            <form method="post" action="{% url 'store:create-customer' %}">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="id_customer_name" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="id_customer_name" name="name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_phone_number" class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="id_phone_number" name="phone_number"
+                                           required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_address" class="form-label">Address</label>
+                                    <input type="text" class="form-control" id="id_address" name="address">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="id_email" name="email">
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success btn-lg">Create Customer</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Refund Creation Tab -->
+                <div class="tab-pane fade" id="refund" role="tabpanel" aria-labelledby="refund-tab">
+                    <div class="card shadow-sm rounded-3">
+                        <div class="card-body p-4">
+                            <div class="mb-4">
+                                <h5 class="card-title mb-3">Find Order by ID</h5>
+                                <form hx-get="{% url 'store:create-refund' %}" hx-target="#order-details"
+                                      hx-swap="innerHTML">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="order_id"
+                                               placeholder="Enter Order ID" required>
+                                        <button type="submit" class="btn btn-outline-secondary">Search</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <hr>
+                            <div id="order-details">
+                                <div class="alert alert-info text-center" role="alert">
+                                    Enter an Order ID to view and process a refund.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+<div class="alert alert-danger" role="alert">
+    <strong>Error:</strong> {{ error }}
+</div>
+
+<form method="post" hx-post="{% url 'store:submit-refund' %}" hx-target="#order-details" hx-swap="innerHTML">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" name="order_id" value="{{ order.id }}">
+    <button type="submit" class="btn btn-danger">Try Again</button>
+</form>
