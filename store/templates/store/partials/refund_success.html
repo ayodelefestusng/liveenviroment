@@ -1,0 +1,9 @@
+<div class="alert alert-success text-center" role="alert">
+    ✅ Refund of {{ refund.quantity }} item(s) for <strong>{{ refund.order_item.product.name }}</strong> was successful.
+</div>
+
+<div class="mt-3 text-center">
+    <a href="{% url 'store:order-dashboard' order.id %}" class="btn btn-outline-primary">
+        Back to Order Dashboard
+    </a>
+</div>

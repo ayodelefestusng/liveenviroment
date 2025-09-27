@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     "ai",
     "buyrite",
     'laundry',
+    'store',
       'django.contrib.humanize',
 
     
@@ -75,6 +76,10 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_static',
     'crispy_forms',
      'rest_framework',
+
+    'django_htmx',  # optional, for enhanced HTMX support
+
+
 
 
 
@@ -91,6 +96,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'django_htmx.middleware.HtmxMiddleware',  # ✅ valid middlewar
 
 ]
 

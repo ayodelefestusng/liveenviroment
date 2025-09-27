@@ -1,0 +1,24 @@
+<li id="cart-item-{{ item.product.id }}" class="list-group-item d-flex justify-content-between align-items-center px-0">
+    <div class="d-flex align-items-center">
+        <i class="bi bi-tag-fill text-muted me-2"></i>
+        <span>{{ item.quantity }} x {{ item.product.name }}</span>
+    </div>
+    <span class="text-success">&#x20a6;{{ item.final_price|floatformat:2 }}</span>
+    <div class="btn-group" role="group">
+        <!-- "Edit" button with HTMX trigger to show the input field -->
+        <button class="btn btn-sm btn-outline-primary"
+                hx-get="{% url 'store:get-edit-cart-item-form' item.product.id %}"
+                hx-target="#cart-item-{{ item.product.id }}"
+                hx-swap="outerHTML"
+                title="Edit Quantity">
+            <i class="bi bi-pencil"></i>
+        </button>
+        <!-- "Remove from Cart" button -->
+        <form hx-post="{% url 'store:remove-from-cart' item.product.id %}" hx-target="#cart-dashboard-container" hx-swap="outerHTML" class="d-inline-block">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-outline-danger" title="Remove Item">
+                <i class="bi bi-trash"></i>
+            </button>
+        </form>
+    </div>
+</li>

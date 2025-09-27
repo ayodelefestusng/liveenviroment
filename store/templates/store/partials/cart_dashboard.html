@@ -1,0 +1,57 @@
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+        <h5 class="m-0">Your Cart</h5>
+        <button class="btn btn-sm btn-outline-light" hx-get="{% url 'store:view-cart' %}" hx-swap="outerHTML">
+            Refresh
+        </button>
+    </div>
+    <div class="card-body">
+        {% if cart_summary.items %}
+            <ul class="list-group list-group-flush">
+                {% for item in cart_summary.items %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center" id="cart-item-{{ item.id }}">
+                        <div class="me-auto">
+                            <h6 class="mb-0">{{ item.product.name }}</h6>
+                            <div class="d-flex align-items-center">
+                                <small class="text-muted" id="quantity-{{ item.product.id }}">
+                                    {{ item.quantity }} x {{ item.product.price|floatformat:2 }}
+                                </small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="fw-bold me-3">
+                                &#x20a6;{{ item.item_total|floatformat:2 }}
+                            </span>
+                            <div class="btn-group" role="group">
+                                <!-- "Edit" button with HTMX trigger to show the input field -->
+                                <button class="btn btn-sm btn-outline-primary"
+                                        hx-get="{% url 'store:get-edit-cart-item-form' item.product.id %}"
+                                        hx-target="#cart-item-{{ item.id }}"
+                                        hx-swap="outerHTML"
+                                        title="Edit Quantity">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <!-- "Remove from Cart" button -->
+                                <form hx-post="{% url 'store:remove-from-cart' item.product.id %}" hx-target="#cart-dashboard-container" hx-swap="outerHTML" class="d-inline-block">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Remove Item">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="mt-3 text-end">
+                <p class="fw-bold mb-1">Total Quantity: {{ cart_summary.total_quantity }}</p>
+                <h5 class="fw-bold">Total Amount: &#x20a6;{{ cart_summary.total_amount|floatformat:2 }}</h5>
+                <a href="{% url 'store:checkout' %}" class="btn btn-success mt-2">
+                    Proceed to Checkout
+                </a>
+            </div>
+        {% else %}
+            <p class="text-muted text-center m-0">Your cart is empty.</p>
+        {% endif %}
+    </div>
+</div>

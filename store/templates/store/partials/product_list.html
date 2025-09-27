@@ -1,0 +1,44 @@
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-3">
+    {% for product in products %}
+    <div class="col">
+        <div class="card h-100 shadow-sm rounded-3 overflow-hidden">
+            <div class="position-relative">
+                <img src="{{ product.image.url }}" class="card-img-top object-fit-cover" alt="{{ product.name }}" style="height: 200px;">
+                <div class="badge bg-success position-absolute top-0 start-0 m-2 rounded-pill">
+                    &#x20a6;{{ product.final_price|floatformat:2 }}
+                </div>
+                <div class="badge bg-primary position-absolute top-0 end-0 m-2 rounded-pill">
+                    {{ product.category.name }}
+                </div>
+            </div>
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title fw-bold">{{ product.name }}</h5>
+                <p class="card-text text-muted mb-auto">
+                    {{ product.description|truncatechars:70 }}
+                </p>
+                <div class="mt-3">
+                    <a href="{% url 'store:product-detail' product.slug %}" class="btn btn-outline-primary btn-sm rounded-pill w-100 mb-2">
+                        View Details
+                    </a>
+                    <form hx-post="{% url 'store:add-to-cart' %}" 
+                          hx-target="#order-dashboard" 
+                          hx-swap="innerHTML"
+                          class="d-grid">
+                        {% csrf_token %}
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <button type="submit" class="btn btn-success btn-sm rounded-pill">
+                            <i class="bi bi-cart-plus-fill me-1"></i> Add to Cart
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info text-center" role="alert">
+            No products available at the moment.
+        </div>
+    </div>
+    {% endfor %}
+</div>

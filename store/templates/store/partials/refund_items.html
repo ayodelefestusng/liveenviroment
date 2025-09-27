@@ -1,0 +1,30 @@
+<h5>Refundable Items for Order #{{ order.id }}</h5>
+
+<form method="post" hx-post="{% url 'store:submit-refund' %}" hx-target="#order-details" hx-swap="innerHTML">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label for="order_item">Select Item</label>
+      <select name="order_item" class="form-select" required>
+    {% for item in order.items.all %}
+        <option value="{{ item.id }}">
+            {{ item.product.name }} — Ordered: {{ item.quantity }}
+        </option>
+    {% endfor %}
+</select>
+
+    </div>
+
+    <div class="mb-3">
+        <label>Quantity to Refund</label>
+        {{ form.quantity }}
+    </div>
+
+    <div class="mb-3">
+        <label>Comments</label>
+        {{ form.comments }}
+    </div>
+
+    <input type="hidden" name="order_id" value="{{ order.id }}">
+    <button type="submit" class="btn btn-danger">Submit Refund</button>
+</form>
