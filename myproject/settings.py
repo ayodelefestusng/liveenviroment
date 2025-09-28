@@ -91,12 +91,6 @@ INSTALLED_APPS = [
 
 
 
-
-
-
-
-
-
 ]
 
 MIDDLEWARE = [
@@ -211,11 +205,34 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+SOCIALACCOUNT_ADAPTER = 'users.adapters.MySocialAccountAdapter'
 # Auth settings
 AUTH_USER_MODEL = 'users.User'
+
+
+
+
+# ✅ Required for django-allauth
 SITE_ID = 1
 
+# Django-allauth configuration
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_VERIFICATION = 'optional'  # Change to 'mandatory' in production
 
+# Social account settings
+SOCIALACCOUNT_AUTO_SIGNUP = True
+
+# Authentication redirects
+LOGIN_URL = 'users:login'
+LOGOUT_REDIRECT_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'buyrite:home'  # Assuming 'home' is the name of your buyrite app's home view/
+# LOGIN_REDIRECT_URL = '/'  # Assuming 'home' is the name of your buyrite app's home view
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -240,12 +257,6 @@ DEFAULT_FROM_EMAIL = "demos@kupiansolutions.com"
 # EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 # EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 # DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
-
-# LOGIN_REDIRECT_URL = 'home'
-# LOGIN_URL = 'users:login'
-# LOGOUT_REDIRECT_URL = 'users:login'
-
-
 
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
