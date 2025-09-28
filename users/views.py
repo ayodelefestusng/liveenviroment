@@ -187,8 +187,10 @@ from django.shortcuts import render
 
 @csrf_exempt
 def user_login(request):
+    
     next_url = request.GET.get("next") or reverse("users:home")  # Default to dashboard if no next
-    print("next_url", request.GET.get("next"))
+    print("request", request.GET.get("next"))
+    print("next_url", next_url)
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
@@ -197,8 +199,9 @@ def user_login(request):
         if user is not None:
             login(request, user)  # Log the user in
             # return render(request, 'registration/profile.html', {"email": email})
-            # return redirect(reverse("users:home"))  # Redirect to home page after login     
-            return redirect(request.POST.get("next", next_url))  # Redirect to original destination
+            return redirect(reverse("users:home"))  # Redirect to home page after login   
+            print("next_urltttttt", next_url)  
+            # return redirect(request.POST.get("next", next_url))  # Redirect to original destination
 
         else:
             messages.error(request, "Invalid email or password. Please try again.")
