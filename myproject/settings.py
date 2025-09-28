@@ -80,6 +80,20 @@ INSTALLED_APPS = [
     'django_htmx',  # optional, for enhanced HTMX support
 
 
+        # Allauth apps
+    
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # Add providers if needed, e.g.:
+    'allauth.socialaccount.providers.google',
+
+
+
+
+
+
 
 
 
@@ -94,15 +108,21 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+     'allauth.account.middleware.AccountMiddleware',  # 👈 Required for django-allauth
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     'django_htmx.middleware.HtmxMiddleware',  # ✅ valid middlewar
 
+    # 'django-htmx-ext.middleware.HtmxExtMiddleware,  "# optional, for enhanced HTMX support
 ]
 
 ROOT_URLCONF = 'myproject.urls'
 
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 
 
