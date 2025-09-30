@@ -108,6 +108,9 @@ MIDDLEWARE = [
     'django_htmx.middleware.HtmxMiddleware',  # ✅ valid middlewar
 
     # 'django-htmx-ext.middleware.HtmxExtMiddleware,  "# optional, for enhanced HTMX support
+
+# 'myproject.middleware.domain_router.DomainRouterMiddleware',
+
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -205,7 +208,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SOCIALACCOUNT_ADAPTER = 'users.adapters.MySocialAccountAdapter'
 # Auth settings
 AUTH_USER_MODEL = 'users.User'
 
@@ -225,13 +227,23 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'optional'  # Change to 'mandatory' in production
 
+
+
+
+
 # Social account settings
 SOCIALACCOUNT_AUTO_SIGNUP = True
+# ACCOUNT_EMAIL_VERIFICATION = "none"
+SOCIALACCOUNT_QUERY_EMAIL = True
+SOCIALACCOUNT_ADAPTER = 'users.adapter.MySocialAccountAdapter'
+# SOCIALACCOUNT_ADAPTER = 'users.adapters.CustomSocialAccountAdapter'
+ACCOUNT_ADAPTER = 'allauth.account.adapter.DefaultAccountAdapter'
+
 
 # Authentication redirects
 LOGIN_URL = 'users:login'
 LOGOUT_REDIRECT_URL = 'users:login'
-LOGIN_REDIRECT_URL = 'buyrite:home'  # Assuming 'home' is the name of your buyrite app's home view/
+LOGIN_REDIRECT_URL = 'users:home'  # Assuming 'home' is the name of your buyrite app's home view/
 # LOGIN_REDIRECT_URL = '/'  # Assuming 'home' is the name of your buyrite app's home view
 
 # Default primary key field type
@@ -277,6 +289,7 @@ STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
 # Replace with your actual domain when deploying.
 SITE_URL = 'http://localhost:8000'
 SITE_DOMAIN = "https://demos.kupiansolutions.com"
+
 
 
 

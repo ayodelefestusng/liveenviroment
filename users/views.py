@@ -311,3 +311,12 @@ def user_logout(request):
     logout(request)
     messages.success(request, "You have been logged out successfully.")
     return redirect("users:login")  # Redirect to login page after logout
+
+
+
+# def save_user(self, request, sociallogin, form=None):
+#     user = sociallogin.user
+#     full_name = sociallogin.account.extra_data.get('name') or f"{sociallogin.account.extra_data.get('given_name', '')} {sociallogin.account.extra_data.get('family_name', '')}".strip()
+#     if not user.full_name:
+#         user.full_name = full_name
+#     user.save()
