@@ -68,7 +68,6 @@ INSTALLED_APPS = [
     'store',
       'django.contrib.humanize',
 
-    
 
     'django_otp',
     'crispy_bootstrap5',
@@ -242,6 +241,13 @@ SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_ADAPTER = 'users.adapter.MySocialAccountAdapter'
 # SOCIALACCOUNT_ADAPTER = 'users.adapters.CustomSocialAccountAdapter'
 ACCOUNT_ADAPTER = 'allauth.account.adapter.DefaultAccountAdapter'
+
+
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_UNIQUE_EMAIL = True
+# SOCIALACCOUNT_QUERY_EMAIL = True
+ACCOUNT_EMAIL_VERIFICATION = "none"
+
 
 
 # Authentication redirects
