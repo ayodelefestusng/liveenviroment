@@ -136,6 +136,10 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'buyrite.context_processors.vin_form_processor',
 
+
+                 "django.template.context_processors.debug",
+               
+
             ],
         },
     },
