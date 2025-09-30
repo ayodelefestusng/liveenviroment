@@ -27,7 +27,6 @@ urlpatterns = [
     # path('disable-2fa/', disable_2fa, name='disable_2fa'),
 
 
-
 ]
 
 hmtx_views = [

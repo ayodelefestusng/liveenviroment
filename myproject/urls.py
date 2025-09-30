@@ -23,7 +23,7 @@ urlpatterns = [
 
     # Authentication
     path('accounts/', include('django.contrib.auth.urls')),  # Built-in login/logout/password views
-    path('accountss/', include('allauth.urls')),              # Social login (Google, Facebook, etc.)
+    path('accounts/', include('allauth.urls')),              # ✅ Social login (Google, Facebook, etc.)
 ]
 
 # Serve media files during development
