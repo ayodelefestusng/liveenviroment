@@ -59,7 +59,7 @@
             <img src="{% static 'images/advisory.png' %}" alt="" class="img-fluid w-100 rounded shadow-sm">
 
             <div class="carousel-caption d-none d-md-block">
-                <h5>We are social /h5>
+                <h5>We are social <h5>
                 <p> Join Our Large network.</p>
             </div>
             </div>
@@ -92,31 +92,30 @@
 
 <div class="container">
   <div class="row justify-content-center text-center text-md-start" style="color: #000080;">
-   <div class="col-md-4 mb-4 d-flex flex-column align-items-center text-center">
-        <a href="" target="_blank">
-            <img src="{% static 'images/digital.png' %}" alt="TaskMate" class="responsive-img rounded shadow-sm">
-        </a>
-        <h4>Digitals</h4>
+            <div class="col-md-4 mb-4 d-flex flex-column align-items-center text-center">
+                <a href="" target="_blank">
+                    <img src="{% static 'images/digital.png' %}" alt="TaskMate" class="responsive-img rounded shadow-sm">
+                </a>
+                <h6>Digitals</h6>
+            </div>
 
+            <div class="col-md-4 mb-4 d-flex flex-column align-items-center text-center">
+                <a href="">
+                    <img src="{% static 'images/advisory.png' %}" alt="Electrical" class="responsive-img rounded shadow-sm">
+                </a>
+                <h6>Financial Advisory</h6>
+
+
+            </div>
+
+            <div class="col-md-4 mb-4 d-flex flex-column align-items-center text-center">
+                <a href="">
+                    <img src="{% static 'images/loan_recovery.jpg' %}" alt="TaskMate" class="responsive-img rounded shadow-sm">
+                </a>
+                <h6>Loan Collections</h6>
+                
+            </div>
     </div>
-
-    <div class="col-md-4 mb-4 d-flex flex-column align-items-center text-center">
-        <a href="">
-            <img src="{% static 'images/advisory.png' %}" alt="Electrical" class="responsive-img rounded shadow-sm">
-        </a>
-        <h4 >Financial Advisory</h4>
-
-
-    </div>
-
-    <div class="col-md-4 mb-4 d-flex flex-column align-items-center text-center">
-        <a href="">
-            <img src="{% static 'images/loan_recovery.jpg' %}" alt="TaskMate" class="responsive-img rounded shadow-sm">
-        </a>
-        <h4>Loan Collections</h4>
-        
-    </div>
-</div>
     
 </div>
 
@@ -128,10 +127,11 @@
 
       <div class="row mt-5">
   <div class="col-md-10 offset-md-1 text-center">
-    <h1 style="color: #000066;">We are a global Digital Financial Service Provider</h1>
+    {% comment %} <h1 style="color: #000066;">We are a global Digital Financial Service Provider</h1> {% endcomment %}
     <h2 class="mt-2" style="color: #000080;">Our focus is value driven</h2>
-    <a href="{% url 'users:home' %}">
-      <button type="button" class="btn btn-primary btn-lg mt-3 shadow">Let's get Started</button>
+    <a href="{% url 'ai:chat_home' %}">
+
+      <button type="button" class="btn btn-primary btn-lg mt-3 shadow">Let's Get Started</button>
     </a>
   </div>
 </div>
