@@ -26,6 +26,10 @@ urlpatterns = [
   path('reset_qr/', reset_qr, name='reset_qr'),
     # path('disable-2fa/', disable_2fa, name='disable_2fa'),
 
+    
+        path('terms-and-privacy/', views.terms_and_privacy, name='terms_and_privacy'),
+
+
 
 ]
 
@@ -36,3 +40,5 @@ hmtx_views = [
 ]
 
 urlpatterns += hmtx_views
+
+

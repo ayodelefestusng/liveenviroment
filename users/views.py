@@ -320,3 +320,9 @@ def user_logout(request):
 #     if not user.full_name:
 #         user.full_name = full_name
 #     user.save()
+
+
+from django.shortcuts import render
+
+def terms_and_privacy(request):
+    return render(request, 'registration/terms_and_privacy.html')
