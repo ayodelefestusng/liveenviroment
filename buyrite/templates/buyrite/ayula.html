@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuyRite | Your Premier Online Store</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font import and application */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb; /* Light background for contrast */
+        }
+        /* Custom styles for a slight lift effect on cards */
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <a href="#" class="text-2xl font-extrabold text-indigo-600 tracking-tight">
+                    Buy<span class="text-gray-800">Rite</span>
+                </a>
+                
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#" class="text-gray-600 hover:text-indigo-600 transition duration-150 font-medium">Shop</a>
+                    <a href="#" class="text-gray-600 hover:text-indigo-600 transition duration-150 font-medium">Categories</a>
+                    <a href="#" class="text-gray-600 hover:text-indigo-600 transition duration-150 font-medium">Deals</a>
+                    <a href="#" class="text-gray-600 hover:text-indigo-600 transition duration-150 font-medium">About</a>
+                </nav>
+
+                <!-- Icons (Search & Cart) -->
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-indigo-600 transition duration-150 p-2 rounded-full hover:bg-indigo-50">
+                        <!-- Search Icon (Lucide/Heroicons SVG style) -->
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </button>
+                    <button class="relative text-gray-600 hover:text-indigo-600 transition duration-150 p-2 rounded-full hover:bg-indigo-50">
+                        <!-- Shopping Cart Icon -->
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.2 4.4a1 1 0 00.9 1.4h12.6a1 1 0 00.9-1.4L17 13"></path></svg>
+                        <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">3</span>
+                    </button>
+                    <!-- Mobile Menu Button (Hidden on Desktop) -->
+                    <button class="md:hidden text-gray-600 hover:text-indigo-600 p-2 rounded-full hover:bg-indigo-50">
+                        <!-- Menu Icon -->
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="bg-indigo-600 text-white pt-16 pb-20 sm:pt-24 sm:pb-28">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight mb-4">
+                    Smart Shopping, Delivered.
+                </h1>
+                <p class="max-w-3xl mx-auto text-xl text-indigo-100 mb-8">
+                    Discover the latest tech, fashion, and home goods with unbeatable prices and fast, reliable shipping.
+                </p>
+                <div class="flex justify-center space-x-4">
+                    <a href="#" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-indigo-600 bg-white hover:bg-gray-100 transition duration-300 transform hover:scale-105">
+                        Shop All Products
+                    </a>
+                    <a href="#" class="inline-flex items-center px-6 py-3 border border-2 border-white text-base font-medium rounded-full text-white hover:bg-white hover:text-indigo-600 transition duration-300 transform hover:scale-105">
+                        View Daily Deals
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products Section -->
+        <section class="py-16 sm:py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-10 text-center">Featured Products</h2>
+                
+                <!-- Product Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    
+                    <!-- Product Card 1: Electronics -->
+                    <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 ease-in-out cursor-pointer border border-gray-100">
+                        <img src="https://placehold.co/600x400/818CF8/FFFFFF?text=Laptop+Pro" alt="Premium Laptop" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Laptop Pro X1</h3>
+                            <p class="text-sm text-gray-500 line-clamp-2 mb-3">Ultra-thin design with incredible speed for work and play.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xl font-bold text-indigo-600">$1,299.00</span>
+                                <button class="bg-indigo-500 text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-150">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 2: Apparel -->
+                    <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 ease-in-out cursor-pointer border border-gray-100">
+                        <img src="https://placehold.co/600x400/374151/FFFFFF?text=Hoodie+Comfort" alt="Comfort Hoodie" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Cloudknit Hoodie</h3>
+                            <p class="text-sm text-gray-500 line-clamp-2 mb-3">The softest, most comfortable wear for all seasons.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xl font-bold text-indigo-600">$59.99</span>
+                                <button class="bg-indigo-500 text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-150">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 3: Home Goods -->
+                    <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 ease-in-out cursor-pointer border border-gray-100">
+                        <img src="https://placehold.co/600x400/22C55E/FFFFFF?text=Smart+Mug" alt="Smart Mug" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Temperature Smart Mug</h3>
+                            <p class="text-sm text-gray-500 line-clamp-2 mb-3">Keeps your drink at the perfect temperature for hours.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xl font-bold text-indigo-600">$89.00</span>
+                                <button class="bg-indigo-500 text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-150">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 4: Accessories -->
+                    <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 ease-in-out cursor-pointer border border-gray-100">
+                        <img src="https://placehold.co/600x400/FACC15/000000?text=Minimalist+Watch" alt="Minimalist Watch" class="w-full h-48 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Zenith Minimal Watch</h3>
+                            <p class="text-sm text-gray-500 line-clamp-2 mb-3">A timeless piece of minimalist design for any occasion.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xl font-bold text-indigo-600">$199.50</span>
+                                <button class="bg-indigo-500 text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-150">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- End Product Grid -->
+                
+                <div class="text-center mt-12">
+                    <a href="#" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-indigo-600 hover:bg-indigo-700 shadow-xl transition duration-300">
+                        Explore More Categories
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter / Promotion Banner -->
+        <section class="bg-indigo-100 py-16 sm:py-20">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl font-bold text-gray-900 mb-3">Join the BuyRite Family</h2>
+                <p class="text-lg text-gray-600 mb-8">
+                    Sign up for our newsletter and get **10% off** your first order! Plus, never miss out on exclusive deals.
+                </p>
+                <form class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 max-w-lg mx-auto">
+                    <input type="email" placeholder="Enter your email address" class="w-full sm:w-2/3 p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" required>
+                    <button type="submit" class="w-full sm:w-1/3 bg-indigo-600 text-white p-3 font-semibold rounded-lg hover:bg-indigo-700 transition duration-300 shadow-md">
+                        Subscribe Now
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 border-b border-gray-700 pb-8 mb-8">
+                <!-- Column 1: Store Info -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-indigo-400">BuyRite</h4>
+                    <p class="text-gray-400 text-sm">Quality goods at competitive prices. Shop smarter, not harder.</p>
+                    <div class="flex space-x-4 mt-4">
+                        <!-- Placeholder Social Icons (e.g., Facebook, Instagram) -->
+                        <a href="#" class="text-gray-400 hover:text-indigo-400 transition">F</a>
+                        <a href="#" class="text-gray-400 hover:text-indigo-400 transition">I</a>
+                        <a href="#" class="text-gray-400 hover:text-indigo-400 transition">T</a>
+                    </div>
+                </div>
+
+                <!-- Column 2: Quick Links -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">My Account</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Order Tracking</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Help Center</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Company -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Press</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Affiliate Program</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Legal -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Shipping Info</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Return Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="text-center text-sm text-gray-500">
+                &copy; 2024 BuyRite. All rights reserved. Designed with Tailwind CSS.
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Simple JavaScript for Mobile Menu (Optional, but good practice) -->
+    <script>
+        // Placeholder for future mobile menu functionality
+        // const menuButton = document.querySelector('button.md\\:hidden');
+        // const mobileMenu = document.querySelector('#mobile-menu');
+        // menuButton.addEventListener('click', () => {
+        //     mobileMenu.classList.toggle('hidden');
+        // });
+    </script>
+
+</body>
+</html>
