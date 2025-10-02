@@ -76,7 +76,7 @@ def yem(request):
         return JsonResponse({'error': str(e)})
 
 
-class HomeView(ListView):
+class HomeView1(ListView):
     model = Vehicle
     template_name = 'buyrite/home.html'
     context_object_name = 'vehicles'
@@ -195,6 +195,141 @@ class HomeView(ListView):
 
         return context
 
+from django.views.generic import ListView
+from django.shortcuts import render
+from django.utils.timezone import now
+
+# Assuming these models are correctly imported:
+# from .models import Vehicle, Category, Brand, State, VehicleModel, Trim, ManufactureYear, InnerColor, Carousel, Post, Town 
+# NOTE: Make sure all required models are imported in your actual file!
+
+class HomeView(ListView):
+    model = Vehicle
+    template_name = 'buyrite/home.html'
+    context_object_name = 'vehicles'
+    
+    def get_queryset(self):
+        queryset = Vehicle.objects.filter(is_available=True).order_by('-created_at')
+        
+        # --- Filter extraction logic ---
+        category_id = self.request.GET.get('category')
+        state_id = self.request.GET.get('state')
+        town_id = self.request.GET.get('town')
+        brand_id = self.request.GET.get('brand')
+        model_id = self.request.GET.get('model')
+        trim_id = self.request.GET.get('trim')
+        min_year = self.request.GET.get('year_min') # Corrected from 'min_year' to 'year_min' based on template
+        max_year = self.request.GET.get('year_max') # Corrected from 'max_year' to 'year_max' based on template
+        min_price = self.request.GET.get('price_min')
+        max_price = self.request.GET.get('price_max')
+        color = self.request.GET.get('color')
+        inner_color = self.request.GET.get('inner_color')
+        search_term = self.request.GET.get('search') # Capture search term
+        
+        # --- Filter application logic (unchanged) ---
+        if search_term:
+            # Added basic search filtering
+            queryset = queryset.filter(
+                Q(brand__name__icontains=search_term) |
+                Q(vehicle_model__name__icontains=search_term) |
+                Q(manufacture_year__year__icontains=search_term)
+            ).distinct() # Use Q objects and distinct if searching across related fields
+
+        if category_id:
+            queryset = queryset.filter(category_id=category_id)
+        if state_id:
+            queryset = queryset.filter(state_id=state_id)
+        if town_id:
+            queryset = queryset.filter(town_id=town_id)
+        if brand_id:
+            queryset = queryset.filter(brand_id=brand_id)
+        if model_id:
+            queryset = queryset.filter(vehicle_model_id=model_id)
+        if trim_id:
+            queryset = queryset.filter(trim_id=trim_id)
+        if min_year:
+            queryset = queryset.filter(manufacture_year__year__gte=min_year)
+        if max_year:
+            queryset = queryset.filter(manufacture_year__year__lte=max_year)
+        if min_price:
+            queryset = queryset.filter(price__gte=min_price)
+        if max_price:
+            queryset = queryset.filter(price__lte=max_price)
+        if color:
+            queryset = queryset.filter(color=color)
+        if inner_color:
+            queryset = queryset.filter(inner_color__id=inner_color) # Assuming inner_color is a ForeignKey to InnerColor model
+        
+        return queryset.select_related('brand', 'vehicle_model', 'trim')
+
+    def get_context_data(self, **kwargs):
+        # Combined and cleaned up your two get_context_data methods
+        context = super().get_context_data(**kwargs)
+
+        # Static list data
+        context['brands'] = Brand.objects.all()
+        context['states'] = State.objects.all()
+        context['years'] = ManufactureYear.objects.all().order_by('-year')
+        context['categories'] = Category.objects.all()
+        context['inner_colors'] = InnerColor.objects.all()
+        context['colors'] = Vehicle.objects.values_list('color', flat=True).distinct()
+        
+        # Non-filter related content
+        context['carousels'] = Carousel.objects.all()
+        context['posts'] = Post.objects.all()
+
+        # Pre-select values (for persistent filtering in the Offcanvas)
+        context['selected_brand'] = self.request.GET.get('brand')
+        context['selected_model'] = self.request.GET.get('model')
+        context['selected_trim'] = self.request.GET.get('trim')
+        context['selected_state'] = self.request.GET.get('state')
+        context['selected_town'] = self.request.GET.get('town')
+        context['selected_category'] = self.request.GET.get('category')
+        context['price_min'] = self.request.GET.get('price_min')
+        context['price_max'] = self.request.GET.get('price_max')
+        context['year_min'] = self.request.GET.get('year_min')
+        context['year_max'] = self.request.GET.get('year_max')
+        context['search'] = self.request.GET.get('search', '') # Pass search term back
+
+        # Provide queryset for dynamic models/trims/towns in filter form
+        # This prevents breaking the select options when filtering on a standard request
+        context['models'] = VehicleModel.objects.filter(brand_id=context['selected_brand']) if context['selected_brand'] else VehicleModel.objects.none()
+        context['trims'] = Trim.objects.filter(vehicle_model_id=context['selected_model']) if context['selected_model'] else Trim.objects.none()
+        context['towns'] = Town.objects.filter(state_id=context['selected_state']) if context['selected_state'] else Town.objects.none()
+        
+        # Calculate time difference (as you had it)
+        for vehicle in context['vehicles']:
+            time_diff = now() - vehicle.created_at
+            days = time_diff.days
+            hours = time_diff.seconds // 3600
+            if hours < 1:
+                vehicle.created_ago = "Just now"
+            elif days == 0:
+                vehicle.created_ago = f"{hours} hour{'s' if hours > 1 else ''} ago"
+            elif days == 1:
+                vehicle.created_ago = "1 day ago"
+            else:
+                vehicle.created_ago = f"{days} days ago"
+
+        return context
+
+    def render_to_response(self, context, **response_kwargs):
+        """
+        Renders either the full page or the HTMX fragment based on the request header.
+        """
+        # Check if the request includes the 'HX-Request' header
+        is_htmx = self.request.headers.get('HX-Request') == 'true'
+
+        if is_htmx:
+            # If it's an HTMX request (e.g., from the search bar), render only the fragment
+            return render(
+                self.request,
+                'buyrite/fragments/vehicle_list.html',
+                context
+            )
+        else:
+            # If it's a standard GET request, render the full page
+            return super().render_to_response(context, **response_kwargs)
 
 
 
