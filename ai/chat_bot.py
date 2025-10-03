@@ -173,9 +173,9 @@ elif chatbot_model == "groq":
 
 
 
+llm = init_chat_model("google_genai:gemini-flash-latest")
 
-
-llm = init_chat_model("google_genai:gemini-2.0-flash")
+# llm = init_chat_model("google_genai:gemini-2.0-flash")
 # llms= ChatGroq( model="deepseek-r1-distill-llama-70b",temperature=0, max_tokens=None,timeout=None, max_retries=2,)
 # llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0,google_api_key=GOOGLE_API_KEY)
 # llm = ChatGoogleGenerativeAI(model=google_model, temperature=0,google_api_key=GOOGLE_API_KEY)
@@ -249,9 +249,9 @@ initialize_vector_store()
 
 # Initialize SQLDatabase with the specified file path
 # DB_FILE_PATH = r"C:\Users\Pro\Desktop\Ayodele\25062025\myproject\db.sqlite3"
-DB_FILE_PATH = r"C:\Users\Pro\Desktop\PROJECT\Live\myproject\db.sqlite3"
-DB_URI = f"sqlite:///{DB_FILE_PATH}" 
-# DB_URI = f"sqlite:///{settings.DATABASES['default']['NAME']}"
+DB_FILE_PATH = f"sqlite:///{settings.DATABASES['default']['NAME']}"
+# DB_URI = f"sqlite:///{DB_FILE_PATH}" 
+DB_URI = f"sqlite:///{settings.DATABASES['default']['NAME']}"
 
 
 # DB_URI = os.getenv("DB_URI")
@@ -1042,7 +1042,7 @@ def generate_final_answer_node(state: State):
 
  # --- THE FIX: PART 2 ---
     # Simplify the prompt. The LLM should NOT handle the chart_base64 data.
-    prompt = f"""You are Damilola, the AI-powered virtual assistant for ATB Bank.
+    prompt = f"""You are Damilola, the AI-powered virtual assistant for ATB .
     Your goal is to provide a final, comprehensive, and empathetic answer based on the user's question and the context gathered from your tools.
     
     User Question: "{user_query}"
@@ -1194,8 +1194,15 @@ def build_graph():
     # Initialize checkpointing with a robust fallback
     memory = None
     try:
-        # DB_FILE_PATH should be defined, e.g., "checkpoints.sqlite"
-        conn = sqlite3.connect(DB_FILE_PATH, check_same_thread=False)
+        # Create a path for the checkpointing database
+        checkpoint_dir = os.path.dirname(settings.DATABASES['default']['NAME'])
+        checkpoint_db = os.path.join(checkpoint_dir, 'checkpoints.sqlite')
+        
+        # Ensure the directory exists
+        os.makedirs(checkpoint_dir, exist_ok=True)
+        
+        # Connect to the SQLite database
+        conn = sqlite3.connect(checkpoint_db, check_same_thread=False)
         memory = SqliteSaver(conn=conn)
         print("SQLite checkpointing connected successfully.")
     except Exception as e:

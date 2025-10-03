@@ -259,26 +259,36 @@ LOGIN_REDIRECT_URL = 'users:home'  # Assuming 'home' is the name of your buyrite
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-MAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "mail.kupiansolutions.com"
-EMAIL_PORT = 465
-EMAIL_USE_TLS = False  # TLS is typically used with port 587; port 465 uses SSL
-EMAIL_USE_SSL = True   # Add this line for SSL support
-EMAIL_HOST_USER = "demos@kupiansolutions.com"
-EMAIL_HOST_PASSWORD = "a1l)8~}};b][b{I&"
-DEFAULT_FROM_EMAIL = "demos@kupiansolutions.com"
+# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# MAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_HOST = "mail.dignityconcept.tech"
+# EMAIL_PORT = 465
+# EMAIL_USE_TLS = False  # TLS is typically used with port 587; port 465 uses SSL
+# EMAIL_USE_SSL = True   # Add this line for SSL support
+# EMAIL_HOST_USER = "solutions@dignityconcept.tech"
+# EMAIL_HOST_PASSWORD = ",gH~t[y,+}BEZ!e]"
+# DEFAULT_FROM_EMAIL = "demos@kupiansolutions.com"
 
-
-
-
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_HOST = "smtp.gmail.com"
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
 # EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 # EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 # DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+# EMAIL_HOST = os.getenv("EMAIL_HOST")
+# EMAIL_PORT = os.getenv("EMAIL_PORT")
+# EMAIL_USE_TLS = False  # TLS is typically used with port 587; port 465 uses SSL
+# EMAIL_USE_SSL = True   # Add this line for SSL support
+
+
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True  # ✅ Enable TLS for Gmail
+EMAIL_USE_SSL = False  # ✅ Must be False if TLS is True
+EMAIL_HOST_USER = "upwardwave.dignity@gmail.com"
+EMAIL_HOST_PASSWORD = "vudtoktjbahbzhbv"
+
+DEFAULT_FROM_EMAIL = 'Dignity Concept <upwardwave.dignity@gmail.com>'
+
 
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
