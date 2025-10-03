@@ -21,7 +21,9 @@ from .forms import (PasswordChangeForm, PasswordResetForm, PasswordSetupForm,
                     RegistrationForm, User)
 
 # Create your views here.
-
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 
 
@@ -70,12 +72,30 @@ def register(request):
             link = request.build_absolute_uri(reverse("users:setup_password", args=[user.pk, token]))
             # link = f"{settings.SITE_DOMAIN}{reverse('users:setup_password', args=[user.pk, token])}"
 
-            send_mail(
-                "Set Your Password",
-                f"Click the link to set your password: {link}",
-                settings.DEFAULT_FROM_EMAIL,
-                [user.email],
+            # send_mail(
+            #     "Set Your Password",
+            #     f"Click the link to set your password: {link}",
+            #     settings.DEFAULT_FROM_EMAIL,
+            #     [user.email],
+            # )
+            # Render HTML template
+            html_content = render_to_string("emails/register_email.html", {
+                    "user": user,
+                    "ceate_link": link,
+    
+                })
+            text_content = strip_tags(html_content)
+
+            # Send email
+            msg = EmailMultiAlternatives(
+                subject="Set Your Password",
+                body=text_content,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[user.email],
             )
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+            messages.success(request, "Registration successful! Please check your email to set your password.")
 
             # return render(request, "myapp/registration_success.html", {"email": user.email})
             return render(request, "registration/password_setup_sent.html", {"email": user.email})
@@ -100,6 +120,11 @@ def setup_password(request, user_id, token):
         return render(request, "registration/error.html", {"message": "Invalid token"})
 
 
+
+
+
+
+
 @csrf_exempt
 def password_reset_request(request):
     if request.method == "POST":
@@ -111,12 +136,29 @@ def password_reset_request(request):
                 token = default_token_generator.make_token(user)
                 link = request.build_absolute_uri(reverse("users:setup_password", args=[user.pk, token]))
                 
-                send_mail(
-                    "Reset Your Password",
-                    f"Click the link to reset your password: {link}",
-                    "admin@example.com",
-                    [email],
+                # send_mail(
+                #     "Reset Your Password",
+                #     f"Click the link to reset your password: {link}",
+                #     "admin@example.com",
+                #     [email],
+                # )
+                  # Render HTML template
+                html_content = render_to_string("emails/password_reset_email.html", {
+                    "user": user,
+                    "reset_link": link,
+                })
+                text_content = strip_tags(html_content)
+
+                # Send email
+                msg = EmailMultiAlternatives(
+                    subject="Reset Your Password",
+                    body=text_content,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    # from_email='Dignity Concept <upwardwave.dignity@gmail.com>',
+                    to=[email],
                 )
+                msg.attach_alternative(html_content, "text/html")
+                msg.send()
             return render(request, "registration/password_reset_sent.html", {"email": email})
     else:
         form = PasswordResetForm()

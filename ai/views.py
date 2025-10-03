@@ -30,7 +30,8 @@ os.environ["GROQ_API_KEY"] = GROQ_API_KEY if GROQ_API_KEY else ""
 # py = Prompt7.objects.get(pk=1)  # Get the existing record
 # google_model = py.views_model
 # google_model=""
-google_model="gemini-2.0-flash"
+# google_model="gemini-2.0-flash"
+google_model="gemini-flash-latest"
 
 llmv = ChatGoogleGenerativeAI(model=google_model, temperature=0, google_api_key=GOOGLE_API_KEY)    
 # llmv=ChatGroq(model ="meta-llama/llama-4-scout-17b-16e-instruct", temperature=0,max_tokens=None,timeout=None,max_retries=2)
