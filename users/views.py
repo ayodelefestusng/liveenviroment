@@ -371,3 +371,68 @@ def terms_and_privacy(request):
 
 def solutions_overview(request):
     return render(request, 'solutions_overview.html')
+
+
+# apps/home/views.py
+from django.views.generic import TemplateView
+from django.views.generic.list import ListView
+from django.http import JsonResponse
+from apps.solutions.models import Solution, SolutionCategory
+
+class HomeView(TemplateView):
+    template_name = 'home/index.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['featured_solutions'] = Solution.objects.filter(
+            is_active=True
+        ).select_related('category')[:6]
+        context['solution_categories'] = SolutionCategory.objects.all()
+        return context
+
+class SolutionQuickView(ListView):
+    template_name = 'partials/solution_quick_view.html'
+    context_object_name = 'solutions'
+    
+    def get_queryset(self):
+        category_slug = self.kwargs.get('category_slug')
+        if category_slug:
+            return Solution.objects.filter(
+                category__slug=category_slug, 
+                is_active=True
+            )[:3]
+        return Solution.objects.filter(is_active=True)[:3]
+
+# apps/demo/views.py
+from django.views.generic import CreateView, TemplateView
+from django.urls import reverse_lazy
+from .models import DemoBooking
+from .forms import DemoBookingForm
+
+class DemoBookingView(CreateView):
+    model = DemoBooking
+    form_class = DemoBookingForm
+    template_name = 'demo/booking.html'
+    success_url = reverse_lazy('demo_success')
+    
+    def form_valid(self, form):
+        # Integrate with Calendly API
+        response = super().form_valid(form)
+        self.integrate_with_calendly(self.object)
+        return response
+    
+    def integrate_with_calendly(self, booking):
+        # Calendly integration logic
+        pass
+
+class DemoBookingPartialView(CreateView):
+    model = DemoBooking
+    form_class = DemoBookingForm
+    template_name = 'partials/demo_form.html'
+    
+    def form_valid(self, form):
+        self.object = form.save()
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Thank you! We will contact you shortly.'
+        })
