@@ -194,15 +194,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "static/"
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-MEDIA_URL = '/media/'
+
 
 
 
@@ -258,24 +258,6 @@ LOGIN_REDIRECT_URL = 'users:home'  # Assuming 'home' is the name of your buyrite
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
-# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# MAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_HOST = "mail.dignityconcept.tech"
-# EMAIL_PORT = 465
-# EMAIL_USE_TLS = False  # TLS is typically used with port 587; port 465 uses SSL
-# EMAIL_USE_SSL = True   # Add this line for SSL support
-# EMAIL_HOST_USER = "solutions@dignityconcept.tech"
-# EMAIL_HOST_PASSWORD = ",gH~t[y,+}BEZ!e]"
-# DEFAULT_FROM_EMAIL = "demos@kupiansolutions.com"
-
-# EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-# EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-# DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
-# EMAIL_HOST = os.getenv("EMAIL_HOST")
-# EMAIL_PORT = os.getenv("EMAIL_PORT")
-# EMAIL_USE_TLS = False  # TLS is typically used with port 587; port 465 uses SSL
-# EMAIL_USE_SSL = True   # Add this line for SSL support
 
 
 

@@ -53,8 +53,7 @@ from langchain_openai import ChatOpenAI
 from langchain_tavily import TavilySearch
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langgraph.checkpoint.memory import InMemorySaver
-from langgraph.checkpoint.sqlite import \
-    SqliteSaver  # Using SqliteSaver as preferred
+from langgraph.checkpoint.sqlite import SqliteSaver  # Using SqliteSaver as preferred
 # # # ==========================
 # # # 🔁 LangGraph Imports
 # # # ==========================
@@ -99,6 +98,8 @@ import pandas as pd
 from matplotlib.ticker import FuncFormatter
 from sqlalchemy import create_engine
 
+
+from langchain_openai import OpenAIEmbeddings
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
@@ -127,6 +128,7 @@ os.environ["LANGSMITH_ENDPOINT"] = LANGSMITH_ENDPOINT if LANGSMITH_ENDPOINT else
 os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY if GOOGLE_API_KEY else ""
 os.environ["TAVILY_API_KEY"] = TAVILY_API_KEY if TAVILY_API_KEY else ""
 os.environ["GROQ_API_KEY"] = GROQ_API_KEY if GROQ_API_KEY else ""
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY if OPENAI_API_KEY else ""
 tavily_search = TavilySearch(max_results=2)
 # Configure Google Generative AI
 # genai.configure(api_key=GOOGLE_API_KEY)
@@ -215,7 +217,8 @@ llm = init_chat_model("google_genai:gemini-flash-latest")
 model = llm # Consistent naming
 
 # Initialize Embeddings and Vector Store
-embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", transport="rest")
+embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
+# embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", transport="rest")
 global_vector_store = None
 
 def initialize_vector_store():
