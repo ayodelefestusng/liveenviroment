@@ -377,7 +377,7 @@ def solutions_overview(request):
 from django.views.generic import TemplateView
 from django.views.generic.list import ListView
 from django.http import JsonResponse
-from apps.solutions.models import Solution, SolutionCategory
+from .models import Solution, SolutionCategory
 
 class HomeView(TemplateView):
     template_name = 'home/index.html'
