@@ -3,6 +3,7 @@
 {% for vehicle in vehicles %}
 <div class="col-lg-4 col-md-6 mb-4">
 <div class="card h-100 shadow-sm border-0">
+ 
 {% if vehicle.image %}
 <a href="{% url 'buyrite:vehicle_detail' slug=vehicle.slug %}">
 <img src="{{ vehicle.image.url }}" class="card-img-top vehicle-img" alt="{{ vehicle.brand.name }} {{ vehicle.vehicle_model.name }}">
