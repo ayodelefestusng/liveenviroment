@@ -368,3 +368,6 @@ from django.shortcuts import render
 
 def terms_and_privacy(request):
     return render(request, 'registration/terms_and_privacy.html')
+
+def solutions_overview(request):
+    return render(request, 'solutions_overview.html')
