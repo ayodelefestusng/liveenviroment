@@ -331,3 +331,13 @@ body {
 }
 
 
+
+
+.hover-shadow:hover {
+  box-shadow: 0 4px 12px rgba(0, 114, 206, 0.2);
+  transform: scale(1.03);
+}
+
+.transition {
+  transition: all 0.3s ease-in-out;
+}

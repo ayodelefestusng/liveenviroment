@@ -380,7 +380,7 @@ from django.views.generic.list import ListView
 from django.http import JsonResponse
 from .models import Solution, SolutionCategory
 
-class HomeView(TemplateView):
+class HomeView1(TemplateView):
     template_name = 'home/index.html'
     
     def get_context_data(self, **kwargs):
@@ -441,12 +441,16 @@ class DemoBookingPartialView(CreateView):
 # apps/home/views.py
 from django.views.generic import TemplateView
 
+from django.views.generic import TemplateView
+from users.models import Company    
+
 class HomeView(TemplateView):
+    print("HomeView")
     template_name = 'home/index.html'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Add any context data needed for the homepage
+        context['companies'] = Company.objects.all() # or .last(), or .get(id=1)
         return context
 
 def solution_detail(request, slug):

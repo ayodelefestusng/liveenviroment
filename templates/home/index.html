@@ -46,19 +46,23 @@
 
 <!-- Trusted By Section -->
 <section class="py-5 bg-light">
-    <div class="container">
-        <p class="text-center text-muted mb-4">Trusted by Africa's Industry Leaders</p>
-        <div class="row align-items-center justify-content-center">
-            {% for i in "12345" %}
-            <div class="col-6 col-md-4 col-lg-2 text-center mb-4">
-                <div class="client-logo-placeholder bg-white rounded-3 p-3 shadow-sm d-flex align-items-center justify-content-center" 
-                     style="height: 80px;">
-                    <span class="text-muted fw-bold">Client {{ i }}</span>
-                </div>
-            </div>
-            {% endfor %}
+  <div class="container">
+    <p class="text-center text-muted mb-4">Trusted by Africa's Industry Leaders</p>
+    {{ companies|length }} companies loaded.
+    <div class="row align-items-center justify-content-center">
+      {% for company in companies %}
+        <div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+          <div class="client-logo-placeholder bg-white rounded-3 p-3 shadow-sm d-flex align-items-center justify-content-center" style="height: 80px;">
+            {% if company.logo %}
+              <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="img-fluid" style="max-height: 60px;">
+            {% else %}
+              <span class="text-muted fw-bold">{{ company.name }}</span>
+            {% endif %}
+          </div>
         </div>
+      {% endfor %}
     </div>
+  </div>
 </section>
 
 <!-- Core Capabilities -->
@@ -154,10 +158,11 @@
                 <div class="platform-visual bg-white rounded-3 p-4 shadow-sm">
                     <div class="visual-placeholder bg-primary bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center" 
                          style="height: 300px;">
-                        <div class="text-center">
-                            <i class="fas fa-cogs fa-4x text-primary mb-3"></i>
-                            <p class="text-muted">Platform Architecture Visualization</p>
-                        </div>
+                       <div class="text-center">
+  <img src="{% static 'images/platform-architecture.jpg' %}" alt="Platform Architecture Visualization"
+       class="img-fluid mb-3" style="max-height: 250px;">
+  {% comment %} <p class="text-muted">Platform Architecture Visualization</p> {% endcomment %}
+</div>
                     </div>
                 </div>
             </div>
