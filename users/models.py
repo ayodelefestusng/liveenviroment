@@ -88,7 +88,7 @@ class SEOFields(models.Model):
     
     class Meta:
         abstract = True
-
+# gg
 # apps/solutions/models.py
 class SolutionCategory(TimeStampedModel):
     name = models.CharField(max_length=100)
@@ -139,7 +139,7 @@ class DemoBooking(TimeStampedModel):
     job_title = models.CharField(max_length=150)
     phone = models.CharField(max_length=20, blank=True)
     industry = models.CharField(max_length=100)
-    interest_areas = models.ManyToManyField('solutions.Solution')
+    interest_areas = models.ManyToManyField('users.Solution')
     message = models.TextField(blank=True)
     preferred_date = models.DateTimeField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')

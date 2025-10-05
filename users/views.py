@@ -16,6 +16,7 @@ from django.http import (HttpResponse, HttpResponseRedirect,
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import View
 
 from .forms import (PasswordChangeForm, PasswordResetForm, PasswordSetupForm,
                     RegistrationForm, User)
@@ -409,6 +410,7 @@ from django.urls import reverse_lazy
 from .models import DemoBooking
 from .forms import DemoBookingForm
 
+# hd
 class DemoBookingView(CreateView):
     model = DemoBooking
     form_class = DemoBookingForm
@@ -436,3 +438,100 @@ class DemoBookingPartialView(CreateView):
             'status': 'success',
             'message': 'Thank you! We will contact you shortly.'
         })
+# apps/home/views.py
+from django.views.generic import TemplateView
+
+class HomeView(TemplateView):
+    template_name = 'home/index.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add any context data needed for the homepage
+        return context
+
+def solution_detail(request, slug):
+    solution = get_object_or_404(Solution, slug=slug)
+    return render(request, 'solution_detail.html', {'solution': solution})
+
+from django.shortcuts import render
+
+def platform_view(request):
+    return render(request, 'platform.html')
+def industries(request):
+    return render(request, 'industries.html')
+def industry_detail(request, industry_slug):
+    return render(request, 'industry_detail.html', {'industry_slug': industry_slug})
+def case_studies(request):
+    return render(request, 'case_studies.html')
+def case_study_detail(request, slug):
+    return render(request, 'case_study_detail.html', {'slug': slug})
+def blog_list(request):
+    return render(request, 'blog_list.html')
+def blog_detail(request, slug):
+    return render(request, 'blog_detail.html', {'slug': slug})
+def demo_booking(request):
+    return render(request, 'demo_booking.html')
+def thank_you(request):
+    return render(request, 'thank_you.html')
+
+# apps/demo/views.py
+from django.views.generic import CreateView, TemplateView
+from django.urls import reverse_lazy
+from django.http import JsonResponse
+from django.contrib import messages
+from .models import SolutionCategory
+from .models import DemoBooking
+from .forms import DemoBookingForm
+
+class DemoBookingView(CreateView):
+    model = DemoBooking
+    form_class = DemoBookingForm
+    template_name = 'demo/booking.html'
+    success_url = reverse_lazy('demo_success')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['solution_categories'] = SolutionCategory.objects.prefetch_related(
+            'solution_set'
+        ).filter(solution__is_active=True).distinct()
+        return context
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        # You can add additional processing here, like:
+        # - Send confirmation email
+        # - Integrate with Calendly
+        # - Notify sales team
+        return response
+
+class DemoSuccessView(TemplateView):
+    template_name = 'demo/success.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add any context data for the success page
+        return context
+
+class DemoBookingPartialView(CreateView):
+    model = DemoBooking
+    form_class = DemoBookingForm
+    template_name = 'partials/demo_form.html'
+    
+    def form_valid(self, form):
+        self.object = form.save()
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Thank you! We will contact you shortly to schedule your demo.'
+        })
+    
+    def form_invalid(self, form):
+        return JsonResponse({
+            'status': 'error',
+            'errors': form.errors.get_json_data()
+        }, status=400)
+
+class CalendlyWebhookView(View):
+    def post(self, request, *args, **kwargs):
+        # Handle Calendly webhook integration
+        # This would process Calendly booking confirmations
+        pass

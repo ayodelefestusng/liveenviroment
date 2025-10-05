@@ -1,5 +1,6 @@
 <!-- templates/base.html -->
 <!DOCTYPE html>
+{% load static %}
 <html lang="en" class="h-100">
 <head>
     <meta charset="UTF-8">
@@ -9,18 +10,42 @@
     <!-- SEO Meta Tags -->
     {% block meta_tags %}
     <meta name="description" content="{% block meta_description %}Dignity Concept Limited unifies data, analytics, and AI to help African enterprises scale with confidence and lead their industries.{% endblock %}">
-    <meta name="keywords" content="{% block meta_keywords %}AI, Machine Learning, Data Analytics, Software Engineering, Africa Technology{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}AI, Machine Learning, Data Analytics, Software Engineering, Africa Technology, Digital Transformation{% endblock %}">
+    <meta name="author" content="Dignity Concept Limited">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="{% block og_title %}Dignity Concept - Engineering Africa's Intelligent Future{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Unifying data, analytics, and AI to help African enterprises scale with confidence.{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:image" content="{% static 'images/og-image.jpg' %}">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}Dignity Concept Limited{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Engineering Africa's Intelligent Future through AI and data analytics.{% endblock %}">
+    <meta name="twitter:image" content="{% static 'images/twitter-image.jpg' %}">
     {% endblock %}
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
     
     <!-- CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
     {% load static %}
     <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'css/forms.css' %}" rel="stylesheet">
     
     <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+    
+    {% block extra_css %}{% endblock %}
 </head>
 <body class="d-flex flex-column h-100">
     <!-- Navigation -->
@@ -28,19 +53,47 @@
     
     <!-- Main Content -->
     <main class="flex-shrink-0">
-        {% block content %}{% endblock %}
+        {% block content %}
+        <!-- Content will be injected here by child templates -->
+        {% endblock %}
     </main>
     
     <!-- Footer -->
     {% include 'partials/footer.html' %}
     
+    <!-- Live Chat Widget -->
+    <div id="chat-widget" class="chat-widget">
+        <div class="chat-toggle">
+            <i class="fas fa-comments"></i>
+        </div>
+        <div class="chat-container">
+            <div class="chat-header">
+                <h6>Chat with Us</h6>
+                <button class="chat-close">&times;</button>
+            </div>
+            <div class="chat-body">
+                <p>Hello! How can we help you today?</p>
+                <!-- Tawk.to or Intercom will be integrated here -->
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
     
-    <!-- Live Chat -->
+    {% block extra_js %}{% endblock %}
+    
     <script>
-        // Tawk.to or Intercom integration
+        // Initialize AOS
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100
+            });
+        });
     </script>
 </body>
 </html>
