@@ -8,17 +8,17 @@
     <div class="container">
         <div class="row align-items-center min-vh-80">
             <div class="col-lg-6">
-                <h1 class="display-3 fw-bold mb-4" data-aos="fade-up">
-                    Engineering Africa's <span class="text-primary">Intelligent Future</span>
-                </h1>
+                <h1 class="display-3 fw-bold mb-4" style="color: #0072CE;" data-aos="fade-up">
+    Engineering Africa's <span style="color: #00B140;">Intelligent Future</span>
+</h1>
                 <p class="lead mb-5" data-aos="fade-up" data-aos-delay="100">
                     We unify data, analytics, and AI to help you scale with confidence and lead your industry.
                 </p>
                 <div class="d-flex flex-wrap gap-3" data-aos="fade-up" data-aos-delay="200">
-                    <a href="{% url 'users:demo_booking' %}" class="btn btn-primary btn-lg px-5">
+                    <a href="{% url 'users:demo_booking' %}" class="btn btn-primary btn-lg px-5" style="background-color: #0072CE; color: white; font-weight: bold;">
                         <i class="fas fa-calendar-check me-2"></i>Book a Demo
                     </a>
-                    <a href="{% url 'users:solutions_overview' %}" class="btn btn-outline-primary btn-lg px-5">
+                    <a href="{% url 'users:solutions_overview' %}" class="btn btn-lg px-5"style="background-color: #00B140; color: white; font-weight: bold;">
                         Explore Our Solutions
                     </a>
                 </div>
@@ -26,13 +26,18 @@
             <div class="col-lg-6">
                 <div class="hero-visual" data-aos="fade-left">
                     <!-- Placeholder for animated visualization -->
-                    <div class="placeholder-visual bg-primary bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center" 
-                         style="height: 400px;">
+                  <a href="#" class="placeholder-visual bg-primary bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center animate-fade-in text-decoration-none"
+   style="height: 400px;">
                         <div class="text-center">
-                            <i class="fas fa-brain fa-5x text-primary mb-3"></i>
+                            {% comment %} <i class="fas fa-brain fa-5x text-primary mb-3 pulse-icon"></i> {% endcomment %}
+                             <video class="fas fa-brain fa-5x text-primary mb-3 pulse-icon"  autoplay loop muted playsinline style="max-height: 100%; max-width: 100%; border-radius: 12px;">
+                <source src="{% static 'images/visualisaton.webm' %}" type="video/webm">
+                Your browser does not support the video tag.
+            </video>
+
                             <p class="text-muted">Interactive AI Visualization</p>
                         </div>
-                    </div>
+</a>
                 </div>
             </div>
         </div>
@@ -161,7 +166,7 @@
 </section>
 
 <!-- Final CTA Section -->
-<section class="py-5 bg-primary text-white">
+<section class="py-5 text-white" style="background-color: #0072CE;">
     <div class="container">
         <div class="row text-center">
             <div class="col-lg-8 mx-auto">

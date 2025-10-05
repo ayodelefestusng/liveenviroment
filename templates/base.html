@@ -5,6 +5,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- In your base.html head section -->
+<link href="{% static 'css/chat.css' %}" rel="stylesheet">
+
+
     <title>{% block title %}Dignity Concept - Engineering Africa's Intelligent Future{% endblock %}</title>
     
     <!-- SEO Meta Tags -->
@@ -61,22 +65,87 @@
     <!-- Footer -->
     {% include 'partials/footer.html' %}
     
-    <!-- Live Chat Widget -->
-    <div id="chat-widget" class="chat-widget">
-        <div class="chat-toggle">
-            <i class="fas fa-comments"></i>
-        </div>
-        <div class="chat-container">
-            <div class="chat-header">
-                <h6>Chat with Us</h6>
-                <button class="chat-close">&times;</button>
+ <!-- Updated Live Chat Widget HTML -->
+<div id="chat-widget" class="chat-widget">
+    <!-- Chat Toggle Button -->
+    <button class="chat-toggle" aria-label="Open chat" aria-expanded="false">
+        <i class="fas fa-comments"></i>
+        <div class="chat-notification" style="display: none;">1</div>
+    </button>
+
+    <!-- Chat Container -->
+    <div class="chat-container" role="dialog" aria-labelledby="chat-header-title" aria-hidden="true">
+        <!-- Chat Header -->
+        <div class="chat-header">
+            <div>
+                <h6 id="chat-header-title">Chat with Us</h6>
+                <div class="chat-status">
+                    <div class="status-indicator"></div>
+                    <span>Online • Usually replies in minutes</span>
+                </div>
             </div>
-            <div class="chat-body">
-                <p>Hello! How can we help you today?</p>
-                <!-- Tawk.to or Intercom will be integrated here -->
+            <div class="chat-header-actions">
+                <button class="chat-minimize" aria-label="Minimize chat">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button class="chat-close" aria-label="Close chat">&times;</button>
+            </div>
+        </div>
+
+        <!-- Chat Body -->
+        <div class="chat-body">
+            <!-- Welcome Message -->
+            <div class="chat-welcome">
+                <i class="fas fa-robot"></i>
+                <p>Hello! I'm your Dignity Concept assistant</p>
+                <small>How can I help you today?</small>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="chat-quick-actions">
+                <a href="{% url 'users:demo_booking' %}" class="quick-action-btn">
+                    <i class="fas fa-calendar me-1"></i>Book Demo
+                </a>
+                <a href="{% url 'users:contact' %}" class="quick-action-btn">
+                    <i class="fas fa-phone me-1"></i>Contact Sales
+                </a>
+                <a href="{% url 'users:solutions_overview' %}" class="quick-action-btn">
+                    <i class="fas fa-rocket me-1"></i>Solutions
+                </a>
+                <a href="{% url 'users:platform' %}" class="quick-action-btn">
+                    <i class="fas fa-cogs me-1"></i>Our Platform
+                </a>
+            </div>
+
+            <!-- Typing Indicator (Hidden by default) -->
+            <div class="typing-indicator" style="display: none;">
+                <span>Assistant is typing</span>
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            <!-- Chat messages will be inserted here by JavaScript -->
+            <div id="chat-messages"></div>
+        </div>
+
+        <!-- Chat Input Area -->
+        <div class="chat-input-area">
+            <div class="chat-input-group">
+                <input type="text" 
+                       class="chat-input" 
+                       placeholder="Type your message..." 
+                       aria-label="Type your message"
+                       maxlength="500">
+                <button class="chat-send-btn" aria-label="Send message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
             </div>
         </div>
     </div>
+</div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -94,6 +163,26 @@
                 offset: 100
             });
         });
+
+
+
+
+
+        // Chat Widget Script
+        
     </script>
+
+
+<!-- In your base.html before closing body tag -->
+<script src="{% static 'js/chat.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+          crossorigin="anonymous"></script>
+  <script>
+    document.body.addEventListener('htmx:configRequest', (event) => {
+      event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+    });
+  </script>
+    
 </body>
 </html>

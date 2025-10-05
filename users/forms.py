@@ -430,11 +430,11 @@ class DemoBookingForm(forms.ModelForm):
             'placeholder': 'Enter your last name',
         }),
         validators=[
-            RegexValidator(
-                regex='^[a-zA-Z\s\-]+$',
-                message='Last name can only contain letters, spaces, and hyphens',
-                code='invalid_last_name'
-            )
+          RegexValidator(
+    regex=r'^[a-zA-Z\s\-]+$',
+    message='Last name can only contain letters, spaces, and hyphens',
+    code='invalid_last_name'
+)
         ]
     )
     

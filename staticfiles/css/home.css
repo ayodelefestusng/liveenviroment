@@ -1,0 +1,180 @@
+
+
+.carol-image {
+  /* width: 100px;      */
+
+  height: 100px;        /* Set a fixed height */
+
+}
+
+.roboto {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:100;
+  font-style: normal;
+  font-variation-settings:"wdth" 100;
+}
+
+.montserrat{
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:100 ;
+  font-style: normal;
+}
+
+
+.car-image {
+  width: 100px;         /* Set a fixed width */
+  height: 100px;        /* Set a fixed height */
+  object-fit: cover;    /* Ensures image fills the box without distortion */
+  border-radius: 8px;   /* Optional: soft rounded corners */
+  margin-bottom: 0px;
+}
+
+
+
+.image-wrapper {
+  /* width: 100px; */
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+}
+.car-text {
+  text-align: center;
+  font-weight: 500;
+  margin-top: 8px;
+color: #DD6E0F;
+
+}
+
+
+
+.product-frame{
+  margin: 0px;
+  margin-top: 10px;
+  font-family: "Arial", sans-serif;
+  /* font-family: "Roboto", sans-serif; */
+  font-optical-sizing: auto;
+  font-weight:10;
+  font-style: normal;
+
+    border: 4px solid red;
+
+     max-width: 100%;
+    
+
+
+}
+
+
+
+.product-image {
+  /* This container will define the boundaries for the image */
+  height: 300px;
+  width: 300px;
+  overflow: hidden; /* Hides any part of the image that goes beyond these dimensions */
+  border-radius: 8px;
+}
+
+.product-image img {
+  /* The image will now fit precisely into its parent container */
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the entire space without distortion */
+}
+
+
+.product-price{
+  margin: 0px;
+    font-weight: 5px;
+    font-size: 15px;
+    color: orangered;
+}
+
+
+.product-name{
+  margin: 0px;
+  font-weight:10;
+}
+
+.product-tame p{
+  margin: 0px;
+  font-weight:50px;
+  color: blue;
+  
+}
+
+.product-info{
+  margin: 0px;
+  font-size: 15px;
+  font-weight:10;
+}
+
+.product-status{
+  margin: 0px;
+  font-weight:10;
+}
+
+
+
+
+
+
+.product-tame p{
+  margin: 0px;
+  font-weight:50px;
+  color: rgb(255, 217, 0);
+  
+}
+
+.carouselExampleInterval {
+  height: 200px;
+  
+}
+
+.carouselExampleInterval img {
+  height: 200px;
+  object-fit: cover;
+
+}
+
+#carouselExampleInterval img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.font-color {
+  color: #000080;
+}
+
+
+/* google icon */
+
+
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.social-btn:hover {
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.svg-icon svg {
+  display: block;
+}

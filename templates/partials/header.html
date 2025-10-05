@@ -5,7 +5,7 @@
         <div class="container">
             <!-- Logo -->
             <a class="navbar-brand" href="{% url 'users:home' %}">
-                <img src="{% static 'images/logo.png' %}" 
+                <img src="{% static 'images/ayulalogo.png' %}" 
                      alt="Dignity Concept Limited" 
                      height="40"
                      class="dignity-logo">
@@ -121,7 +121,7 @@
                         <a class="nav-link" href="{% url 'users:about' %}">
                             About Us
                         </a>
-                    </li>
+                    </li>``
 
                     <!-- Contact -->
                     <li class="nav-item">
@@ -135,11 +135,10 @@
                 <div class="d-flex align-items-center gap-2">
                     <a href="{% url 'users:solutions_overview' %}" class="btn btn-outline-primary btn-sm">
                         Explore Solutions
-                    </a>
-                    <a href="{% url 'users:demo_booking' %}" class="btn btn-primary btn-sm">
-                        <i class="fas fa-calendar-check me-1"></i>
-                        Book Demo
-                    </a>
+     <a href="{% url 'users:demo_booking' %}" class="btn btn-primary btn-sm" style="background-color: #0072CE;">
+    <i class="fas fa-calendar-check me-1"></i>
+    Book Demo
+</a>
                 </div>
             </div>
         </div>
