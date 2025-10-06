@@ -341,3 +341,24 @@ body {
 .transition {
   transition: all 0.3s ease-in-out;
 }
+
+
+    /* Style the toggler button border and background */
+.navbar-toggler {
+    border-color: #00B140;
+    background-color: transparent;
+}
+
+/* Style the icon inside the toggler */
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%2300B140' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+.navbar-toggler:focus,
+.navbar-toggler:active {
+    border-color: #00B140;
+/* box-shadow: none;  */
+/* Optional: removes Bootstrap's default blue glow */ 
+   box-shadow: 0 0 0 0.25rem rgba(0, 114, 206, 0.25); /* Custom blue glow */
+
+}
+

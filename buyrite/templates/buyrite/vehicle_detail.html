@@ -180,16 +180,19 @@
         <!-- Seller Details Card -->
         <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center">
             <img src="https://placehold.co/100x100/A0AEC0/000?text=Seller" alt="Seller's Profile" class="w-24 h-24 rounded-full border-4 border-gray-200 mb-4">
-            <h4 class="text-xl font-semibold text-gray-900">{{ user.full_name|default:"Merchant" }}</h4>
+            <h4 class="text-xl font-semibold text-gray-900">{{ product_info.seller.full_name|default:"Merchant" }}</h4>
             <p class="text-gray-500 mb-4">Verified Merchant</p>
+            <div class="text-gray-500 mb-4">
+              
+            </div>
 
             {% if request.user.is_authenticated %}
-                <a href="tel:{{ user.phone|default:'12345678901' }}" class="action-button call-button w-full mb-2">
+                <a href="tel:{{ product_info.seller.phone|default:'12345678901' }}" class="action-button call-button w-full mb-2">
                     <!-- Call Icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" ...></svg>
                     <span>Call Merchant</span>
                 </a>
-                <a href="https://wa.me/{{ user.phone|default:'12345678901' }}" target="_blank" class="action-button whatsapp-button w-full">
+                <a href="https://wa.me/{{ product_info.seller.phone|default:'12345678901' }}" target="_blank" class="action-button whatsapp-button w-full">
                     <!-- WhatsApp Icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" ...></svg>
                     <span>Chat on WhatsApp</span>

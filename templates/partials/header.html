@@ -21,8 +21,10 @@
 
             <!-- Main Navigation -->
             <div class="collapse navbar-collapse" id="navbarMain">
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav me-auto" >
                     <!-- Solutions Dropdown -->
+                   
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="solutionsDropdown" 
                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -136,12 +138,12 @@
                     {% comment %} <a href="{% url 'users:solutions_overview' %}" class="btn btn-outline-primary btn-sm">
                         Explore Solutions {% endcomment %}
                      <button class="btn btn-outline-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#solutionsOffcanvas" aria-controls="solutionsOffcanvas">
-    Our Products       
-</button>   
-     <a href="{% url 'users:demo_booking' %}" class="btn btn-primary btn-sm" style="background-color: #0072CE;">
-    <i class="fas fa-calendar-check me-1"></i>
-    Book Demo
-</a>
+                        Our Products       
+                    </button>   
+                      <a href="{% url 'users:demo_booking' %}" class="btn btn-primary btn-sm" style="background-color: #0072CE;">
+                      <i class="fas fa-calendar-check me-1"></i>
+                      Book Demo
+                  </a>
 
                 </div>
             </div>

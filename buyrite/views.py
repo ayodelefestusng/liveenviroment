@@ -365,6 +365,8 @@ class VehicleDetailView(DetailView):
         ]
         context['carousel'] = [img for img in image_fields if img]
         context['product_info'] = vehicle
+        context['seller'] = vehicle.seller  # 👈 Add this line
+
         time_diff = now() - vehicle.created_at
         days = time_diff.days
         hours = time_diff.seconds // 3600
