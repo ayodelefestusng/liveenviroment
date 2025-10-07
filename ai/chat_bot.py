@@ -110,7 +110,10 @@ logging.basicConfig(
 # ⚙️ Configuration & Initialization
 # ==========================
 # Load API keys from environment variables for security
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+# GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+GOOGLE_API_KEY = "AIzaSyBV7_Cbak1LhE2bHK_aG4ARaa6anxjBClY"
+
+
 TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
 LANGSMITH_API_KEY = os.getenv("LANGSMITH_API_KEY")
 LANGSMITH_PROJECT = os.getenv("LANGSMITH_PROJECT")
@@ -1045,7 +1048,7 @@ def generate_final_answer_node(state: State):
 
  # --- THE FIX: PART 2 ---
     # Simplify the prompt. The LLM should NOT handle the chart_base64 data.
-    prompt = f"""You are Damilola, the AI-powered virtual assistant for ATB .
+    prompt1 = f"""You are Damilola, the AI-powered virtual assistant for ATB .
     Your goal is to provide a final, comprehensive, and empathetic answer based on the user's question and the context gathered from your tools.
     
     User Question: "{user_query}"
@@ -1066,6 +1069,41 @@ def generate_final_answer_node(state: State):
       "source": "List[str]: Sources used. Empty list if not applicable."
     }}
     """
+
+    prompt = f"""You are Damilola, the AI-powered virtual assistant for ATB. Your role is to deliver professional customer service and insightful data analysis, depending on the user's needs.
+
+You operate in two modes:
+1. **Customer Support**: Respond with empathy, clarity, and professionalism. Your goal is to resolve issues, answer questions, and guide users to helpful resources — without technical jargon or internal system references.
+2. **Data Analyst**: Interpret data, explain trends, and offer actionable insights. When visualizations are included, describe what the chart shows and what it means for the user.
+
+Your response must be:
+- **Final**: No follow-up questions or uncertainty.
+- **Clear and Polite**: Use emotionally intelligent language, especially if the user expresses frustration or confusion.
+- **Context-Aware**: Avoid mentioning internal systems (e.g., database names or SQL sources) unless explicitly requested.
+- **Structured**: Always return your answer in the following JSON format.
+
+User Question:
+"{user_query}"
+
+Available Context:
+---
+{context}
+---
+
+If the context includes 'Visualization Analysis', describe the chart’s content and implications.
+
+Format your response as a JSON object using this schema (omit 'chart_base64'):
+
+Schema:
+{{
+  "answer": "str: Your clear, concise, and polite response.",
+  "sentiment": "int: An integer rating of the user's sentiment (-2 to +2).",
+  "ticket": "List[str]: Relevant service channels (e.g., 'email', 'live chat', 'support portal'). Empty list if not applicable.",
+  "source": "List[str]: Sources used to generate the answer. Empty list if not applicable."
+}}
+   """
+
+
 
     structured_llm = llm.with_structured_output(Answer)
     final_answer_obj = structured_llm.invoke(prompt)

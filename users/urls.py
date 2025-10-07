@@ -43,7 +43,7 @@ urlpatterns = [
     path('thank-you/', thank_you, name='thank_you'),
     path('', HomeView.as_view(), name='home'),
 
-    # path('', views.DemoBookingView.as_view(), name='demo_booking'),
+    path('', views.DemoBookingView.as_view(), name='demo_booking'),
     path('success/', views.DemoSuccessView.as_view(), name='demo_success'),
     path('partial/', views.DemoBookingPartialView.as_view(), name='demo_booking_partial'),
     path('calendly-webhook/', views.CalendlyWebhookView.as_view(), name='calendly_webhook'),
