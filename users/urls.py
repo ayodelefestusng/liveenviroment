@@ -7,7 +7,7 @@ app_name = 'users'
 
 
 urlpatterns = [
-        path("",home, name="home"),
+        # path("",home, name="home"),
    path("about", about, name="about"),
   path("contact", contact, name="contact"),
 
@@ -28,8 +28,29 @@ urlpatterns = [
 
     
         path('terms-and-privacy/', views.terms_and_privacy, name='terms_and_privacy'),
+<<<<<<< HEAD
 
+=======
+>>>>>>> deepseek
 
+    path('solutions-overview/', solutions_overview, name='solutions_overview'),
+    path('solutions/<slug:slug>/', solution_detail, name='solution_detail'),
+    path('platform/', platform_view, name='platform'),
+    path('industries/', industries, name='industries'),
+
+    path('industries/<slug:industry_slug>/', industry_detail, name='industry_detail'),
+    path('case-studies/', case_studies, name='case_studies'),
+    path('case-studies/<slug:slug>/', case_study_detail, name='case_study_detail'),
+    path('blog/', blog_list, name='blog_list'),
+    path('blog/<slug:slug>/', blog_detail, name='blog_detail'),
+    path('demo-booking/', demo_booking, name='demo_booking'),
+    path('thank-you/', thank_you, name='thank_you'),
+    path('', HomeView.as_view(), name='home'),
+
+    path('', views.DemoBookingView.as_view(), name='demo_booking'),
+    path('success/', views.DemoSuccessView.as_view(), name='demo_success'),
+    path('partial/', views.DemoBookingPartialView.as_view(), name='demo_booking_partial'),
+    path('calendly-webhook/', views.CalendlyWebhookView.as_view(), name='calendly_webhook'),
 
 ]
 

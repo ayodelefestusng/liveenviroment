@@ -48,6 +48,7 @@
 
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav ms-auto">
+<<<<<<< HEAD
                 {% if user.is_authenticated and not user.is_dealer %}
                     <li class="nav-item">
                         <a class="nav-link text-dark" href="{% url 'buyrite:dealer_registration' %}">Become a Dealer</a>
@@ -57,11 +58,26 @@
                 {% if user.is_authenticated %}
                    
                     <li class="nav-item">
+=======
+                {% comment %} {% if user.is_authenticated and not user.is_dealer %} {% endcomment %}
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{% url 'buyrite:dealer_registration' %}">Become a Dealer</a>
+                    </li>
+                {% comment %} {% endif %} {% endcomment %}
+                <li class="nav-item">
+>>>>>>> deepseek
                         <a class="nav-link text-dark btn btn-warning" href="{% url 'buyrite:check_vin' %}">Custom Paper</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark btn btn-warning" href="#">VIN Lookup</a>
                     </li>
+<<<<<<< HEAD
+=======
+
+                {% if user.is_authenticated %}
+                   
+                    
+>>>>>>> deepseek
                     {% if user.is_dealer or user.is_superuser %}
                         <li class="nav-item">
                             <button class="btn btn-outline-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#operationsMenu">

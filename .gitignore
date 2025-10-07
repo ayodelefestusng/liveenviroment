@@ -28,10 +28,10 @@ local_settings.py
 settings_local.py
 
 # Media and static files (optional)
-/media/
-/staticfiles/
-/static_root/
-/media_root/
+# /media/
+# /staticfiles/
+# /static_root/
+# /media_root/
 
 # VS Code
 .vscode/
