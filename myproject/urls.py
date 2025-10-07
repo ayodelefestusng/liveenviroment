@@ -9,14 +9,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-<<<<<<< HEAD
-=======
 from django.views.generic import TemplateView
 
 
     # config/urls.py
 
->>>>>>> deepseek
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,11 +31,6 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),              # ✅ Social login (Google, Facebook, etc.)
 ]
 
-<<<<<<< HEAD
-# Serve media files during development
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-=======
 urlpatterns += [
     # path('admin/', admin.site.urls),
     # path('home', include('apps.home.urls')),
@@ -62,4 +54,3 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
->>>>>>> deepseek

@@ -1048,11 +1048,7 @@ def generate_final_answer_node(state: State):
 
  # --- THE FIX: PART 2 ---
     # Simplify the prompt. The LLM should NOT handle the chart_base64 data.
-<<<<<<< HEAD
-    prompt = f"""You are Damilola, the AI-powered virtual assistant for ATB .
-=======
     prompt1 = f"""You are Damilola, the AI-powered virtual assistant for ATB .
->>>>>>> deepseek
     Your goal is to provide a final, comprehensive, and empathetic answer based on the user's question and the context gathered from your tools.
     
     User Question: "{user_query}"

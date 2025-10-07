@@ -259,10 +259,6 @@ LOGIN_REDIRECT_URL = 'users:home'  # Assuming 'home' is the name of your buyrite
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
-<<<<<<< HEAD
-=======
-
->>>>>>> deepseek
 
 # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 # EMAIL_HOST = "smtp.gmail.com"
@@ -272,17 +268,7 @@ LOGIN_REDIRECT_URL = 'users:home'  # Assuming 'home' is the name of your buyrite
 # EMAIL_HOST_USER = "upwardwave.dignity@gmail.com"
 # EMAIL_HOST_PASSWORD = "vudtoktjbahbzhbv"
 
-<<<<<<< HEAD
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True  # ✅ Enable TLS for Gmail
-EMAIL_USE_SSL = False  # ✅ Must be False if TLS is True
-EMAIL_HOST_USER = "upwardwave.dignity@gmail.com"
-EMAIL_HOST_PASSWORD = "vudtoktjbahbzhbv"
-=======
 # DEFAULT_FROM_EMAIL = 'Dignity Concept <upwardwave.dignity@gmail.com>'
->>>>>>> deepseek
 
 DEFAULT_FROM_EMAIL = 'Dignity Concept <upwardwave.dignity@gmail.com>'
 

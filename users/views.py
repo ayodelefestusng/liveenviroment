@@ -16,10 +16,7 @@ from django.http import (HttpResponse, HttpResponseRedirect,
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-<<<<<<< HEAD
-=======
 from django.views.generic import View
->>>>>>> deepseek
 
 from .forms import (PasswordChangeForm, PasswordResetForm, PasswordSetupForm,
                     RegistrationForm, User)
@@ -371,9 +368,6 @@ def user_logout(request):
 from django.shortcuts import render
 
 def terms_and_privacy(request):
-<<<<<<< HEAD
-    return render(request, 'registration/terms_and_privacy.html')
-=======
     return render(request, 'registration/terms_and_privacy.html')
 
 def solutions_overview(request):
@@ -545,4 +539,3 @@ class CalendlyWebhookView(View):
         # Handle Calendly webhook integration
         # This would process Calendly booking confirmations
         pass
->>>>>>> deepseek

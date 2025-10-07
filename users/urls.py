@@ -28,10 +28,6 @@ urlpatterns = [
 
     
         path('terms-and-privacy/', views.terms_and_privacy, name='terms_and_privacy'),
-<<<<<<< HEAD
-
-=======
->>>>>>> deepseek
 
     path('solutions-overview/', solutions_overview, name='solutions_overview'),
     path('solutions/<slug:slug>/', solution_detail, name='solution_detail'),
