@@ -29,7 +29,7 @@ class RegistrationForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_action = reverse_lazy('users:register')
         self.helper.form_method = ('POST')
-        self.helper.add_input(Submit('submit', 'users:Register'))
+        self.helper.add_input(Submit('submit', 'Register'))
         self.helper.layout = Layout(
         
             Field('email'),

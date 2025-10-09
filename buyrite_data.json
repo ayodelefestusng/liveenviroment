@@ -1,0 +1,5018 @@
+[
+{
+  "model": "buyrite.carousel",
+  "pk": 1,
+  "fields": {
+    "name": "Payment",
+    "image": "carosel_images/payment2.png"
+  }
+},
+{
+  "model": "buyrite.carousel",
+  "pk": 2,
+  "fields": {
+    "name": "Network",
+    "image": "carosel_images/network.jpeg"
+  }
+},
+{
+  "model": "buyrite.carousel",
+  "pk": 3,
+  "fields": {
+    "name": "Innovation",
+    "image": "carosel_images/innovation.jpeg"
+  }
+},
+{
+  "model": "buyrite.tag",
+  "pk": 1,
+  "fields": {
+    "name": "Ayodele"
+  }
+},
+{
+  "model": "buyrite.tag",
+  "pk": 2,
+  "fields": {
+    "name": "Nigeria used"
+  }
+},
+{
+  "model": "buyrite.tag",
+  "pk": 3,
+  "fields": {
+    "name": "Clean Body"
+  }
+},
+{
+  "model": "buyrite.post",
+  "pk": 1,
+  "fields": {
+    "title": "Nigeria Independence",
+    "content": "The day Nigeria got indepence was great",
+    "tags": [
+      1,
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "buyrite.post",
+  "pk": 2,
+  "fields": {
+    "title": "The Ghana Indepence",
+    "content": "The great day of Gjhana",
+    "tags": [
+      1,
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "buyrite.post",
+  "pk": 3,
+  "fields": {
+    "title": "England Indepence",
+    "content": "Hedjdjdj",
+    "tags": [
+      1,
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "buyrite.category",
+  "pk": 1,
+  "fields": {
+    "name": "Car",
+    "image": "category_images/car_0pTSfRh.png"
+  }
+},
+{
+  "model": "buyrite.category",
+  "pk": 2,
+  "fields": {
+    "name": "Lorry",
+    "image": "category_images/truckv2.png"
+  }
+},
+{
+  "model": "buyrite.category",
+  "pk": 3,
+  "fields": {
+    "name": "Bus",
+    "image": "category_images/bus_S7vWx4R.png"
+  }
+},
+{
+  "model": "buyrite.category",
+  "pk": 4,
+  "fields": {
+    "name": "Machinery",
+    "image": "category_images/heavy-equipment.png"
+  }
+},
+{
+  "model": "buyrite.category",
+  "pk": 5,
+  "fields": {
+    "name": "Motorcycle",
+    "image": "category_images/motorcycle.png"
+  }
+},
+{
+  "model": "buyrite.category",
+  "pk": 6,
+  "fields": {
+    "name": "Truck",
+    "image": "category_images/truck.png"
+  }
+},
+{
+  "model": "buyrite.category",
+  "pk": 7,
+  "fields": {
+    "name": "Services",
+    "image": "category_images/services.png"
+  }
+},
+{
+  "model": "buyrite.category",
+  "pk": 8,
+  "fields": {
+    "name": "Spare Part",
+    "image": "category_images/vehicle_part.png"
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 8,
+  "fields": {
+    "name": "Mercedes-Benz",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 9,
+  "fields": {
+    "name": "Volvo",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 10,
+  "fields": {
+    "name": "Yutong",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 11,
+  "fields": {
+    "name": "MAN",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 12,
+  "fields": {
+    "name": "Scania",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 13,
+  "fields": {
+    "name": "Toyota",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 14,
+  "fields": {
+    "name": "Honda",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 15,
+  "fields": {
+    "name": "Volkswagen",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 16,
+  "fields": {
+    "name": "BMW",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 17,
+  "fields": {
+    "name": "Tesla",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 18,
+  "fields": {
+    "name": "Iveco",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 19,
+  "fields": {
+    "name": "Caterpillar",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 20,
+  "fields": {
+    "name": "Komatsu",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 21,
+  "fields": {
+    "name": "John Deere",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 22,
+  "fields": {
+    "name": "JCB",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 23,
+  "fields": {
+    "name": "Harley-Davidson",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 24,
+  "fields": {
+    "name": "Yamaha",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 25,
+  "fields": {
+    "name": "Kawasaki",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 26,
+  "fields": {
+    "name": "Ford",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 27,
+  "fields": {
+    "name": "Chevrolet",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 28,
+  "fields": {
+    "name": "Ram",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.brand",
+  "pk": 29,
+  "fields": {
+    "name": "GMC",
+    "logo": ""
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 25,
+  "fields": {
+    "brand": 8,
+    "name": "Citaro"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 26,
+  "fields": {
+    "brand": 9,
+    "name": "9700"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 27,
+  "fields": {
+    "brand": 10,
+    "name": "ZK6122H"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 28,
+  "fields": {
+    "brand": 11,
+    "name": "Lion's City"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 29,
+  "fields": {
+    "brand": 12,
+    "name": "Irizar"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 30,
+  "fields": {
+    "brand": 13,
+    "name": "Corolla"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 31,
+  "fields": {
+    "brand": 13,
+    "name": "RAV4"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 32,
+  "fields": {
+    "brand": 14,
+    "name": "Civic"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 33,
+  "fields": {
+    "brand": 14,
+    "name": "CR-V"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 34,
+  "fields": {
+    "brand": 15,
+    "name": "Golf"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 35,
+  "fields": {
+    "brand": 15,
+    "name": "Polo"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 36,
+  "fields": {
+    "brand": 16,
+    "name": "3 Series"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 37,
+  "fields": {
+    "brand": 17,
+    "name": "Model Y"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 38,
+  "fields": {
+    "brand": 17,
+    "name": "Model 3"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 39,
+  "fields": {
+    "brand": 8,
+    "name": "Actros"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 40,
+  "fields": {
+    "brand": 9,
+    "name": "FH"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 41,
+  "fields": {
+    "brand": 12,
+    "name": "R-Series"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 42,
+  "fields": {
+    "brand": 18,
+    "name": "Stralis"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 43,
+  "fields": {
+    "brand": 11,
+    "name": "TGX"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 44,
+  "fields": {
+    "brand": 19,
+    "name": "D10"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 45,
+  "fields": {
+    "brand": 19,
+    "name": "320"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 46,
+  "fields": {
+    "brand": 20,
+    "name": "PC200"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 47,
+  "fields": {
+    "brand": 21,
+    "name": "8R"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 48,
+  "fields": {
+    "brand": 22,
+    "name": "3CX"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 49,
+  "fields": {
+    "brand": 14,
+    "name": "Super Cub"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 50,
+  "fields": {
+    "brand": 23,
+    "name": "Street Glide"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 51,
+  "fields": {
+    "brand": 24,
+    "name": "YZF-R1"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 52,
+  "fields": {
+    "brand": 25,
+    "name": "Ninja"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 53,
+  "fields": {
+    "brand": 16,
+    "name": "R 1250 GS"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 54,
+  "fields": {
+    "brand": 26,
+    "name": "F-150"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 55,
+  "fields": {
+    "brand": 27,
+    "name": "Silverado"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 56,
+  "fields": {
+    "brand": 28,
+    "name": "1500"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 57,
+  "fields": {
+    "brand": 13,
+    "name": "Hilux"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 58,
+  "fields": {
+    "brand": 29,
+    "name": "Sierra"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 59,
+  "fields": {
+    "brand": 26,
+    "name": "Ranger"
+  }
+},
+{
+  "model": "buyrite.vehiclemodel",
+  "pk": 60,
+  "fields": {
+    "brand": 13,
+    "name": "Kemp"
+  }
+},
+{
+  "model": "buyrite.trim",
+  "pk": 73,
+  "fields": {
+    "vehicle_model": 30,
+    "name": "LE"
+  }
+},
+{
+  "model": "buyrite.trim",
+  "pk": 74,
+  "fields": {
+    "vehicle_model": 31,
+    "name": "XLE"
+  }
+},
+{
+  "model": "buyrite.trim",
+  "pk": 75,
+  "fields": {
+    "vehicle_model": 32,
+    "name": "EX"
+  }
+},
+{
+  "model": "buyrite.trim",
+  "pk": 76,
+  "fields": {
+    "vehicle_model": 33,
+    "name": "EX-L"
+  }
+},
+{
+  "model": "buyrite.trim",
+  "pk": 77,
+  "fields": {
+    "vehicle_model": 34,
+    "name": "GTI"
+  }
+},
+{
+  "model": "buyrite.trim",
+  "pk": 78,
+  "fields": {
+    "vehicle_model": 36,
+    "name": "330i"
+  }
+},
+{
+  "model": "buyrite.trim",
+  "pk": 79,
+  "fields": {
+    "vehicle_model": 37,
+    "name": "Long Range"
+  }
+},
+{
+  "model": "buyrite.trim",
+  "pk": 80,
+  "fields": {
+    "vehicle_model": 38,
+    "name": "Long Range"
+  }
+},
+{
+  "model": "buyrite.trim",
+  "pk": 81,
+  "fields": {
+    "vehicle_model": 49,
+    "name": "C125"
+  }
+},
+{
+  "model": "buyrite.trim",
+  "pk": 82,
+  "fields": {
+    "vehicle_model": 50,
+    "name": "Special"
+  }
+},
+{
+  "model": "buyrite.trim",
+  "pk": 83,
+  "fields": {
+    "vehicle_model": 52,
+    "name": "ZX-10R"
+  }
+},
+{
+  "model": "buyrite.trim",
+  "pk": 84,
+  "fields": {
+    "vehicle_model": 53,
+    "name": "Adventure"
+  }
+},
+{
+  "model": "buyrite.trim",
+  "pk": 85,
+  "fields": {
+    "vehicle_model": 54,
+    "name": "XLT"
+  }
+},
+{
+  "model": "buyrite.trim",
+  "pk": 86,
+  "fields": {
+    "vehicle_model": 55,
+    "name": "LT"
+  }
+},
+{
+  "model": "buyrite.trim",
+  "pk": 87,
+  "fields": {
+    "vehicle_model": 56,
+    "name": "Big Horn"
+  }
+},
+{
+  "model": "buyrite.trim",
+  "pk": 88,
+  "fields": {
+    "vehicle_model": 57,
+    "name": "SR5"
+  }
+},
+{
+  "model": "buyrite.trim",
+  "pk": 89,
+  "fields": {
+    "vehicle_model": 58,
+    "name": "1500"
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 1,
+  "fields": {
+    "year": 2005
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 2,
+  "fields": {
+    "year": 2006
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 3,
+  "fields": {
+    "year": 2007
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 4,
+  "fields": {
+    "year": 2008
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 5,
+  "fields": {
+    "year": 2009
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 6,
+  "fields": {
+    "year": 2010
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 7,
+  "fields": {
+    "year": 2011
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 8,
+  "fields": {
+    "year": 2012
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 9,
+  "fields": {
+    "year": 2013
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 10,
+  "fields": {
+    "year": 2014
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 11,
+  "fields": {
+    "year": 2015
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 12,
+  "fields": {
+    "year": 2016
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 13,
+  "fields": {
+    "year": 2017
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 14,
+  "fields": {
+    "year": 2018
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 15,
+  "fields": {
+    "year": 2019
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 16,
+  "fields": {
+    "year": 2020
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 17,
+  "fields": {
+    "year": 2021
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 18,
+  "fields": {
+    "year": 2022
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 19,
+  "fields": {
+    "year": 2023
+  }
+},
+{
+  "model": "buyrite.manufactureyear",
+  "pk": 20,
+  "fields": {
+    "year": 2024
+  }
+},
+{
+  "model": "buyrite.fueloption",
+  "pk": 1,
+  "fields": {
+    "name": "Petrol"
+  }
+},
+{
+  "model": "buyrite.fueloption",
+  "pk": 2,
+  "fields": {
+    "name": "Diesel"
+  }
+},
+{
+  "model": "buyrite.fueloption",
+  "pk": 3,
+  "fields": {
+    "name": "Electric"
+  }
+},
+{
+  "model": "buyrite.fueloption",
+  "pk": 4,
+  "fields": {
+    "name": "Hybrid"
+  }
+},
+{
+  "model": "buyrite.fueloption",
+  "pk": 5,
+  "fields": {
+    "name": "CNG"
+  }
+},
+{
+  "model": "buyrite.color",
+  "pk": 1,
+  "fields": {
+    "name": "Red",
+    "hex_code": null
+  }
+},
+{
+  "model": "buyrite.color",
+  "pk": 2,
+  "fields": {
+    "name": "Blue",
+    "hex_code": null
+  }
+},
+{
+  "model": "buyrite.color",
+  "pk": 3,
+  "fields": {
+    "name": "Black",
+    "hex_code": null
+  }
+},
+{
+  "model": "buyrite.color",
+  "pk": 4,
+  "fields": {
+    "name": "White",
+    "hex_code": null
+  }
+},
+{
+  "model": "buyrite.color",
+  "pk": 5,
+  "fields": {
+    "name": "Silver",
+    "hex_code": null
+  }
+},
+{
+  "model": "buyrite.color",
+  "pk": 6,
+  "fields": {
+    "name": "Green",
+    "hex_code": null
+  }
+},
+{
+  "model": "buyrite.innercolor",
+  "pk": 1,
+  "fields": {
+    "name": "Ash"
+  }
+},
+{
+  "model": "buyrite.enginetype",
+  "pk": 1,
+  "fields": {
+    "name": "V6"
+  }
+},
+{
+  "model": "buyrite.enginetype",
+  "pk": 2,
+  "fields": {
+    "name": "V8"
+  }
+},
+{
+  "model": "buyrite.enginetype",
+  "pk": 3,
+  "fields": {
+    "name": "Inline-4"
+  }
+},
+{
+  "model": "buyrite.enginetype",
+  "pk": 4,
+  "fields": {
+    "name": "Electric Motor"
+  }
+},
+{
+  "model": "buyrite.enginetype",
+  "pk": 5,
+  "fields": {
+    "name": "Hybrid Drive"
+  }
+},
+{
+  "model": "buyrite.driveterrain",
+  "pk": 1,
+  "fields": {
+    "name": "FWD"
+  }
+},
+{
+  "model": "buyrite.driveterrain",
+  "pk": 2,
+  "fields": {
+    "name": "RWD"
+  }
+},
+{
+  "model": "buyrite.driveterrain",
+  "pk": 3,
+  "fields": {
+    "name": "AWD"
+  }
+},
+{
+  "model": "buyrite.driveterrain",
+  "pk": 4,
+  "fields": {
+    "name": "4WD"
+  }
+},
+{
+  "model": "buyrite.condition",
+  "pk": 1,
+  "fields": {
+    "name": "New"
+  }
+},
+{
+  "model": "buyrite.condition",
+  "pk": 2,
+  "fields": {
+    "name": "Used"
+  }
+},
+{
+  "model": "buyrite.condition",
+  "pk": 3,
+  "fields": {
+    "name": "Refurbished"
+  }
+},
+{
+  "model": "buyrite.vas",
+  "pk": 1,
+  "fields": {
+    "name": "First Body"
+  }
+},
+{
+  "model": "buyrite.vas",
+  "pk": 2,
+  "fields": {
+    "name": "Accident Free"
+  }
+},
+{
+  "model": "buyrite.vas",
+  "pk": 3,
+  "fields": {
+    "name": "Aloy Wheel"
+  }
+},
+{
+  "model": "buyrite.vas",
+  "pk": 4,
+  "fields": {
+    "name": "Leather Seat"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 1,
+  "fields": {
+    "name": "Lagos"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 2,
+  "fields": {
+    "name": "Abuja"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 3,
+  "fields": {
+    "name": "Abia"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 4,
+  "fields": {
+    "name": "Ebonyi"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 5,
+  "fields": {
+    "name": "Ogun"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 6,
+  "fields": {
+    "name": "Rivers"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 7,
+  "fields": {
+    "name": "Ekiti"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 8,
+  "fields": {
+    "name": "Delta"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 9,
+  "fields": {
+    "name": "Anambra"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 10,
+  "fields": {
+    "name": "Enugu"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 11,
+  "fields": {
+    "name": "Ondo"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 12,
+  "fields": {
+    "name": "Kebbi"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 13,
+  "fields": {
+    "name": "Edo"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 14,
+  "fields": {
+    "name": "Bauchi"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 15,
+  "fields": {
+    "name": "Benue"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 16,
+  "fields": {
+    "name": "Niger"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 17,
+  "fields": {
+    "name": "Kano"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 18,
+  "fields": {
+    "name": "Cross River"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 19,
+  "fields": {
+    "name": "Yobe"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 20,
+  "fields": {
+    "name": "Kogi"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 21,
+  "fields": {
+    "name": "Jigawa"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 22,
+  "fields": {
+    "name": "Osun"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 23,
+  "fields": {
+    "name": "Imo"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 24,
+  "fields": {
+    "name": "Bayelsa"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 25,
+  "fields": {
+    "name": "Gombe"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 26,
+  "fields": {
+    "name": "Zamfara"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 27,
+  "fields": {
+    "name": "Oyo"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 28,
+  "fields": {
+    "name": "Akwa Ibom"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 29,
+  "fields": {
+    "name": "Kwara"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 30,
+  "fields": {
+    "name": "Taraba"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 31,
+  "fields": {
+    "name": "Adamawa"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 32,
+  "fields": {
+    "name": "Plateau"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 33,
+  "fields": {
+    "name": "Kaduna"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 34,
+  "fields": {
+    "name": "Katsina"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 35,
+  "fields": {
+    "name": "Nasarawa"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 36,
+  "fields": {
+    "name": "Sokoto"
+  }
+},
+{
+  "model": "buyrite.state",
+  "pk": 37,
+  "fields": {
+    "name": "Borno"
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 1,
+  "fields": {
+    "name": "Ikeja",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 2,
+  "fields": {
+    "name": "Lekki",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 3,
+  "fields": {
+    "name": "Yaba",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 4,
+  "fields": {
+    "name": "Garki",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 5,
+  "fields": {
+    "name": "Wuse",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 6,
+  "fields": {
+    "name": "Maitama",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 7,
+  "fields": {
+    "name": "Aba",
+    "state": 3
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 8,
+  "fields": {
+    "name": "Abakaliki",
+    "state": 4
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 9,
+  "fields": {
+    "name": "Abeokuta",
+    "state": 5
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 10,
+  "fields": {
+    "name": "Abonnema",
+    "state": 6
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 11,
+  "fields": {
+    "name": "Ado Ekiti",
+    "state": 7
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 12,
+  "fields": {
+    "name": "Afikpo",
+    "state": 4
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 13,
+  "fields": {
+    "name": "Agbor",
+    "state": 8
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 14,
+  "fields": {
+    "name": "Agulu",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 15,
+  "fields": {
+    "name": "Aku",
+    "state": 10
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 16,
+  "fields": {
+    "name": "Akure",
+    "state": 11
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 17,
+  "fields": {
+    "name": "Amaigbo",
+    "state": 3
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 18,
+  "fields": {
+    "name": "Ankpa",
+    "state": 12
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 19,
+  "fields": {
+    "name": "Asaba",
+    "state": 8
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 20,
+  "fields": {
+    "name": "Auchi",
+    "state": 13
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 21,
+  "fields": {
+    "name": "Awka",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 22,
+  "fields": {
+    "name": "Azare",
+    "state": 14
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 23,
+  "fields": {
+    "name": "Bama",
+    "state": 15
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 24,
+  "fields": {
+    "name": "Bauchi",
+    "state": 14
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 25,
+  "fields": {
+    "name": "Bende",
+    "state": 3
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 26,
+  "fields": {
+    "name": "Benin City",
+    "state": 13
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 27,
+  "fields": {
+    "name": "Bida",
+    "state": 16
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 28,
+  "fields": {
+    "name": "Birnin Kebbi",
+    "state": 17
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 29,
+  "fields": {
+    "name": "Biu",
+    "state": 15
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 30,
+  "fields": {
+    "name": "Buguma",
+    "state": 6
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 31,
+  "fields": {
+    "name": "Calabar",
+    "state": 18
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 32,
+  "fields": {
+    "name": "Damaturu",
+    "state": 19
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 33,
+  "fields": {
+    "name": "Daura",
+    "state": 20
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 34,
+  "fields": {
+    "name": "Dutse",
+    "state": 21
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 35,
+  "fields": {
+    "name": "Ede",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 36,
+  "fields": {
+    "name": "Effium",
+    "state": 4
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 37,
+  "fields": {
+    "name": "Effon Alaiye",
+    "state": 7
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 38,
+  "fields": {
+    "name": "Eha Amufu",
+    "state": 10
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 39,
+  "fields": {
+    "name": "Ejigbo",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 40,
+  "fields": {
+    "name": "Ekpoma",
+    "state": 13
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 41,
+  "fields": {
+    "name": "Enugu",
+    "state": 10
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 42,
+  "fields": {
+    "name": "Enugu Ukwu",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 43,
+  "fields": {
+    "name": "Etiti",
+    "state": 23
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 44,
+  "fields": {
+    "name": "Ezza Inyimagu",
+    "state": 4
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 45,
+  "fields": {
+    "name": "Funtua",
+    "state": 20
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 46,
+  "fields": {
+    "name": "Gamboru",
+    "state": 15
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 47,
+  "fields": {
+    "name": "Gashua",
+    "state": 19
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 48,
+  "fields": {
+    "name": "Gboko",
+    "state": 24
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 49,
+  "fields": {
+    "name": "Gbongan",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 50,
+  "fields": {
+    "name": "Gombe",
+    "state": 25
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 51,
+  "fields": {
+    "name": "Gusau",
+    "state": 26
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 52,
+  "fields": {
+    "name": "Hadejia",
+    "state": 21
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 53,
+  "fields": {
+    "name": "Ibadan",
+    "state": 27
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 54,
+  "fields": {
+    "name": "Idah",
+    "state": 12
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 55,
+  "fields": {
+    "name": "Ife",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 56,
+  "fields": {
+    "name": "Ifo",
+    "state": 5
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 57,
+  "fields": {
+    "name": "Ifon",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 58,
+  "fields": {
+    "name": "Igbo Ora",
+    "state": 27
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 59,
+  "fields": {
+    "name": "Igbo Ukwu",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 60,
+  "fields": {
+    "name": "Igboho",
+    "state": 27
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 61,
+  "fields": {
+    "name": "Ihiala",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 62,
+  "fields": {
+    "name": "Ijebu Igbo",
+    "state": 5
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 63,
+  "fields": {
+    "name": "Ijebu Ode",
+    "state": 5
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 64,
+  "fields": {
+    "name": "Ijero",
+    "state": 7
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 65,
+  "fields": {
+    "name": "Ikare",
+    "state": 11
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 66,
+  "fields": {
+    "name": "Ikerre",
+    "state": 7
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 67,
+  "fields": {
+    "name": "Ikire",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 68,
+  "fields": {
+    "name": "Ikirun",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 69,
+  "fields": {
+    "name": "Ikom",
+    "state": 18
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 70,
+  "fields": {
+    "name": "Ikot Ekpene",
+    "state": 28
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 71,
+  "fields": {
+    "name": "Ila Orangun",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 72,
+  "fields": {
+    "name": "Ilawe Ekiti",
+    "state": 7
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 73,
+  "fields": {
+    "name": "Ilesha",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 74,
+  "fields": {
+    "name": "Ilobu",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 75,
+  "fields": {
+    "name": "Ilorin",
+    "state": 29
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 76,
+  "fields": {
+    "name": "Inisa",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 77,
+  "fields": {
+    "name": "Ise",
+    "state": 7
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 78,
+  "fields": {
+    "name": "Iseyin",
+    "state": 27
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 79,
+  "fields": {
+    "name": "Ishieke",
+    "state": 4
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 80,
+  "fields": {
+    "name": "Iwo",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 81,
+  "fields": {
+    "name": "Jalingo",
+    "state": 30
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 82,
+  "fields": {
+    "name": "Jimeta",
+    "state": 31
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 83,
+  "fields": {
+    "name": "Jos",
+    "state": 32
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 84,
+  "fields": {
+    "name": "Kaduna",
+    "state": 33
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 85,
+  "fields": {
+    "name": "Kafanchan",
+    "state": 33
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 86,
+  "fields": {
+    "name": "Kagoro",
+    "state": 33
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 87,
+  "fields": {
+    "name": "Kano",
+    "state": 34
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 88,
+  "fields": {
+    "name": "Katsina",
+    "state": 20
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 89,
+  "fields": {
+    "name": "Kaura Namoda",
+    "state": 26
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 90,
+  "fields": {
+    "name": "Keffi",
+    "state": 35
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 91,
+  "fields": {
+    "name": "Kishi",
+    "state": 27
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 92,
+  "fields": {
+    "name": "Kontagora",
+    "state": 16
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 93,
+  "fields": {
+    "name": "Kuroko",
+    "state": 12
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 94,
+  "fields": {
+    "name": "Lafia",
+    "state": 35
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 95,
+  "fields": {
+    "name": "Lokoja",
+    "state": 12
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 96,
+  "fields": {
+    "name": "Maiduguri",
+    "state": 15
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 97,
+  "fields": {
+    "name": "Makurdi",
+    "state": 24
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 98,
+  "fields": {
+    "name": "Malumfashi",
+    "state": 20
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 99,
+  "fields": {
+    "name": "Minna",
+    "state": 16
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 100,
+  "fields": {
+    "name": "Modakeke",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 101,
+  "fields": {
+    "name": "Mubi",
+    "state": 31
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 102,
+  "fields": {
+    "name": "Nguru",
+    "state": 19
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 103,
+  "fields": {
+    "name": "Nkpor",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 104,
+  "fields": {
+    "name": "Nnewi",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 105,
+  "fields": {
+    "name": "Nsukka",
+    "state": 10
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 106,
+  "fields": {
+    "name": "Numan",
+    "state": 31
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 107,
+  "fields": {
+    "name": "Obosi",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 108,
+  "fields": {
+    "name": "Offa",
+    "state": 29
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 109,
+  "fields": {
+    "name": "Ogaminan",
+    "state": 12
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 110,
+  "fields": {
+    "name": "Ogbomosho",
+    "state": 27
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 111,
+  "fields": {
+    "name": "Ohafia",
+    "state": 3
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 112,
+  "fields": {
+    "name": "Oka Akoko",
+    "state": 11
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 113,
+  "fields": {
+    "name": "Okene",
+    "state": 12
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 114,
+  "fields": {
+    "name": "Okigwi",
+    "state": 23
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 115,
+  "fields": {
+    "name": "Okitipupa",
+    "state": 11
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 116,
+  "fields": {
+    "name": "Okpoko",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 117,
+  "fields": {
+    "name": "Okrika",
+    "state": 6
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 118,
+  "fields": {
+    "name": "Ondo",
+    "state": 11
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 119,
+  "fields": {
+    "name": "Onitsha",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 120,
+  "fields": {
+    "name": "Oron",
+    "state": 28
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 121,
+  "fields": {
+    "name": "Oshogbo",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 122,
+  "fields": {
+    "name": "Otukpo",
+    "state": 24
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 123,
+  "fields": {
+    "name": "Owerri",
+    "state": 23
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 124,
+  "fields": {
+    "name": "Owo",
+    "state": 11
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 125,
+  "fields": {
+    "name": "Oyo",
+    "state": 27
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 126,
+  "fields": {
+    "name": "Ozubulu",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 127,
+  "fields": {
+    "name": "Port Harcourt",
+    "state": 6
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 128,
+  "fields": {
+    "name": "Sagamu",
+    "state": 5
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 129,
+  "fields": {
+    "name": "Sango Otta",
+    "state": 5
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 130,
+  "fields": {
+    "name": "Sapele",
+    "state": 8
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 131,
+  "fields": {
+    "name": "Shaki",
+    "state": 27
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 132,
+  "fields": {
+    "name": "Sokoto",
+    "state": 36
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 133,
+  "fields": {
+    "name": "Suleja",
+    "state": 16
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 134,
+  "fields": {
+    "name": "Uga",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 135,
+  "fields": {
+    "name": "Ugep",
+    "state": 18
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 136,
+  "fields": {
+    "name": "Ughelli",
+    "state": 8
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 137,
+  "fields": {
+    "name": "Umuahia",
+    "state": 3
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 138,
+  "fields": {
+    "name": "Uromi",
+    "state": 13
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 139,
+  "fields": {
+    "name": "Uyo",
+    "state": 28
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 140,
+  "fields": {
+    "name": "Warri",
+    "state": 8
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 141,
+  "fields": {
+    "name": "Wukari",
+    "state": 30
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 142,
+  "fields": {
+    "name": "Yenagoa",
+    "state": 37
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 143,
+  "fields": {
+    "name": "Yola",
+    "state": 31
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 144,
+  "fields": {
+    "name": "Zaria",
+    "state": 33
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 145,
+  "fields": {
+    "name": "Ajah",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 146,
+  "fields": {
+    "name": "Alimosho",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 147,
+  "fields": {
+    "name": "Ikeja",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 148,
+  "fields": {
+    "name": "Ojo",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 149,
+  "fields": {
+    "name": "Surulere",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 150,
+  "fields": {
+    "name": "Abule Egba",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 151,
+  "fields": {
+    "name": "Agbara-Igbesan",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 152,
+  "fields": {
+    "name": "Agboyi/Ketu",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 153,
+  "fields": {
+    "name": "Agege",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 154,
+  "fields": {
+    "name": "Amuwo-Odofin",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 155,
+  "fields": {
+    "name": "Apapa",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 156,
+  "fields": {
+    "name": "Badagry",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 157,
+  "fields": {
+    "name": "Egbe/Idimu",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 158,
+  "fields": {
+    "name": "Ejigbo",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 159,
+  "fields": {
+    "name": "Eko Atlantic",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 160,
+  "fields": {
+    "name": "Epe",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 161,
+  "fields": {
+    "name": "Gbagada",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 162,
+  "fields": {
+    "name": "Ibeju",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 163,
+  "fields": {
+    "name": "Ifako-Ijaiye",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 164,
+  "fields": {
+    "name": "Ikorodu",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 165,
+  "fields": {
+    "name": "Ikotun/Igando",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 166,
+  "fields": {
+    "name": "Ikoyi",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 167,
+  "fields": {
+    "name": "Ilashe",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 168,
+  "fields": {
+    "name": "Ilupeju",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 169,
+  "fields": {
+    "name": "Ipaja",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 170,
+  "fields": {
+    "name": "Isolo",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 171,
+  "fields": {
+    "name": "Kosofe",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 172,
+  "fields": {
+    "name": "Lagos Island (Eko)",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 173,
+  "fields": {
+    "name": "Magodo",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 174,
+  "fields": {
+    "name": "Maryland",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 175,
+  "fields": {
+    "name": "Mushin",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 176,
+  "fields": {
+    "name": "Ogba",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 177,
+  "fields": {
+    "name": "Ogudu",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 178,
+  "fields": {
+    "name": "Ojodu",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 179,
+  "fields": {
+    "name": "Ojota",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 180,
+  "fields": {
+    "name": "Orile",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 181,
+  "fields": {
+    "name": "Oshodi",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 182,
+  "fields": {
+    "name": "Shomolu",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 183,
+  "fields": {
+    "name": "Tarkwa Bay Island",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 184,
+  "fields": {
+    "name": "Victoria Island",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 185,
+  "fields": {
+    "name": "Asokoro",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 186,
+  "fields": {
+    "name": "Abaji",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 187,
+  "fields": {
+    "name": "Abuja Municipal",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 188,
+  "fields": {
+    "name": "Apo",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 189,
+  "fields": {
+    "name": "Asokoro",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 190,
+  "fields": {
+    "name": "Bwari",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 191,
+  "fields": {
+    "name": "Durumi",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 192,
+  "fields": {
+    "name": "Gudu",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 193,
+  "fields": {
+    "name": "Gwagwalada",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 194,
+  "fields": {
+    "name": "Gwarinpa",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 195,
+  "fields": {
+    "name": "Jabi",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 196,
+  "fields": {
+    "name": "Kado",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 197,
+  "fields": {
+    "name": "Katampe",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 198,
+  "fields": {
+    "name": "Kuje",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 199,
+  "fields": {
+    "name": "Kwali",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 200,
+  "fields": {
+    "name": "Lugbe",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 201,
+  "fields": {
+    "name": "Mabushi",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 202,
+  "fields": {
+    "name": "Utako",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 203,
+  "fields": {
+    "name": "Aba",
+    "state": 3
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 204,
+  "fields": {
+    "name": "Abakaliki",
+    "state": 4
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 205,
+  "fields": {
+    "name": "Abeokuta",
+    "state": 5
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 206,
+  "fields": {
+    "name": "Abonnema",
+    "state": 6
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 207,
+  "fields": {
+    "name": "Ado Ekiti",
+    "state": 7
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 208,
+  "fields": {
+    "name": "Afikpo",
+    "state": 4
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 209,
+  "fields": {
+    "name": "Agbor",
+    "state": 8
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 210,
+  "fields": {
+    "name": "Agulu",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 211,
+  "fields": {
+    "name": "Aku",
+    "state": 10
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 212,
+  "fields": {
+    "name": "Akure",
+    "state": 11
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 213,
+  "fields": {
+    "name": "Amaigbo",
+    "state": 3
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 214,
+  "fields": {
+    "name": "Ankpa",
+    "state": 12
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 215,
+  "fields": {
+    "name": "Asaba",
+    "state": 8
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 216,
+  "fields": {
+    "name": "Auchi",
+    "state": 13
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 217,
+  "fields": {
+    "name": "Awka",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 218,
+  "fields": {
+    "name": "Azare",
+    "state": 14
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 219,
+  "fields": {
+    "name": "Bama",
+    "state": 15
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 220,
+  "fields": {
+    "name": "Bauchi",
+    "state": 14
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 221,
+  "fields": {
+    "name": "Bende",
+    "state": 3
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 222,
+  "fields": {
+    "name": "Benin City",
+    "state": 13
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 223,
+  "fields": {
+    "name": "Bida",
+    "state": 16
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 224,
+  "fields": {
+    "name": "Birnin Kebbi",
+    "state": 17
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 225,
+  "fields": {
+    "name": "Biu",
+    "state": 15
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 226,
+  "fields": {
+    "name": "Buguma",
+    "state": 6
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 227,
+  "fields": {
+    "name": "Calabar",
+    "state": 18
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 228,
+  "fields": {
+    "name": "Damaturu",
+    "state": 19
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 229,
+  "fields": {
+    "name": "Daura",
+    "state": 20
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 230,
+  "fields": {
+    "name": "Dutse",
+    "state": 21
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 231,
+  "fields": {
+    "name": "Ede",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 232,
+  "fields": {
+    "name": "Effium",
+    "state": 4
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 233,
+  "fields": {
+    "name": "Effon Alaiye",
+    "state": 7
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 234,
+  "fields": {
+    "name": "Eha Amufu",
+    "state": 10
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 235,
+  "fields": {
+    "name": "Ejigbo",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 236,
+  "fields": {
+    "name": "Ekpoma",
+    "state": 13
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 237,
+  "fields": {
+    "name": "Enugu",
+    "state": 10
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 238,
+  "fields": {
+    "name": "Enugu Ukwu",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 239,
+  "fields": {
+    "name": "Etiti",
+    "state": 23
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 240,
+  "fields": {
+    "name": "Ezza Inyimagu",
+    "state": 4
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 241,
+  "fields": {
+    "name": "Funtua",
+    "state": 20
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 242,
+  "fields": {
+    "name": "Gamboru",
+    "state": 15
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 243,
+  "fields": {
+    "name": "Gashua",
+    "state": 19
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 244,
+  "fields": {
+    "name": "Gboko",
+    "state": 24
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 245,
+  "fields": {
+    "name": "Gbongan",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 246,
+  "fields": {
+    "name": "Gombe",
+    "state": 25
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 247,
+  "fields": {
+    "name": "Gusau",
+    "state": 26
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 248,
+  "fields": {
+    "name": "Hadejia",
+    "state": 21
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 249,
+  "fields": {
+    "name": "Ibadan",
+    "state": 27
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 250,
+  "fields": {
+    "name": "Idah",
+    "state": 12
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 251,
+  "fields": {
+    "name": "Ife",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 252,
+  "fields": {
+    "name": "Ifo",
+    "state": 5
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 253,
+  "fields": {
+    "name": "Ifon",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 254,
+  "fields": {
+    "name": "Igbo Ora",
+    "state": 27
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 255,
+  "fields": {
+    "name": "Igbo Ukwu",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 256,
+  "fields": {
+    "name": "Igboho",
+    "state": 27
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 257,
+  "fields": {
+    "name": "Ihiala",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 258,
+  "fields": {
+    "name": "Ijebu Igbo",
+    "state": 5
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 259,
+  "fields": {
+    "name": "Ijebu Ode",
+    "state": 5
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 260,
+  "fields": {
+    "name": "Ijero",
+    "state": 7
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 261,
+  "fields": {
+    "name": "Ikare",
+    "state": 11
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 262,
+  "fields": {
+    "name": "Ikerre",
+    "state": 7
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 263,
+  "fields": {
+    "name": "Ikire",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 264,
+  "fields": {
+    "name": "Ikirun",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 265,
+  "fields": {
+    "name": "Ikom",
+    "state": 18
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 266,
+  "fields": {
+    "name": "Ikot Ekpene",
+    "state": 28
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 267,
+  "fields": {
+    "name": "Ila Orangun",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 268,
+  "fields": {
+    "name": "Ilawe Ekiti",
+    "state": 7
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 269,
+  "fields": {
+    "name": "Ilesha",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 270,
+  "fields": {
+    "name": "Ilobu",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 271,
+  "fields": {
+    "name": "Ilorin",
+    "state": 29
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 272,
+  "fields": {
+    "name": "Inisa",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 273,
+  "fields": {
+    "name": "Ise",
+    "state": 7
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 274,
+  "fields": {
+    "name": "Iseyin",
+    "state": 27
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 275,
+  "fields": {
+    "name": "Ishieke",
+    "state": 4
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 276,
+  "fields": {
+    "name": "Iwo",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 277,
+  "fields": {
+    "name": "Jalingo",
+    "state": 30
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 278,
+  "fields": {
+    "name": "Jimeta",
+    "state": 31
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 279,
+  "fields": {
+    "name": "Jos",
+    "state": 32
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 280,
+  "fields": {
+    "name": "Kaduna",
+    "state": 33
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 281,
+  "fields": {
+    "name": "Kafanchan",
+    "state": 33
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 282,
+  "fields": {
+    "name": "Kagoro",
+    "state": 33
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 283,
+  "fields": {
+    "name": "Kano",
+    "state": 34
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 284,
+  "fields": {
+    "name": "Katsina",
+    "state": 20
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 285,
+  "fields": {
+    "name": "Kaura Namoda",
+    "state": 26
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 286,
+  "fields": {
+    "name": "Keffi",
+    "state": 35
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 287,
+  "fields": {
+    "name": "Kishi",
+    "state": 27
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 288,
+  "fields": {
+    "name": "Kontagora",
+    "state": 16
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 289,
+  "fields": {
+    "name": "Kuroko",
+    "state": 12
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 290,
+  "fields": {
+    "name": "Lafia",
+    "state": 35
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 291,
+  "fields": {
+    "name": "Lokoja",
+    "state": 12
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 292,
+  "fields": {
+    "name": "Maiduguri",
+    "state": 15
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 293,
+  "fields": {
+    "name": "Makurdi",
+    "state": 24
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 294,
+  "fields": {
+    "name": "Malumfashi",
+    "state": 20
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 295,
+  "fields": {
+    "name": "Minna",
+    "state": 16
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 296,
+  "fields": {
+    "name": "Modakeke",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 297,
+  "fields": {
+    "name": "Mubi",
+    "state": 31
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 298,
+  "fields": {
+    "name": "Nguru",
+    "state": 19
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 299,
+  "fields": {
+    "name": "Nkpor",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 300,
+  "fields": {
+    "name": "Nnewi",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 301,
+  "fields": {
+    "name": "Nsukka",
+    "state": 10
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 302,
+  "fields": {
+    "name": "Numan",
+    "state": 31
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 303,
+  "fields": {
+    "name": "Obosi",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 304,
+  "fields": {
+    "name": "Offa",
+    "state": 29
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 305,
+  "fields": {
+    "name": "Ogaminan",
+    "state": 12
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 306,
+  "fields": {
+    "name": "Ogbomosho",
+    "state": 27
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 307,
+  "fields": {
+    "name": "Ohafia",
+    "state": 3
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 308,
+  "fields": {
+    "name": "Oka Akoko",
+    "state": 11
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 309,
+  "fields": {
+    "name": "Okene",
+    "state": 12
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 310,
+  "fields": {
+    "name": "Okigwi",
+    "state": 23
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 311,
+  "fields": {
+    "name": "Okitipupa",
+    "state": 11
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 312,
+  "fields": {
+    "name": "Okpoko",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 313,
+  "fields": {
+    "name": "Okrika",
+    "state": 6
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 314,
+  "fields": {
+    "name": "Ondo",
+    "state": 11
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 315,
+  "fields": {
+    "name": "Onitsha",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 316,
+  "fields": {
+    "name": "Oron",
+    "state": 28
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 317,
+  "fields": {
+    "name": "Oshogbo",
+    "state": 22
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 318,
+  "fields": {
+    "name": "Otukpo",
+    "state": 24
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 319,
+  "fields": {
+    "name": "Owerri",
+    "state": 23
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 320,
+  "fields": {
+    "name": "Owo",
+    "state": 11
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 321,
+  "fields": {
+    "name": "Oyo",
+    "state": 27
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 322,
+  "fields": {
+    "name": "Ozubulu",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 323,
+  "fields": {
+    "name": "Port Harcourt",
+    "state": 6
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 324,
+  "fields": {
+    "name": "Sagamu",
+    "state": 5
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 325,
+  "fields": {
+    "name": "Sango Otta",
+    "state": 5
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 326,
+  "fields": {
+    "name": "Sapele",
+    "state": 8
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 327,
+  "fields": {
+    "name": "Shaki",
+    "state": 27
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 328,
+  "fields": {
+    "name": "Sokoto",
+    "state": 36
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 329,
+  "fields": {
+    "name": "Suleja",
+    "state": 16
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 330,
+  "fields": {
+    "name": "Uga",
+    "state": 9
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 331,
+  "fields": {
+    "name": "Ugep",
+    "state": 18
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 332,
+  "fields": {
+    "name": "Ughelli",
+    "state": 8
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 333,
+  "fields": {
+    "name": "Umuahia",
+    "state": 3
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 334,
+  "fields": {
+    "name": "Uromi",
+    "state": 13
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 335,
+  "fields": {
+    "name": "Uyo",
+    "state": 28
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 336,
+  "fields": {
+    "name": "Warri",
+    "state": 8
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 337,
+  "fields": {
+    "name": "Wukari",
+    "state": 30
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 338,
+  "fields": {
+    "name": "Yenagoa",
+    "state": 37
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 339,
+  "fields": {
+    "name": "Yola",
+    "state": 31
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 340,
+  "fields": {
+    "name": "Zaria",
+    "state": 33
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 341,
+  "fields": {
+    "name": "Ajah",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 342,
+  "fields": {
+    "name": "Alimosho",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 343,
+  "fields": {
+    "name": "Ikeja",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 344,
+  "fields": {
+    "name": "Ojo",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 345,
+  "fields": {
+    "name": "Surulere",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 346,
+  "fields": {
+    "name": "Abule Egba",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 347,
+  "fields": {
+    "name": "Agbara-Igbesan",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 348,
+  "fields": {
+    "name": "Agboyi/Ketu",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 349,
+  "fields": {
+    "name": "Agege",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 350,
+  "fields": {
+    "name": "Amuwo-Odofin",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 351,
+  "fields": {
+    "name": "Apapa",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 352,
+  "fields": {
+    "name": "Badagry",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 353,
+  "fields": {
+    "name": "Egbe/Idimu",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 354,
+  "fields": {
+    "name": "Ejigbo",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 355,
+  "fields": {
+    "name": "Eko Atlantic",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 356,
+  "fields": {
+    "name": "Epe",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 357,
+  "fields": {
+    "name": "Gbagada",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 358,
+  "fields": {
+    "name": "Ibeju",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 359,
+  "fields": {
+    "name": "Ifako-Ijaiye",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 360,
+  "fields": {
+    "name": "Ikorodu",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 361,
+  "fields": {
+    "name": "Ikotun/Igando",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 362,
+  "fields": {
+    "name": "Ikoyi",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 363,
+  "fields": {
+    "name": "Ilashe",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 364,
+  "fields": {
+    "name": "Ilupeju",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 365,
+  "fields": {
+    "name": "Ipaja",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 366,
+  "fields": {
+    "name": "Isolo",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 367,
+  "fields": {
+    "name": "Kosofe",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 368,
+  "fields": {
+    "name": "Lagos Island (Eko)",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 369,
+  "fields": {
+    "name": "Magodo",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 370,
+  "fields": {
+    "name": "Maryland",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 371,
+  "fields": {
+    "name": "Mushin",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 372,
+  "fields": {
+    "name": "Ogba",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 373,
+  "fields": {
+    "name": "Ogudu",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 374,
+  "fields": {
+    "name": "Ojodu",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 375,
+  "fields": {
+    "name": "Ojota",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 376,
+  "fields": {
+    "name": "Orile",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 377,
+  "fields": {
+    "name": "Oshodi",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 378,
+  "fields": {
+    "name": "Shomolu",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 379,
+  "fields": {
+    "name": "Tarkwa Bay Island",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 380,
+  "fields": {
+    "name": "Victoria Island",
+    "state": 1
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 381,
+  "fields": {
+    "name": "Asokoro",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 382,
+  "fields": {
+    "name": "Abaji",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 383,
+  "fields": {
+    "name": "Abuja Municipal",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 384,
+  "fields": {
+    "name": "Apo",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 385,
+  "fields": {
+    "name": "Asokoro",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 386,
+  "fields": {
+    "name": "Bwari",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 387,
+  "fields": {
+    "name": "Durumi",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 388,
+  "fields": {
+    "name": "Gudu",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 389,
+  "fields": {
+    "name": "Gwagwalada",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 390,
+  "fields": {
+    "name": "Gwarinpa",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 391,
+  "fields": {
+    "name": "Jabi",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 392,
+  "fields": {
+    "name": "Kado",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 393,
+  "fields": {
+    "name": "Katampe",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 394,
+  "fields": {
+    "name": "Kuje",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 395,
+  "fields": {
+    "name": "Kwali",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 396,
+  "fields": {
+    "name": "Lugbe",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 397,
+  "fields": {
+    "name": "Mabushi",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.town",
+  "pk": 398,
+  "fields": {
+    "name": "Utako",
+    "state": 2
+  }
+},
+{
+  "model": "buyrite.vehicle",
+  "pk": 214,
+  "fields": {
+    "seller": 31,
+    "category": 1,
+    "brand": 13,
+    "vehicle_model": 30,
+    "trim": 73,
+    "manufacture_year": 9,
+    "condition": 3,
+    "fuel_option": 2,
+    "color": 3,
+    "inner_color": 1,
+    "engine_type": 3,
+    "drive_terrain": 1,
+    "state": 1,
+    "town": 3,
+    "exchange_option": "yes",
+    "registered": "yes",
+    "negotiable": "yes",
+    "no_of_tyres": 4,
+    "seat": 5,
+    "mileage": 10000,
+    "price": "10000.00",
+    "transmission": "automatic",
+    "number_cylinder": 4,
+    "horsepower": 30,
+    "contact_phone": "08021299221",
+    "description": "Hello",
+    "social_media": null,
+    "image": "vehicles/1.jpg",
+    "image2": "vehicles/2.jpg",
+    "image3": "vehicles/3.jpg",
+    "image4": "vehicles/4.jpg",
+    "image5": "vehicles/5.jpg",
+    "image6": "",
+    "image7": "",
+    "image8": "",
+    "image9": "",
+    "image10": "",
+    "image_hash": null,
+    "image2_hash": null,
+    "image3_hash": null,
+    "image4_hash": null,
+    "image5_hash": null,
+    "image6_hash": null,
+    "image7_hash": null,
+    "image8_hash": null,
+    "image9_hash": null,
+    "image10_hash": null,
+    "is_available": true,
+    "created_at": "2025-09-01T16:00:44.045Z",
+    "date_sold": null,
+    "number_of_view": 10,
+    "slug": "toyota-corolla",
+    "vin": "",
+    "index": "toyota-le-car-2013-corolla-refurbished-diesel-inline-4-fwd-lagos-yaba",
+    "vas": [
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "buyrite.vehicle",
+  "pk": 215,
+  "fields": {
+    "seller": 31,
+    "category": 3,
+    "brand": 26,
+    "vehicle_model": 59,
+    "trim": 85,
+    "manufacture_year": 2,
+    "condition": 3,
+    "fuel_option": 4,
+    "color": 2,
+    "inner_color": 1,
+    "engine_type": 3,
+    "drive_terrain": 1,
+    "state": 1,
+    "town": 3,
+    "exchange_option": "yes",
+    "registered": "yes",
+    "negotiable": "no",
+    "no_of_tyres": 4,
+    "seat": 5,
+    "mileage": 300,
+    "price": "1000.00",
+    "transmission": "automatic",
+    "number_cylinder": 4,
+    "horsepower": 100,
+    "contact_phone": "08021299221",
+    "description": "Hello",
+    "social_media": null,
+    "image": "vehicles/ford1a.jpg",
+    "image2": "vehicles/ford2a.jpg",
+    "image3": "vehicles/ford3a.jpg",
+    "image4": "vehicles/ford4a.jpg",
+    "image5": "vehicles/images5b.jpg",
+    "image6": "vehicles/2_jJe6mVK.jpg",
+    "image7": "",
+    "image8": "",
+    "image9": "",
+    "image10": "",
+    "image_hash": null,
+    "image2_hash": null,
+    "image3_hash": null,
+    "image4_hash": null,
+    "image5_hash": null,
+    "image6_hash": null,
+    "image7_hash": null,
+    "image8_hash": null,
+    "image9_hash": null,
+    "image10_hash": null,
+    "is_available": true,
+    "created_at": "2025-09-01T16:04:07.698Z",
+    "date_sold": null,
+    "number_of_view": 58,
+    "slug": "ford-ranger",
+    "vin": "",
+    "index": "ford-xlt-bus-2006-ranger-refurbished-hybrid-inline-4-fwd-lagos-yaba",
+    "vas": [
+      2,
+      1,
+      4
+    ]
+  }
+},
+{
+  "model": "buyrite.article",
+  "pk": 1,
+  "fields": {
+    "title": "The Rebirth of Nigeria",
+    "content": "The rebirth of Nigeria",
+    "excerpt": "The rebirth of Nigeria",
+    "slug": "the-rebirth-of-nigeria",
+    "author": "Anonymous",
+    "published_date": "2025-08-28T12:24:37Z",
+    "tags": [
+      1,
+      2
+    ]
+  }
+},
+{
+  "model": "buyrite.article",
+  "pk": 2,
+  "fields": {
+    "title": "The rebirth of Ghana",
+    "content": "The rebirth of Ghana is very key to the national developement",
+    "excerpt": "The rebirth of Ghana is very key to the national developement",
+    "slug": "the-rebirth-of-ghana",
+    "author": "Anonymous",
+    "published_date": "2025-08-28T12:30:56Z",
+    "tags": [
+      1,
+      2
+    ]
+  }
+},
+{
+  "model": "buyrite.dealerprofile",
+  "pk": 3,
+  "fields": {
+    "user": 14,
+    "business_logo": "dealer_logos/dmc2_J5jrFWh.jpg",
+    "business_address": "9 S.O. Lawal Street Erunwen Ikorodu",
+    "state": 1,
+    "town": 164,
+    "is_confirmed": true,
+    "is_rejected": true,
+    "rejected_count": 9,
+    "rejection_comment": "ccc",
+    "created_at": "2025-09-20T13:31:11Z",
+    "updated_at": "2025-09-20T13:55:31.137Z"
+  }
+},
+{
+  "model": "buyrite.dealerprofile",
+  "pk": 4,
+  "fields": {
+    "user": 8,
+    "business_logo": "",
+    "business_address": "Blk 5, flat 13 Bar beach towers",
+    "state": 1,
+    "town": 362,
+    "is_confirmed": false,
+    "is_rejected": false,
+    "rejected_count": 0,
+    "rejection_comment": "",
+    "created_at": "2025-09-20T13:31:11.992Z",
+    "updated_at": "2025-09-20T13:31:12.024Z"
+  }
+},
+{
+  "model": "users.user",
+  "pk": 1,
+  "fields": {
+    "password": "",
+    "last_login": null,
+    "email": "placeholder@example.com",
+    "full_name": "",
+    "phone": null,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_seller": false,
+    "is_buyer": true,
+    "mfa_secret": null,
+    "mfa_enabled": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$b0EMTMQcp9uTLDoDgv8Jat$OmUriAItgf28mi0kVVjBHMgha9FTL6VgVWcEUSTemk0=",
+    "last_login": null,
+    "email": "placeholder2@example.com",
+    "full_name": "",
+    "phone": null,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_seller": false,
+    "is_buyer": true,
+    "mfa_secret": null,
+    "mfa_enabled": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$TYJobTVgU5TFTeofoopCs8$FJzKgNNQlgO1rEmIpwqmbf8U2+JUIZXyoOOUZH0Jb40=",
+    "last_login": null,
+    "email": "placeholder3@example.com",
+    "full_name": "",
+    "phone": null,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_seller": false,
+    "is_buyer": true,
+    "mfa_secret": null,
+    "mfa_enabled": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$01JNsWU2BrhJkEx586eEQp$plgX6ZpoEBg2DYzgz4Ap29+Uxt38Q9GjGP2PmGZBT6s=",
+    "last_login": null,
+    "email": "placeholder4@example.com",
+    "full_name": "",
+    "phone": null,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_seller": false,
+    "is_buyer": true,
+    "mfa_secret": null,
+    "mfa_enabled": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$5rJdT4Grl3UKoMVfSdvJXZ$WGqePUX171e4vDlvIG3tUSw9M5wS4eyoEh8S5xiQTFY=",
+    "last_login": null,
+    "email": "placeholder5@example.com",
+    "full_name": "",
+    "phone": null,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_seller": false,
+    "is_buyer": true,
+    "mfa_secret": null,
+    "mfa_enabled": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$paJ2al5r10oePYFHyZSLoK$7yvI1RVD5o4bi/3OqyV0EDC2bObn2K1ltwXUTdQfJiU=",
+    "last_login": null,
+    "email": "placeholder6@example.com",
+    "full_name": "",
+    "phone": null,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_seller": false,
+    "is_buyer": true,
+    "mfa_secret": null,
+    "mfa_enabled": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$iU2CXXigKT5i80U0Ofvitm$kuGxaAmEsKsVtvslsOak6SvTRZ+rKfDd/Q3GxqeYUlY=",
+    "last_login": null,
+    "email": "placeholder7@example.com",
+    "full_name": "",
+    "phone": null,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_seller": false,
+    "is_buyer": true,
+    "mfa_secret": null,
+    "mfa_enabled": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 8,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$IDARhGzUodZO1aKKRT2XaN$wHtI8rdhC8R9WChi+FYcj/Mlt4km4IIL3i3eO5RH1aE=",
+    "last_login": null,
+    "email": "wale@gmail.com",
+    "full_name": "Wale",
+    "phone": null,
+    "is_active": true,
+    "is_staff": true,
+    "is_superuser": true,
+    "is_seller": true,
+    "is_buyer": true,
+    "mfa_secret": null,
+    "mfa_enabled": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 13,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$02Y8FrxHvqWEx0s9oxtBHb$zNvmcsqvPIbTSXkMVDh1rFlaChovNqpV413cq1BYVRY=",
+    "last_login": "2025-09-30T16:13:05.638Z",
+    "email": "ayodelefestusng22@gmail.com",
+    "full_name": "Ayodele Adeyinka",
+    "phone": null,
+    "is_active": true,
+    "is_staff": true,
+    "is_superuser": true,
+    "is_seller": false,
+    "is_buyer": true,
+    "mfa_secret": null,
+    "mfa_enabled": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 14,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$DhyZHhDoL1Lwf6FJd6x7Gi$4o4Td9Qu75uT8ZptizWg2JIXsy6w418bw0RgJ93HLtM=",
+    "last_login": "2025-10-07T08:32:10.689Z",
+    "email": "ayodelefestusng@gmail.com",
+    "full_name": "Ayodele Adeyinka",
+    "phone": "08021299221",
+    "is_active": true,
+    "is_staff": true,
+    "is_superuser": true,
+    "is_seller": false,
+    "is_buyer": true,
+    "mfa_secret": "7KTLBKV",
+    "mfa_enabled": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 21,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$dFnhvWiJ72ZXw4ZRyKF9BN$1KtigdkthSV9rsFHcW+xNzIK6pK4ZvKPl+lPRo1x+hg=",
+    "last_login": null,
+    "email": "ayodelefestusng1234@gmail.com",
+    "full_name": "Ayodele Adeyinka",
+    "phone": null,
+    "is_active": true,
+    "is_staff": true,
+    "is_superuser": true,
+    "is_seller": false,
+    "is_buyer": true,
+    "mfa_secret": null,
+    "mfa_enabled": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 31,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$ivCYQwu47MZlyhfLd0nPBZ$lK5FRN1+2oakYGawlnZSvOhxFZ2zb+SKsJlgU+c74i4=",
+    "last_login": "2025-10-03T08:17:25Z",
+    "email": "upwardwave.dignity@gmail.com",
+    "full_name": "Dignity",
+    "phone": "08021299221",
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_seller": false,
+    "is_buyer": true,
+    "mfa_secret": null,
+    "mfa_enabled": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.company",
+  "pk": 1,
+  "fields": {
+    "name": "scb",
+    "logo": "company_logos/scb.png"
+  }
+},
+{
+  "model": "users.company",
+  "pk": 2,
+  "fields": {
+    "name": "buyrite",
+    "logo": "company_logos/Buy_RITE_2.png"
+  }
+},
+{
+  "model": "users.company",
+  "pk": 3,
+  "fields": {
+    "name": "Tennybel",
+    "logo": "company_logos/tennybel.jpg"
+  }
+},
+{
+  "model": "users.company",
+  "pk": 4,
+  "fields": {
+    "name": "Ultimate Gas",
+    "logo": "company_logos/ultimate_gas.png"
+  }
+},
+{
+  "model": "users.company",
+  "pk": 5,
+  "fields": {
+    "name": "Easymart",
+    "logo": "company_logos/easymart.jpg"
+  }
+},
+{
+  "model": "users.company",
+  "pk": 6,
+  "fields": {
+    "name": "top Integrated",
+    "logo": "company_logos/topIntrgated.jpg"
+  }
+}
+]

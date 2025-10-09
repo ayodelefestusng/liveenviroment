@@ -140,10 +140,27 @@
                      <button class="btn btn-outline-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#solutionsOffcanvas" aria-controls="solutionsOffcanvas">
                         Our Products       
                     </button>   
-                      <a href="{% url 'users:demo_booking' %}" class="btn btn-primary btn-sm" style="background-color: #0072CE;">
+                      {% comment %} <a href="{% url 'users:demo_booking' %}" class="btn btn-primary btn-sm" style="background-color: #0072CE;">
                       <i class="fas fa-calendar-check me-1"></i>
                       Book Demo
-                  </a>
+                  </a> {% endcomment %}
+
+
+
+
+                  
+<!-- Calendly link widget begin -->
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+<a href="#" 
+
+onclick="Calendly.initPopupWidget({url: 'https://calendly.com/demo-dignityconceptgoba/dignity_concept?hide_gdpr_banner=1'});return false;"
+   class="btn btn-primary btn-sm" 
+   style="background-color: #0072CE;">
+   <i class="fas fa-calendar-check me-1"></i>  Book Demo
+</a>
+<!-- Calendly link widget end -->
 
                 </div>
             </div>
