@@ -140,15 +140,11 @@
                      <button class="btn btn-outline-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#solutionsOffcanvas" aria-controls="solutionsOffcanvas">
                         Our Products       
                     </button>   
-                      {% comment %} <a href="{% url 'users:demo_booking' %}" class="btn btn-primary btn-sm" style="background-color: #0072CE;">
+                    {% comment %} <a href="{% url 'users:demo_booking' %}" class="btn btn-primary btn-sm" style="background-color: #0072CE;">
+                      
                       <i class="fas fa-calendar-check me-1"></i>
                       Book Demo
-                  </a> {% endcomment %}
-
-
-
-
-                  
+                  </a>  {% endcomment %}
 <!-- Calendly link widget begin -->
 <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
@@ -162,13 +158,16 @@ onclick="Calendly.initPopupWidget({url: 'https://calendly.com/demo-dignityconcep
 </a>
 <!-- Calendly link widget end -->
 
+
+
+
+
+
+
                 </div>
             </div>
         </div>
     </nav>
-
-
-    
 </header>
 <!-- Offcanvas for Solutions (Mobile) -->
 
@@ -263,7 +262,7 @@ onclick="Calendly.initPopupWidget({url: 'https://calendly.com/demo-dignityconcep
 <div class="mb-4">
   <h6 class="d-flex align-items-center">
     <svg width="24" height="24" fill="currentColor" class="me-2 text-warning">
-      <use xlink:href="#icon-cart" />
+      <use xlink:href="#icon-cart" >
     </svg>
     <span class="fw-semibold">E-Commerce</span>
   </h6>

@@ -18,9 +18,25 @@
                     We unify data, analytics, and AI to help you scale with confidence and lead your industry.
                 </p>
                 <div class="d-flex flex-wrap gap-3" data-aos="fade-up" data-aos-delay="200">
-                    <a href="{% url 'users:demo_booking' %}" class="btn btn-primary btn-lg px-5" style="background-color: #0072CE; color: white; font-weight: bold;">
+                    {% comment %} <a href="{% url 'users:demo_booking' %}" class="btn btn-primary btn-lg px-5" style="background-color: #0072CE; color: white; font-weight: bold;">
                         <i class="fas fa-calendar-check me-2"></i>Book a Demo
-                    </a>
+                    </a> {% endcomment %}
+
+<!-- Calendly link widget begin -->
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+<a href="#" 
+
+onclick="Calendly.initPopupWidget({url: 'https://calendly.com/demo-dignityconceptgoba/dignity_concept?hide_gdpr_banner=1'});return false;"
+   class="btn btn-primary btn-lg px-5"
+   style="background-color: #0072CE; color: white; font-weight: bold;">
+   <i class="fas fa-calendar-check me-1"></i>  Book Demo
+</a>
+<!-- Calendly link widget end -->
+
+
+
                     <a href="{% url 'users:solutions_overview' %}" class="btn btn-lg px-5"style="background-color: #00B140; color: white; font-weight: bold;">
                         Explore Our Solutions
                     </a>
@@ -185,9 +201,24 @@
                     Join Africa's leading enterprises in building an intelligent future.
                 </p>
                 <div data-aos="fade-up" data-aos-delay="200">
-                    <a href="{% url 'users:demo_booking' %}" class="btn btn-light btn-lg px-5 me-3">
+                    {% comment %} <a href="{% url 'users:demo_booking' %}" class="btn btn-light btn-lg px-5 me-3">
                         <i class="fas fa-calendar-check me-2"></i>Book a Demo
-                    </a>
+                    </a> {% endcomment %}
+
+
+<!-- Calendly link widget begin -->
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+<a href="#" 
+
+onclick="Calendly.initPopupWidget({url: 'https://calendly.com/demo-dignityconceptgoba/dignity_concept?hide_gdpr_banner=1'});return false;"
+   class="btn btn-light btn-lg px-5 me-3">
+   <i class="fas fa-calendar-check me-2"></i>  Book Demo
+</a>
+<!-- Calendly link widget end -->
+
+
                     <a href="{% url 'users:contact' %}" class="btn btn-outline-light btn-lg px-5">
                         Contact Us
                     </a>
