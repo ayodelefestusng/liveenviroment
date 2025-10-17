@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Document Search Results{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">Document Search & Filter</h1>
+    
+    <!-- Search and Filter Form (Always Visible) -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="GET" action="{% url 'search_document' %}" class="row g-3 align-items-end">
+                
+                <!-- Query Text Input -->
+                <div class="col-md-4">
+                    <label for="id_q" class="form-label fw-bold">Keyword Search</label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="id_q" 
+                           name="q" 
+                           placeholder="Title or content keywords..."
+                           value="{{ query|default_if_none:'' }}">
+                </div>
+
+                <!-- Category Filter -->
+                <div class="col-md-3">
+                    <label for="id_category" class="form-label fw-bold">Category</label>
+                    <select class="form-select" id="id_category" name="category">
+                        <option value="">All Categories</option>
+                        {% for cat in categories %}
+                            <option value="{{ cat.id }}" 
+                                {% if selected_category|urlencode == cat.id|urlencode %}selected{% endif %}>
+                                {{ cat.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Status Filter -->
+                <div class="col-md-3">
+                    <label for="id_status" class="form-label fw-bold">Workflow Status</label>
+                    <select class="form-select" id="id_status" name="status">
+                        <option value="">All Statuses</option>
+                        {% for key, value in status_choices %}
+                            <option value="{{ key }}" 
+                                {% if selected_status == key %}selected{% endif %}>
+                                {{ value }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Search Button -->
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-search me-1"></i> Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Results Display -->
+    <h2 class="mb-3">
+        Found {{ documents.count }} Result{% if documents.count != 1 %}s{% endif %}
+    </h2>
+
+    {% if documents %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Submitted By</th>
+                        <th scope="col">Last Updated</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for document in documents %}
+                    <tr>
+                        <td class="text-wrap">
+                            <a href="{% url 'document_detail' pk=document.pk %}">{{ document.title }}</a>
+                        </td>
+                        <td>{{ document.category.name }}</td>
+                        <td>
+                            {% if document.status == 'APPROVED' %}
+                                <span class="badge bg-success">{{ document.get_status_display }}</span>
+                            {% elif document.status == 'REJECTED' %}
+                                <span class="badge bg-danger">{{ document.get_status_display }}</span>
+                            {% elif document.status == 'SUBMITTED' or document.status == 'IN_REVIEW' %}
+                                <span class="badge bg-warning text-dark">{{ document.get_status_display }}</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ document.get_status_display }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ document.submitted_by.username }}</td>
+                        <td>{{ document.updated_at|date:"M d, Y" }}</td>
+                        <td>
+                            <a href="{% url 'document_detail' pk=document.pk %}" class="btn btn-sm btn-outline-info">
+                                View
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            No documents matched your search criteria. Try a different query or fewer filters.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

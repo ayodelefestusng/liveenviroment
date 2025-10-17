@@ -66,7 +66,12 @@ INSTALLED_APPS = [
     "buyrite",
     'laundry',
     'store',
+    "smart_office",
       'django.contrib.humanize',
+
+
+              
+
 
 
     'django_otp',
@@ -75,6 +80,8 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_static',
     'crispy_forms',
      'rest_framework',
+         'tinymce',
+         'taggit',
 
     'django_htmx',  # optional, for enhanced HTMX support
 
@@ -204,8 +211,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 
-
-
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -224,11 +229,12 @@ SITE_ID = 1
 ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_USERNAME_REQUIRED = False
+# ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'optional'  # Change to 'mandatory' in production
+
 
 
 
@@ -321,3 +327,97 @@ PAYPAL_CLIENT_SECRET = os.getenv("PAYPAL_CLIENT_SECRET")
 # Base URL of your application, used for absolute URL generation.
 SITE_URL = 'http://localhost:8000'
 
+
+
+
+STATIC_URL = 'static/'
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# TINYMCE_JS_URL = 'https://cdn.tiny.cloud/1/ogdmvge43vwuhn7ascystm3r6p5qhwdx6d4tweotiiihfre3/tinymce/8/tinymce.min.js'
+# TINYMCE_COMPRESSOR = False
+
+
+
+
+# TINYMCE_COMPRESSOR = False
+
+# TINYMCE_JS_URL = '/static/js/tinymce.min.js'
+
+
+
+
+
+
+
+
+
+
+# TINYMCE_JS_URL = os.path.join(STATIC_URL, "tinymce/tinymce.min.js")
+# TINYMCE_JS_URL = '/static/js/tinymce.min.js'
+
+# TINYMCE_JS_URL = 'https://cdn.tiny.cloud/1/no-api-key/tinymce/8/tinymce.min.js'
+# TINYMCE_COMPRESSOR = False
+# TINYMCE_JS_URL = 'https://cdn.tiny.cloud/1/ogdmvge43vwuhn7ascystm3r6p5qhwdx6d4tweotiiihfre3/tinymce/8/tinymce.min.js'
+
+
+# ogdmvge43vwuhn7ascystm3r6p5qhwdx6d4tweotiiihfre3
+# TINYMCE_DEFAULT_CONFIG = {
+#     'height': 360,
+#     'width': 800,
+#     'plugins': 'link image preview code',
+#     'toolbar': 'undo redo | bold italic | alignleft aligncenter alignright | code',
+    
+# }
+
+
+# # TINYMCE_JS_URL = 'http://debug.example.org/tiny_mce/tiny_mce_src.js'
+
+TINYMCE_DEFAULT_CONFIG = {
+    "height": "320px",  # Editor height
+    "width": "960px",   # Editor width
+
+    "menubar": "file edit view insert format tools table help",  # Top menu bar options
+
+    "plugins": "advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code "
+               "fullscreen insertdatetime media table paste code help wordcount spellchecker",  # Enabled plugins
+
+    "toolbar": "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft "
+               "aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor "
+               "backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | "
+               "fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | "
+               "a11ycheck ltr rtl | showcomments addcomment code",  # Toolbar layout
+
+    "custom_undo_redo_levels": 10,  # Number of undo/redo steps
+
+    # "language": "es_ES",  # Optional: force Spanish language
+       "browser_spellcheck": True,
+    "contextmenu": False,
+
+
+    "plugins": "image code wordcount",
+    "toolbar": "undo redo | image code wordcount",
+    "images_upload_url": "/upload_image/",
+    "automatic_uploads": True,
+    "file_picker_types": "image",
+
+
+}
+
+
+TINYMCE_SPELLCHECKER = True
+# TINYMCE_COMPRESSOR = True
+# TINYMCE_EXTRA_MEDIA = {
+#     'css': {
+#         'all': [
+#             ...
+#         ],
+#     },
+#     'js': [
+#         ...
+#     ],
+# }
+# TINYMCE_API_KEY = 'ogdmvge43vwuhn7ascystm3r6p5qhwdx6d4tweotiiihfre3'

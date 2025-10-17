@@ -25,10 +25,19 @@ urlpatterns = [
     path('buyrite/', include(('buyrite.urls', 'buyrite'), namespace='buyrite')),
     path('laundry/', include(('laundry.urls', 'laundry'), namespace='laundry')),
     path('store/', include(('store.urls', 'store'), namespace='store')),
+     path('smart_office/', include(('smart_office.urls', 'smart_office'), namespace='smart_office')),
+ 
 
     # Authentication
     path('accounts/', include('django.contrib.auth.urls')),  # Built-in login/logout/password views
     path('accounts/', include('allauth.urls')),              # ✅ Social login (Google, Facebook, etc.)
+
+   path('tinymce/', include('tinymce.urls'))
+  
+   
+   
+
+
 ]
 
 urlpatterns += [

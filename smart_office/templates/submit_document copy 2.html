@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Submit New Document{% endblock title %}
+
+{% block extra_head %}
+<!-- Optional: Add select2 or another library for better multiselect field UI -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock extra_head %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow-lg">
+            <div class="card-header bg-success text-white">
+                <h1 class="h3 mb-0">Submit New Document for Approval</h1>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Section 1: Document Details -->
+                    <h4 class="mb-3 text-primary border-bottom pb-2">Document Details</h4>
+                    
+                    <!-- Title and Category -->
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label for="{{ form.title.id_for_label }}" class="form-label fw-bold">Title</label>
+                            {{ form.title }}
+                            {% if form.title.errors %}<div class="text-danger small">{{ form.title.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.category.id_for_label }}" class="form-label fw-bold">Category</label>
+                            {{ form.category }}
+                            {% if form.category.errors %}<div class="text-danger small">{{ form.category.errors }}</div>{% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="mb-3">
+                        <label for="{{ form.tags.id_for_label }}" class="form-label fw-bold">Tags (Comma Separated)</label>
+                        {{ form.tags }}
+                        <div class="form-text">e.g., policy, finance, quarterly report</div>
+                        {% if form.tags.errors %}<div class="text-danger small">{{ form.tags.errors }}</div>{% endif %}
+                    </div>
+
+                    <!-- Attached File -->
+                    <div class="mb-3">
+                        <label for="{{ form.file.id_for_label }}" class="form-label fw-bold">Attached File (Optional)</label>
+                        {{ form.file }}
+                        {% if form.file.errors %}<div class="text-danger small">{{ form.file.errors }}</div>{% endif %}
+                    </div>
+                    
+                    <!-- Content (Rich Text Editor) -->
+                    <div class="mb-4">
+                        <label for="{{ form.content.id_for_label }}" class="form-label fw-bold">Document Content</label>
+                        {{ form.media }}
+                        {{ form.content }}
+                        {% if form.content.errors %}<div class="text-danger small">{{ form.content.errors }}</div>{% endif %}
+                    </div>
+
+                    <!-- Section 2: Workflow Assignment -->
+                    <h4 class="mb-3 text-primary border-bottom pb-2 mt-4">Define Approval Workflow</h4>
+                    <p class="text-muted small">Select the users required for each stage. Users will be assigned in the order: Review > Concurrence > Approval.</p>
+
+                    <div class="row">
+                        <!-- Reviewers -->
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.reviewer_users.id_for_label }}" class="form-label fw-bold">Reviewers</label>
+                            {{ form.reviewer_users }}
+                            <div class="form-text text-secondary">Initial feedback and suggestions.</div>
+                            {% if form.reviewer_users.errors %}<div class="text-danger small">{{ form.reviewer_users.errors }}</div>{% endif %}
+                        </div>
+
+                        <!-- Concurrers -->
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.concurrence_users.id_for_label }}" class="form-label fw-bold">Concurrence Users</label>
+                            {{ form.concurrence_users }}
+                            <div class="form-text text-secondary">Must agree (concur) with the document before final approval.</div>
+                            {% if form.concurrence_users.errors %}<div class="text-danger small">{{ form.concurrence_users.errors }}</div>{% endif %}
+                        </div>
+
+                        <!-- Approvers -->
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.approver_users.id_for_label }}" class="form-label fw-bold">Approvers</label>
+                            {{ form.approver_users }}
+                            <div class="form-text text-secondary">Final sign-off authority.</div>
+                            {% if form.approver_users.errors %}<div class="text-danger small">{{ form.approver_users.errors }}</div>{% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="d-grid gap-2 mt-4 pt-3 border-top">
+                        <button type="submit" class="btn btn-success btn-lg shadow">
+                            <i class="bi bi-send-fill me-2"></i> Submit Document
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+    {{ block.super }} 
+    
+    <!-- Include jQuery before Select2 -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // 1. Initialize Select2 for all user selection fields
+            $('#id_assigned_reviewers, #id_assigned_concurrers, #id_assigned_approvers').select2({
+                theme: "bootstrap-5", // Use the Bootstrap 5 theme
+                placeholder: "Select users...",
+                allowClear: true, // Allows users to clear the selection
+                width: '100%',
+                dropdownParent: $('#id_assigned_reviewers').parent().parent().parent()
+            });
+
+            // 2. Initialize TinyMCE for the content textarea
+            {% comment %} // We now call the global function defined in base.html's {% block extra_js %} {% endcomment %}
+            if (typeof initializeTinyMCE !== 'undefined') {
+                // The 'id_content' is the ID of the Django form field. 'true' means it's editable.
+                initializeTinyMCE('textarea#id_content', true);
+            } else {
+                // This console error should now be fixed as block.super is included
+                console.error("TinyMCE initialization function 'initializeTinyMCE' not found. Ensure base.html loads correctly.");
+            }
+        });
+    </script>
+{% endblock %}

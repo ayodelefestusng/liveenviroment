@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Dashboard | Document Workflow{% endblock title %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4 text-primary">Your Document Dashboard</h1>
+    </div>
+
+    <!-- Section 1: Documents Requiring Your Action -->
+    <div class="col-12 mb-5">
+        <div class="card shadow">
+            <div class="card-header bg-warning text-dark fw-bold h5">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i> Documents Requiring Your Action ({{ documents_for_action|length }})
+            </div>
+            <div class="card-body p-0">
+                {% if documents_for_action %}
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Document Title</th>
+                                <th scope="col">Stage</th>
+                                <th scope="col">Assigned Role</th>
+                                <th scope="col">Assigned On</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for assignment in documents_for_action %}
+                            <tr>
+                                <td><a href="{% url 'document_detail' pk=assignment.document.pk %}" class="text-decoration-none fw-bold">{{ assignment.document.title }}</a></td>
+                                <td><span class="badge bg-secondary">{{ assignment.stage.get_stage_type_display }}</span></td>
+                                <td><span class="badge bg-info text-dark">{{ assignment.get_action_type_display }}</span></td>
+                                <td>{{ assignment.assigned_at|naturaltime }}</td>
+                                <td>
+                                    <a href="{% url 'document_detail' pk=assignment.document.pk %}" class="btn btn-sm btn-warning">
+                                        Take Action
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="p-3 text-muted">You have no documents pending your review, concurrence, or approval. Great job!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2: My Submitted Documents -->
+    <div class="col-12">
+        <div class="card shadow">
+            <div class="card-header bg-info text-white fw-bold h5">
+                <i class="bi bi-file-earmark-check-fill me-2"></i> My Submitted Documents ({{ my_submitted_documents|length }})
+            </div>
+            <div class="card-body p-0">
+                {% if my_submitted_documents %}
+                <div class="table-responsive">
+                    <table class="table table-striped mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Title</th>
+                                <th scope="col">Current Status</th>
+                                <th scope="col">Last Updated</th>
+                                <th scope="col">Next Action Required</th>
+                                <th scope="col">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for document in my_submitted_documents %}
+                            <tr>
+                                <td>{{ document.title }}</td>
+                                <td>
+                                    {% with status=document.status %}
+                                        <span class="badge {% if status == 'DRAFT' %}bg-secondary{% elif status == 'REJECTED' %}bg-danger{% elif status == 'APPROVED' %}bg-success{% else %}bg-primary{% endif %}">
+                                            {{ document.get_status_display }}
+                                        </span>
+                                    {% endwith %}
+                                </td>
+                                <td>{{ document.updated_at|naturalday }}</td>
+                                <td>
+                                    {% if document.status == 'REJECTED' %}
+                                        <span class="badge bg-danger">Author Edit Required</span>
+                                    {% elif document.status == 'APPROVED' %}
+                                        <span class="badge bg-success">Complete</span>
+                                    {% else %}
+                                        <span class="badge bg-light text-secondary">Awaiting Reviewer Action</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'document_detail' pk=document.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="p-3 text-muted">You have not submitted any documents yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

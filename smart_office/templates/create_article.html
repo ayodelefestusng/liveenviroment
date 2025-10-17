@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Create Article{% endblock %}
+
+
+{% block content %}
+    <!-- Your form or page content here -->
+
+
+        <h1>Submit an Article</h1>
+<form method="post" hx-post="{% url 'autosave_article' %}" hx-trigger="keyup changed delay:500ms" hx-target="#autosave-status">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div id="autosave-status"></div>
+</form>
+
+
+
+
+
+    <p>Status: {{ form.status }}</p>
+{% endblock %}
+
+

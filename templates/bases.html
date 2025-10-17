@@ -31,6 +31,9 @@
   <link rel="stylesheet" href="{% static 'css/info.css' %}">
     <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <script src="{% static 'js/vehicle_upload.js' %}"></script>
+    {% comment %} js {% endcomment %}
+    link
 </head>
 <body>
 
@@ -107,6 +110,10 @@
 
  
  {% block content %}{% endblock %}
+
+ {% block extra_js %}
+ 
+ {% endblock %}
     </div>
 
     

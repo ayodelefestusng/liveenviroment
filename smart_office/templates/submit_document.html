@@ -1,0 +1,162 @@
+{% extends "baseT.html" %}
+{% load static %}
+
+{% block extra_head %}
+    <!-- TinyMCE script removed: The main TinyMCE CDN is now loaded globally in base.html. -->
+    
+    <!-- Select2 CSS (Required for Searchable User Selection) -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Select2 Bootstrap 5 Theme CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block title %}Submit New Document{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4 text-primary">Submit New Document</h1>
+    <p class="text-muted">Fill out the details below and assign users to initiate the document workflow.</p>
+
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-md-5">
+            <!-- REVERTED: Removed the explicit action attribute to use standard Django POST behavior -->
+            <form method="post" enctype="multipart/form-data" id="document-submission-form">
+                {% csrf_token %}
+
+                <!-- Basic Document Details -->
+                <h3 class="mb-4 text-secondary border-bottom pb-2">1. Document Details</h3>
+                <div class="row g-3">
+                    <!-- Title -->
+                    <div class="col-md-8">
+                        <label for="{{ form.title.id_for_label }}" class="form-label fw-bold">{{ form.title.label }}</label>
+                        {{ form.title }}
+                        {% if form.title.errors %}<div class="text-danger small">{{ form.title.errors }}</div>{% endif %}
+                    </div>
+                    
+                    <!-- Category -->
+                    <div class="col-md-4">
+                        <label for="{{ form.category.id_for_label }}" class="form-label fw-bold">{{ form.category.label }}</label>
+                        {{ form.category }}
+                        {% if form.category.errors %}<div class="text-danger small">{{ form.category.errors }}</div>{% endif %}
+                    </div>
+                    
+                    <!-- Content (TinyMCE) -->
+                    <div class="col-12">
+                        <label for="{{ form.content.id_for_label }}" class="form-label fw-bold">{{ form.content.label }}</label>
+                        <!-- The form field for content should already be a textarea, which TinyMCE targets -->
+                        {{ form.content }}
+                        {% if form.content.errors %}<div class="text-danger small">{{ form.content.errors }}</div>{% endif %}
+                    </div>
+                    
+                    <!-- File Attachment -->
+                    <div class="col-md-6">
+                        <label for="{{ form.file.id_for_label }}" class="form-label fw-bold">{{ form.file.label }}</label>
+                        {{ form.file }}
+                        <div class="form-text text-secondary">Optional: Attach supplementary files (e.g., source data).</div>
+                        {% if form.file.errors %}<div class="text-danger small">{{ form.file.errors }}</div>{% endif %}
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="col-md-6">
+                        <label for="{{ form.tags.id_for_label }}" class="form-label fw-bold">{{ form.tags.label }}</label>
+                        {{ form.tags }}
+                        <div class="form-text text-secondary">Use commas to separate tags (e.g., Policy, IT, QMS).</div>
+                        {% if form.tags.errors %}<div class="text-danger small">{{ form.tags.errors }}</div>{% endif %}
+                    </div>
+                </div>
+
+                <!-- Workflow Assignment -->
+                <h3 class="mt-5 mb-4 text-secondary border-bottom pb-2">2. Workflow Assignment (Sequential Steps)</h3>
+
+                <div class="alert alert-info small rounded-3" role="alert">
+                    The workflow follows the assigned steps: **Review** $\rightarrow$ **Concurrence** $\rightarrow$ **Approval**. You must assign at least one user across these three steps.
+                </div>
+
+                <div class="row g-3">
+                    <!-- Step 1: Reviewers -->
+                    <div class="col-md-4 mb-3">
+                        <label for="{{ form.assigned_reviewers.id_for_label }}" class="form-label fw-bold">{{ form.assigned_reviewers.label }}</label>
+                        {{ form.assigned_reviewers }}
+                        <div class="form-text text-secondary">Initial feedback and suggestions.</div>
+                        {% if form.assigned_reviewers.errors %}<div class="text-danger small">{{ form.assigned_reviewers.errors }}</div>{% endif %}
+                    </div>      
+                    
+                    <!-- Step 2: Concurrence Users -->
+                    <div class="col-md-4 mb-3">
+                        <label for="{{ form.assigned_concurrers.id_for_label }}" class="form-label fw-bold">{{ form.assigned_concurrers.label }}</label>
+                        {{ form.assigned_concurrers }}
+                        <div class="form-text text-secondary">All assigned users must agree for the workflow to proceed.</div>
+                        {% if form.assigned_concurrers.errors %}<div class="text-danger small">{{ form.assigned_concurrers.errors }}</div>{% endif %}
+                    </div>      
+                    
+                    <!-- Step 3: Final Approver(s) -->
+                    <div class="col-md-4 mb-3">
+                        <label for="{{ form.assigned_approvers.id_for_label }}" class="form-label fw-bold">{{ form.assigned_approvers.label }}</label>
+                        {{ form.assigned_approvers }}
+                        <div class="form-text text-secondary">The final signature(s) required to make the document **APPROVED**.</div>
+                        {% if form.assigned_approvers.errors %}<div class="text-danger small">{{ form.assigned_approvers.errors }}</div>{% endif %}
+                    </div>
+                </div>
+
+                <hr class="my-4">
+                
+                <button type="submit" class="btn btn-success btn-lg shadow-sm" id="submit-document-btn">
+                    <i class="bi bi-send-fill me-2"></i> Submit Document
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <!-- 3. Load the parent base.html scripts (which defines initializeTinyMCE) FIRST -->
+    {{ block.super }} 
+    
+    <!-- 1. Include jQuery before Select2, as it's a hard dependency -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- 2. Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    
+    <script>
+        $(document).ready(function() {
+            
+            // FIX for "An invalid form control with name='content' is not focusable" warning.
+            // TinyMCE hides the original textarea, making the client-side 'required' attribute problematic for accessibility/validation checks.
+            $('#id_content').removeAttr('required');
+
+            // 4. Initialize Select2 for all user selection fields
+            $('#id_assigned_reviewers, #id_assigned_concurrers, #id_assigned_approvers').select2({
+                theme: "bootstrap-5", // Use the Bootstrap 5 theme
+                placeholder: "Select users...",
+                allowClear: true, // Allows users to clear the selection
+                width: '100%',
+                // Use closest '.card-body' as the dropdown parent for better z-index handling
+                dropdownParent: $('#id_assigned_reviewers').closest('.card-body') 
+            });
+
+            // 5. Initialize TinyMCE for the content textarea
+            let tinyMCEInitialized = false;
+            // The function should now be available because block.super was loaded first.
+            if (typeof initializeTinyMCE !== 'undefined') {
+                initializeTinyMCE('textarea#id_content', true);
+                tinyMCEInitialized = true;
+            } else {
+                // If it still fails, there's a deeper issue in base.html, but this error message remains for debugging.
+                console.error("TinyMCE initialization function 'initializeTinyMCE' not found, even after loading block.super.");
+            }
+
+            // 6. Fix for TinyMCE content not posting (Consolidated jQuery handler)
+            // TinyMCE needs to sync its editor content back to the original textarea before submission.
+            $('#document-submission-form').on('submit', function(e) {
+                if (tinyMCEInitialized && typeof tinymce !== 'undefined') {
+                    // This command ensures the content from the editor is copied back to the textarea
+                    tinymce.triggerSave(); 
+                }
+                // The form will now proceed with its default submit action (POST)
+            });
+
+        }); // End of document.ready
+    </script>
+{% endblock %}

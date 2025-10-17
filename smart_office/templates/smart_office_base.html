@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block smart_office %}
+     <div class="container-fluid container">
+            <a href="{% url 'document_list' %}" class="navbar-brand h1 mb-0 text-primary fw-bold fs-4">
+                DMS Workflow
+            </a>
+            <div class="d-flex align-items-center">
+                <a href="{% url 'document_list' %}" class="btn btn-link text-secondary me-3">Dashboard</a>
+                <a href="{% url 'submit_document' %}" class="btn btn-primary shadow-sm me-3">
+                    New Document
+                </a>
+                <!-- User Placeholder -->
+                <span class="text-secondary small">Welcome, {{ user.username }}</span>
+            </div>
+        </div>
+{% endblock %}
+
+{% block content %}
+    <div class="document-container">
+        {% block document_content %}
+        <!-- Child templates will override this block -->
+        {% endblock %}
+    </div>
+{% endblock %}

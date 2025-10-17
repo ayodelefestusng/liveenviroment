@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Document: {{ document.title }}{% endblock title %}
+
+{% block content %}
+<div class="row">
+    <!-- Column 1: Document Content & Author Edit -->
+    <div class="col-lg-8 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h2 class="h4 mb-0">{{ document.title }}</h2>
+                <span class="badge bg-light text-dark">{{ document.get_status_display }}</span>
+            </div>
+            <div class="card-body">
+                <p class="text-muted small mb-3">
+                    Authored by: <span class="fw-bold">{{ document.author.username }}</span> |
+                    Category: <span class="fw-bold">{{ document.category.name }}</span> |
+                    Last Updated: {{ document.updated_at|naturaltime }}
+                </p>
+
+                {% if can_edit_content %}
+                    <!-- Author Edit Form (Visible only when rejected or draft) -->
+                    <h5 class="text-danger mb-3">Document Content (Editable - Incorporate Feedback)</h5>
+                    <form method="post" enctype="multipart/form-data" class="tinymce-form">
+                        {% csrf_token %}
+                        <!-- Assuming the content field is named 'content' -->
+                        {{ form.media }}
+                        {{ form.content }}
+                        <div class="d-grid mt-3">
+                            <button type="submit" name="action" value="update_content" class="btn btn-success btn-lg">Update Content & Resubmit</button>
+                            <small class="text-muted mt-2 text-center">Updating content will restart the review process.</small>
+                        </div>
+                    </form>
+                    <script>
+                        // Initialize TinyMCE for the editable content field
+                        // We use the ID #id_content, which Django generates for form fields.
+                        initializeTinyMCE('#id_content', true); 
+                    </script>
+                {% else %}
+                    <!-- Read-Only Content View -->
+                    <h5 class="mb-3">Document Content</h5>
+                    <div class="document-content border p-3 bg-light rounded" id="document-content-display">
+                        <!-- Content goes here -->
+                        {{ document.content|safe }}
+                    </div>
+                {% endif %}
+
+                {% if document.file %}
+                <div class="mt-4 border-top pt-3">
+                    <p class="fw-bold mb-1">Attached File:</p>
+                    <a href="{{ document.file.url }}" target="_blank" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-file-earmark-arrow-down-fill me-1"></i> Download Original File
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Column 2: Workflow, Action & History -->
+    <div class="col-lg-4">
+        
+        <!-- Action Card (Visible only if user needs to act) -->
+        {% if current_assignment %}
+        <div class="card shadow mb-4 border-warning">
+            <div class="card-header bg-warning text-dark fw-bold h5">
+                Action Required: {{ current_assignment.get_stage_type_display }}
+            </div>
+            <div class="card-body">
+                <p class="small text-muted">Your role: **{{ current_assignment.get_action_type_display }}**</p>
+                <form method="post" action="{% url 'document_action' assignment_pk=current_assignment.pk %}">
+                    {% csrf_token %}
+                    <!-- Comment field -->
+                    <div class="mb-3">
+                        <label for="{{ action_form.comment.id_for_label }}" class="form-label small">Your Comment (Required):</label>
+                        <!-- Render the comment textarea -->
+                        {{ action_form.comment }}
+                    </div>
+                    
+                    <!-- Dynamic Action Buttons -->
+                    <div class="d-grid gap-2">
+                        <!-- We iterate over the custom choices defined in the form's status field -->
+                        {% for value, label in action_form.status.field.choices %}
+                            {% if value != '' %}
+                                <button type="submit" name="status" value="{{ value }}" 
+                                    class="btn 
+                                    {% if value == 'REJECTED' or value == 'DECLINED' or value == 'AMENDED' %}btn-danger 
+                                    {% elif value == 'CONCURRED' or value == 'APPROVED' %}btn-success 
+                                    {% else %}btn-primary 
+                                    {% endif %}">
+                                    {{ label }}
+                                </button>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Workflow Progress Card -->
+        <div class="card shadow mb-4">
+            <div class="card-header bg-secondary text-white fw-bold">
+                Workflow Progress
+            </div>
+            <div class="card-body">
+                {% for stage in all_stages %}
+                    <h6 class="mt-2 mb-1 fw-bold text-dark">
+                        {{ stage.get_stage_type_display }}
+                        <span class="badge {% if stage.is_complete %}bg-success{% else %}bg-secondary{% endif %}">
+                            {% if stage.is_complete %}Complete{% else %}Pending{% endif %}
+                        </span>
+                    </h6>
+                    <ul class="list-unstyled small ps-3">
+                        {% for assignment in stage.assignments.all %}
+                            <li class="mb-1 d-flex justify-content-between">
+                                <div>
+                                    <i class="bi bi-person-circle me-1"></i>
+                                    {{ assignment.reviewer.username }} ({{ assignment.get_action_type_display }})
+                                </div>
+                                <div>
+                                    {% if assignment.status == 'PENDING' %}
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    {% elif assignment.status == 'COMPLETED' or assignment.status == 'CONCURRED' or assignment.status == 'APPROVED' %}
+                                        <span class="badge bg-success">Actioned</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Rejected</span>
+                                    {% endif %}
+                                </div>
+                            </li>
+                            {% if assignment.comment %}
+                                <p class="text-muted fst-italic ps-3 small border-start border-2 ms-2">{{ assignment.comment }}</p>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    <hr class="my-2">
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Document History Card -->
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white fw-bold">
+                Document History
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush small">
+                    {% for record in history %}
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="me-auto">
+                                <div class="fw-bold">{{ record.action }}</div>
+                                <span class="text-muted">By {{ record.actor.username|default:"System" }}</span>
+                            </div>
+                            <span class="badge bg-light text-dark rounded-pill">{{ record.timestamp|naturaltime }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if not can_edit_content %}
+<!-- Read-Only TinyMCE Initialization -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Only run if the author edit form is NOT present (meaning content is read-only)
+        if (!document.querySelector('.tinymce-form')) {
+            const displayDiv = document.getElementById('document-content-display');
+            
+            // To display rich HTML content consistently (with file uploads working), 
+            // we often need to initialize TinyMCE in read-only mode.
+            // However, for pure display purposes, simply using {{ document.content|safe }} is often better
+            // as it prevents an extra iframe load. We will use a standard textarea init 
+            // only if the content area uses the TinyMCE class.
+        }
+    });
+</script>
+{% endif %}
+
+{% endblock content %}
