@@ -494,3 +494,22 @@ def create_dealer_profile(sender, instance, created, **kwargs):
 def save_dealer_profile(sender, instance, **kwargs):
     if instance.groups.filter(name='Dealers').exists():
         instance.dealer_profile.save()
+
+
+##
+
+from django.db import models
+from django.contrib.auth.models import User
+
+class VinCheck(models.Model):
+    """Tracks VIN check attempts for usage limits."""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    vin = models.CharField(max_length=17)
+    # A check is either free or paid. If a user tries a second time, they must pay.
+    is_free_check = models.BooleanField(default=False) 
+    is_paid_check = models.BooleanField(default=False) 
+    checked_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        status = "Paid" if self.is_paid_check else "Free"
+        return f"[{status}] {self.user.username} - {self.vin}"

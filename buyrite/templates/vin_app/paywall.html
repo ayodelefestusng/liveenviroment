@@ -1,0 +1,28 @@
+{% extends "vin_app/base.html" %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h2>Unlock Full VIN Report for {{ vin }}</h2>
+    <p class="lead text-danger">Your free check has been used. Proceed with payment to view the full report.</p>
+
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        **Error:** {{ error }}
+    </div>
+    {% endif %}
+
+    <div class="card p-4 mx-auto" style="max-width: 400px;">
+        <h5 class="card-title">One-Time Report Price: $9.99</h5>
+        <p class="card-text">Get unlimited access to this VIN's full sales history and features, including a downloadable PDF.</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success btn-lg w-100 mt-3">
+                Pay Now & Get Instant PDF Report
+            </button>
+        </form>
+    </div>
+    
+    <p class="mt-3 text-muted"><small>Payment is securely processed.</small></p>
+</div>
+{% endblock %}

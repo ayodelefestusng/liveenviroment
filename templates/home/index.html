@@ -171,9 +171,13 @@ onclick="Calendly.initPopupWidget({url: 'https://calendly.com/demo-dignityconcep
                         </div>
                     </div>
                 </div>
-                <a href="{% url 'users:platform' %}" class="btn btn-outline-primary mt-3">
+                <a href="#" class="btn btn-outline-primary mt-3">
                     Learn More About Our Platform
                 </a>
+
+                {% comment %} <a href="{% url 'users:platform' %}" class="btn btn-outline-primary mt-3">
+                    Learn More About Our Platform
+                </a> {% endcomment %}
             </div>
             <div class="col-lg-6" data-aos="fade-left">
                 <div class="platform-visual bg-white rounded-3 p-4 shadow-sm">
@@ -219,9 +223,13 @@ onclick="Calendly.initPopupWidget({url: 'https://calendly.com/demo-dignityconcep
 <!-- Calendly link widget end -->
 
 
-                    <a href="{% url 'users:contact' %}" class="btn btn-outline-light btn-lg px-5">
+                    <a href="#" class="btn btn-outline-light btn-lg px-5">
                         Contact Us
                     </a>
+                    {% comment %} <a href="{% url 'users:contact' %}" class="btn btn-outline-light btn-lg px-5">
+                        Contact Us
+                    </a> {% endcomment %}
+
                 </div>
             </div>
         </div>

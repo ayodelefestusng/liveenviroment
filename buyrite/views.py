@@ -1206,3 +1206,226 @@ def check_vin_view(request):
         "form": form,
         "message": message
     })
+
+def kambo(request):
+    print ("Kambo view accessed")
+    return render(request, 'buyrite/kambo.html')
+
+
+
+
+
+
+
+
+#Gemini Vin Check
+import requests
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.conf import settings
+from .models import VinCheck
+from .forms import VinInputForm
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.units import inch
+from reportlab.lib import colors
+
+# Utility function to fetch data from the external API
+def fetch_vin_data(vin):
+    """Fetches sales history data from the external API."""
+    url = f"{settings.EXTERNAL_API_BASE_URL}{vin}"
+    headers = {'x-AuthKey': settings.EXTERNAL_API_AUTH_KEY} # Use the required header
+    
+    try:
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status() 
+        return response.json()
+    except requests.RequestException as e:
+        print(f"API Error for VIN {vin}: {e}")
+        return {"status": "error", "message": "Failed to connect to the VIN API or VIN is invalid."}
+
+# --- Main Views ---
+
+@login_required
+def vin_check_view(request):
+    """Handles VIN input, usage check, API call, and paywall redirection."""
+    user = request.user
+    form = VinInputForm()
+    
+    # Check if the user has already used their free check (LIMIT: ONCE per user)
+    has_used_free_check = VinCheck.objects.filter(user=user, is_free_check=True).exists()
+
+    if request.method == 'POST':
+        form = VinInputForm(request.POST)
+        if form.is_valid():
+            vin = form.cleaned_data['vin'].upper()
+            
+            # 1. USAGE LIMIT CHECK: Redirect to paywall if limit exceeded
+            if has_used_free_check:
+                # Use query parameter to pass vin securely (better than URL for long data)
+                return redirect('paywall', vin=vin) 
+
+            # 2. FREE CHECK EXECUTION
+            api_data = fetch_vin_data(vin)
+
+            if api_data.get("status") == "success":
+                # Save the **free** check attempt
+                VinCheck.objects.create(user=user, vin=vin, is_free_check=True)
+                return render(request, 'vin_app/results.html', {
+                    'vin': vin,
+                    'data': api_data.get('data'),
+                    'is_paid': False 
+                })
+            else:
+                return render(request, 'vin_app/index.html', {
+                    'form': form,
+                    'has_used_free_check': has_used_free_check,
+                    'error': api_data.get('message', 'VIN Check Failed. Please check the VIN and try again.')
+                })
+
+    return render(request, 'vin_app/index.html', {'form': form, 'has_used_free_check': has_used_free_check})
+
+# --- Payment Flow Simulation ---
+
+@login_required
+def paywall_view(request, vin):
+    """Displays the paywall and simulates payment success."""
+    # In a real app, this would be a complex view initiating a Stripe/PayPal checkout
+    if request.method == 'POST':
+        # --- SIMULATE SUCCESSFUL PAYMENT ---
+        
+        # In a real app, you'd verify the transaction and store the payment ID here.
+        # For this example, we proceed immediately to the paid check view.
+        return redirect('paid_check', vin=vin) 
+    
+    return render(request, 'vin_app/paywall.html', {'vin': vin})
+
+@login_required
+def paid_check_view(request, vin):
+    """Executes the check after simulated payment."""
+    user = request.user
+    
+    # This view simulates the backend callback *after* payment is confirmed.
+    api_data = fetch_vin_data(vin)
+
+    if api_data.get("status") == "success":
+        # Save the **paid** check attempt
+        VinCheck.objects.create(user=user, vin=vin, is_paid_check=True)
+        
+        # Display results and set 'is_paid' to True to trigger PDF download in the template
+        return render(request, 'vin_app/results.html', {
+            'vin': vin,
+            'data': api_data.get('data'),
+            'is_paid': True # Important: Triggers auto-download
+        })
+    else:
+        # Handle API error after payment (e.g., refund flow would be needed in real app)
+        return render(request, 'vin_app/paywall.html', {
+            'vin': vin,
+            'error': api_data.get('message', 'Payment processed, but VIN API failed. Please contact support.')
+        })
+
+# --- PDF Generation ---
+
+@login_required
+def generate_pdf_view(request, vin):
+    """Generates and forces the download of the PDF report."""
+    
+    # Security Check: Ensure the user has a recent paid check for this VIN
+    is_authorized = VinCheck.objects.filter(user=request.user, vin=vin, is_paid_check=True).exists()
+    if not is_authorized:
+        return HttpResponse("Unauthorized to download this report.", status=403)
+
+    # Fetch data (can be optimized by caching if needed)
+    api_data = fetch_vin_data(vin) 
+    if api_data.get("status") != "success":
+        return HttpResponse("PDF generation failed: Could not retrieve VIN data.", status=500)
+
+    # Setup PDF response
+    response = HttpResponse(content_type='application/pdf')
+    filename = f"VIN_Sales_History_Report_{vin}.pdf"
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+
+    p = canvas.Canvas(response, pagesize=letter)
+    width, height = letter
+    data = api_data.get('data', {})
+    
+    # --- PDF Content Layout ---
+    
+    # Title
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(1 * inch, height - 1 * inch, "Vehicle Sales History Report")
+    
+    p.setFont("Helvetica", 12)
+    p.drawString(1 * inch, height - 1.3 * inch, f"VIN: {vin}")
+    p.line(1 * inch, height - 1.4 * inch, width - 1 * inch, height - 1.4 * inch)
+
+    current_y = height - 1.7 * inch
+    
+    # Vehicle Summary
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(1 * inch, current_y, "Vehicle Details:")
+    current_y -= 0.3 * inch
+    p.setFont("Helvetica", 10)
+    
+    details = {
+        "Make": data.get('make'),
+        "Model": data.get('model'),
+        "Year": data.get('year'),
+        "Trim": data.get('trim'),
+        "Engine": data.get('sales_history', [{}])[0].get('data', {}).get('engine'),
+        "Drivetrain": data.get('sales_history', [{}])[0].get('data', {}).get('drivetrain'),
+    }
+    
+    for key, value in details.items():
+        p.drawString(1.2 * inch, current_y, f"{key}: {value or 'N/A'}")
+        current_y -= 0.2 * inch
+        if current_y < 1 * inch:
+            p.showPage()
+            current_y = height - 1 * inch
+
+    current_y -= 0.5 * inch
+
+    # Sales History
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(1 * inch, current_y, "Detailed Sales History:")
+    current_y -= 0.3 * inch
+
+    sales_history = data.get('sales_history', [])
+    if not sales_history:
+        p.drawString(1.2 * inch, current_y, "No historical sales records found.")
+    else:
+        for i, sale in enumerate(sales_history):
+            sale_data = sale.get('data', {})
+            
+            p.setFont("Helvetica-Bold", 10)
+            p.setFillColor(colors.darkgreen)
+            p.drawString(1.2 * inch, current_y, f"Sale Record #{i+1}")
+            current_y -= 0.2 * inch
+            p.setFillColor(colors.black)
+            p.setFont("Helvetica", 9)
+            
+            sale_details = {
+                "Status": sale_data.get('sale_status'),
+                "Date": sale_data.get('sale_date'),
+                "Odometer (mi)": sale_data.get('odometer_mi'),
+                "Price": sale_data.get('listing_price', {}).get('retail_value'),
+                "Location": f"{sale_data.get('city')}, {sale_data.get('state')}",
+                "Seller Type": sale_data.get('seller_type'),
+            }
+
+            for key, value in sale_details.items():
+                p.drawString(1.4 * inch, current_y, f"{key}: {value or 'N/A'}")
+                current_y -= 0.15 * inch
+
+            current_y -= 0.25 * inch # Space between records
+            
+            if current_y < 1 * inch:
+                p.showPage()
+                current_y = height - 1 * inch
+
+    # Finalize PDF
+    p.showPage()
+    p.save()
+    return response

@@ -5,7 +5,7 @@ app_name = 'smart_office'
 
 urlpatterns = [
     # Document Management
-    path('list/', views.document_list, name='document_list'),
+    path('', views.document_list, name='document_list'),
     path('submit/', views.submit_document, name='submit_document'),
     path('<int:pk>/', views.document_detail, name='document_detail'),
 

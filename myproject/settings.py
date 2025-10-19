@@ -421,3 +421,8 @@ TINYMCE_SPELLCHECKER = True
 #     ],
 # }
 # TINYMCE_API_KEY = 'ogdmvge43vwuhn7ascystm3r6p5qhwdx6d4tweotiiihfre3'
+
+
+
+EXTERNAL_API_BASE_URL = "https://api.vehicledatabases.com/saleshistory/"
+EXTERNAL_API_AUTH_KEY = "e9e7dba6a79e11f0812f0242ac120002" # Replace this

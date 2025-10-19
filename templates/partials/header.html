@@ -32,54 +32,106 @@
                         </a>
                         <ul class="dropdown-menu shadow" aria-labelledby="solutionsDropdown">
                             <li>
-                                <a class="dropdown-item" href="{% url 'users:solutions_overview' %}">
+                                <a class="dropdown-item" href="#">
                                     <i class="fas fa-chart-line me-2 text-primary"></i>
                                     Solutions Overview
                                 </a>
+
+                                   {% comment %} <a class="dropdown-item" href="{% url 'users:solutions_overview' %}">
+                                    <i class="fas fa-chart-line me-2 text-primary"></i>
+                                    Solutions Overview
+                                </a> {% endcomment %}
+
+
                             </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                                <a class="dropdown-item" href="{% url 'users:solution_detail' 'intelligent-customer-experience' %}">
+                                <a class="dropdown-item" href="#">
                                     <i class="fas fa-users me-2 text-primary"></i>
                                     Intelligent Customer Experience
                                 </a>
+
+
+  {% comment %} <a class="dropdown-item" href="{% url 'users:solution_detail' 'intelligent-customer-experience' %}">
+                                    <i class="fas fa-users me-2 text-primary"></i>
+                                    Intelligent Customer Experience
+                                </a> {% endcomment %}
+
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{% url 'users:solution_detail' 'enterprise-analytics-risk-management' %}">
+                                <a class="dropdown-item" href="#">
                                     <i class="fas fa-chart-bar me-2 text-primary"></i>
                                     Enterprise Analytics & Risk Management
                                 </a>
+
+
+
+                                {% comment %} <a class="dropdown-item" href="{% url 'users:solution_detail' 'enterprise-analytics-risk-management' %}">
+                                    <i class="fas fa-chart-bar me-2 text-primary"></i>
+                                    Enterprise Analytics & Risk Management
+                                </a> {% endcomment %}
+
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{% url 'users:solution_detail' 'ai-powered-hr-platform' %}">
+                                <a class="dropdown-item" href="#">
                                     <i class="fas fa-user-tie me-2 text-primary"></i>
                                     AI-Powered HR Platform
                                 </a>
+
+
+     {% comment %} <a class="dropdown-item" href="{% url 'users:solution_detail' 'ai-powered-hr-platform' %}">
+                                    <i class="fas fa-user-tie me-2 text-primary"></i>
+                                    AI-Powered HR Platform
+                                </a> {% endcomment %}
+
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{% url 'users:solution_detail' 'unified-commerce-payments' %}">
+                                <a class="dropdown-item" href="#">
                                     <i class="fas fa-shopping-cart me-2 text-primary"></i>
                                     Unified Commerce & Payments
                                 </a>
+
+
+{% comment %} <a class="dropdown-item" href="{% url 'users:solution_detail' 'unified-commerce-payments' %}">
+                                    <i class="fas fa-shopping-cart me-2 text-primary"></i>
+                                    Unified Commerce & Payments
+                                </a> {% endcomment %}
+
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{% url 'users:solution_detail' 'process-automation' %}">
+                                <a class="dropdown-item" href="#">
                                     <i class="fas fa-robot me-2 text-primary"></i>
                                     Process Automation (RPA)
                                 </a>
+
+{% comment %} 
+   <a class="dropdown-item" href="{% url 'users:solution_detail' 'process-automation' %}">
+                                    <i class="fas fa-robot me-2 text-primary"></i>
+                                    Process Automation (RPA)
+                                </a> {% endcomment %}
+
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{% url 'users:solution_detail' 'tax-management' %}">
+                                <a class="dropdown-item" href="#">
                                     <i class="fas fa-receipt me-2 text-primary"></i>
                                     Tax Management Solution
                                 </a>
+
+{% comment %} 
+    <a class="dropdown-item" href="{% url 'users:solution_detail' 'tax-management' %}">
+                                    <i class="fas fa-receipt me-2 text-primary"></i>
+                                    Tax Management Solution
+                                </a> {% endcomment %}
+
                             </li>
                         </ul>
                     </li>
 
                     <!-- Platform -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'users:platform' %}">
+                        
+                      <a class="nav-link" href="#">
+                        {% comment %} <a class="nav-link" href="{% url 'users:platform' %}"> {% endcomment %}
                             Platform
                         </a>
                     </li>
@@ -92,25 +144,32 @@
                         </a>
                         <ul class="dropdown-menu shadow" aria-labelledby="industriesDropdown">
                             <li>
-                                <a class="dropdown-item" href="{% url 'users:industries' %}#banking">
+                                <a class="dropdown-item" href="#">
+                                {% comment %} <a class="dropdown-item" href="{% url 'users:industries' %}#banking"> {% endcomment %}
+
                                     <i class="fas fa-university me-2 text-primary"></i>
                                     Banking & Financial Services
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{% url 'users:industries' %}#insurance">
+                             
+                                <a class="dropdown-item" href= "#">
+                                  {% comment %} <a class="dropdown-item" href="{% url 'users:industries' %}#insurance"> {% endcomment %}
                                     <i class="fas fa-shield-alt me-2 text-primary"></i>
                                     Insurance
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{% url 'users:industries' %}#oil-gas">
+                                <a class="dropdown-item" href= "#">
+                                  {% comment %} <a class="dropdown-item" href="{% url 'users:industries' %}#oil-gas"> {% endcomment %}
                                     <i class="fas fa-gas-pump me-2 text-primary"></i>
                                     Oil & Gas
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{% url 'users:industries' %}#retail">
+                                <a class="dropdown-item" href= "#">
+
+                                  {% comment %} <a class="dropdown-item" href="{% url 'users:industries' %}#retail"> {% endcomment %}
                                     <i class="fas fa-shopping-bag me-2 text-primary"></i>
                                     Retail & E-commerce
                                 </a>
@@ -120,18 +179,23 @@
 
                     <!-- About -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'users:about' %}">
+                        <a class="nav-link" href= "#">
+                        {% comment %} <a class="nav-link" href="{% url 'users:about' %}"> {% endcomment %}
                             About Us
                         </a>
                     </li>
 
                     <!-- Contact -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'users:contact' %}">
+                        <a class="nav-link" href= "#">
+                          {% comment %} <a class="nav-link" href="{% url 'users:contact' %}"> {% endcomment %}
                             Contact
                         </a>
                     </li>
                 </ul>
+{% block smart_office %}
+ 
+{% endblock %}
 
                 <!-- CTA Buttons -->
                 <div class="d-flex align-items-center gap-2">
@@ -178,33 +242,51 @@ onclick="Calendly.initPopupWidget({url: 'https://calendly.com/demo-dignityconcep
   </div>
   <div class="offcanvas-body">
 
-    <!-- AI Section -->
-    <div class="mb-4">
-      <h6 class="d-flex align-items-center">
-        <svg width="24" height="24" fill="currentColor" class="me-2 text-primary"><use xlink:href="#icon-brain"/></svg>
-        <i class="bi bi-openai">AI</i>
-        
-      </h6>
-      <div class="d-flex flex-wrap gap-3">
-     <a href="{% url 'ai:chat_home' %}" class="text-decoration-none">
-  <div class="d-flex flex-column align-items-center p-3 border rounded-3 shadow-sm hover-shadow transition bg-light">
-    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor"
-         class="bi bi-chat-left-quote-fill text-primary mb-2" viewBox="0 0 16 16">
-      <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793zm7.194 2.766a1.7 1.7 0 0 0-.227-.272 1.5 1.5 0 0 0-.469-.324l-.008-.004A1.8 1.8 0 0 0 5.734 4C4.776 4 4 4.746 4 5.667c0 .92.776 1.666 1.734 1.666.343 0 .662-.095.931-.26-.137.389-.39.804-.81 1.22a.405.405 0 0 0 .011.59c.173.16.447.155.614-.01 1.334-1.329 1.37-2.758.941-3.706a2.5 2.5 0 0 0-.227-.4zM11 7.073c-.136.389-.39.804-.81 1.22a.405.405 0 0 0 .012.59c.172.16.446.155.613-.01 1.334-1.329 1.37-2.758.942-3.706a2.5 2.5 0 0 0-.228-.4 1.7 1.7 0 0 0-.227-.273 1.5 1.5 0 0 0-.469-.324l-.008-.004A1.8 1.8 0 0 0 10.07 4c-.957 0-1.734.746-1.734 1.667 0 .92.777 1.666 1.734 1.666.343 0 .662-.095.931-.26z"/>
+<!-- AI Section -->
+<div class="mb-4">
+  <h6 class="d-flex align-items-center">
+    <svg width="24" height="24" fill="currentColor" class="me-2 text-primary">
+      <use xlink:href="#icon-brain"/>
     </svg>
-    <p class="text-muted fw-semibold mb-0">Chat Bot</p>
-  </div>
-<a  href="#" class="text-decoration-none">
-  <div class="d-flex flex-column align-items-center p-3 border rounded-3 shadow-sm hover-shadow transition bg-light">
-    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor"
-         class="bi bi-people text-primary mb-2" viewBox="0 0 16 16">
-      <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
-    </svg>
-    <p class="text-muted fw-semibold mb-0">AI-HR </p>
-  </div>
-</a>
+    <i class="bi bi-openai">AI</i>
+  </h6>
+
+  <div class="d-flex flex-wrap gap-3">
+    <!-- Chat Bot -->
+    <a href="{% url 'ai:chat_home' %}" class="text-decoration-none">
+      <div class="d-flex flex-column align-items-center p-3 border rounded-3 shadow-sm hover-shadow transition bg-light">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor"
+             class="bi bi-chat-left-quote-fill text-primary mb-2" viewBox="0 0 16 16">
+          <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793zm7.194 2.766..."/>
+        </svg>
+        <p class="text-muted fw-semibold mb-0">Chat Bot</p>
       </div>
-    </div>
+    </a>
+
+    <!-- AI-HR -->
+    <a href="#" class="text-decoration-none">
+      <div class="d-flex flex-column align-items-center p-3 border rounded-3 shadow-sm hover-shadow transition bg-light">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor"
+             class="bi bi-people text-primary mb-2" viewBox="0 0 16 16">
+          <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c..."/>
+        </svg>
+        <p class="text-muted fw-semibold mb-0">AI-HR</p>
+      </div>
+    </a>
+
+    <!-- Smart Office -->
+    <a href="{% url 'smart_office:document_list' %}" class="text-decoration-none">
+      <div class="d-flex flex-column align-items-center p-3 border rounded-3 shadow-sm hover-shadow transition bg-light">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor"
+             class="bi bi-file-earmark-text text-primary mb-2" viewBox="0 0 16 16">
+          <path d="M5 7h6v1H5V7zm0 2h6v1H5V9zm0 2h4v1H5v-1z"/>
+          <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6.5L14 4.5zM13 4.5L9.5 1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>
+        </svg>
+        <p class="text-muted fw-semibold mb-0">Smart Office</p>
+      </div>
+    </a>
+  </div>
+</div>
 
 
 

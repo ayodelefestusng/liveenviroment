@@ -228,3 +228,18 @@ class VINCheckForm(forms.Form):
         label="Enter VIN",
         widget=forms.TextInput(attrs={'placeholder': 'Enter 17-character VIN'})
     )
+
+
+##
+
+from django import forms
+
+class VinInputForm(forms.Form):
+    vin = forms.CharField(
+        max_length=17,
+        label="Enter Vehicle Identification Number (VIN)",
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Enter 5-17 digit VIN',
+            'class': 'form-control form-control-lg' # Bootstrap class
+        })
+    )

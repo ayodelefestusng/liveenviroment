@@ -1,0 +1,63 @@
+{% extends "bases.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Results for VIN: <span class="badge bg-primary">{{ vin }}</span></h2>
+
+    {% if is_paid %}
+    <div class="alert alert-success" role="alert">
+        ✅ **Payment Successful!** Your full report is displayed below and is automatically downloading as a PDF.
+    </div>
+    <script>
+        // Automatic download script triggered only for paid checks
+        window.onload = function() {
+            // Delay slightly to ensure page loads before download starts
+            setTimeout(function() {
+                window.location.href = "{% url 'generate_pdf' vin=vin %}";
+            }, 500); 
+        };
+    </script>
+    {% else %}
+    <div class="alert alert-info" role="alert">
+        🎉 **Free Check Complete!** This is a preview. Subsequent checks require payment.
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-light">Vehicle Summary</div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Make:</strong> {{ data.make }}</li>
+                    <li class="list-group-item"><strong>Model:</strong> {{ data.model }}</li>
+                    <li class="list-group-item"><strong>Year:</strong> {{ data.year }}</li>
+                    <li class="list-group-item"><strong>Trim:</strong> {{ data.trim }}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-12">
+            <h3>Sales History Records</h3>
+            {% for sale in data.sales_history %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title text-success">Sale Date: {{ sale.data.sale_date|default:"N/A" }}</h5>
+                    <p class="card-text">
+                        **Odometer:** {{ sale.data.odometer_mi }} mi | 
+                        **Location:** {{ sale.data.city|default:"N/A" }}, {{ sale.data.state|default:"N/A" }} |
+                        **Seller Type:** {{ sale.data.seller_type|default:"N/A" }}
+                    </p>
+                    {% if sale.data.images %}
+                        <p class="mt-2"><strong>Images:</strong></p>
+                        {% for image_url in sale.data.images|slice:":3" %} 
+                            <img src="{{ image_url }}" alt="Vehicle Image" style="width: 100px; height: auto; margin-right: 5px;">
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p>No sales history records found.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

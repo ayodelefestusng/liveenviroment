@@ -6,7 +6,7 @@ from .views import (DashboardView, HomeView, VehicleDetailView,
                     approve_dealer, dealer_registration, edit_vehicle,
                     handle_admin_tool_form, load_models, load_towns,
                     load_trims, load_years, mark_as_sold, operations_view,
-                    upload_vehicle, upload_vehicle_success, yem,check_vin_view)
+                    upload_vehicle, upload_vehicle_success, yem,check_vin_view,kambo,paywall_view,paid_check_view,generate_pdf_view,vin_check_view)
 
 app_name = 'buyrite'
 
@@ -47,6 +47,24 @@ urlpatterns = [
     path('yem/', yem, name='yem'),
      path('check-vin/', check_vin_view, name='check_vin'),
 
+         path('kambo/', kambo, name='kambo'),
+
+
+#    # Add more URL patterns as needed Gemini VIew
+
+
+
+    # Payment Flow
+    path('', vin_check_view, name='vin_check'),
+    path('paywall/<str:vin>/', paywall_view, name='paywall'),
+    path('paid-check/<str:vin>/', paid_check_view, name='paid_check'),
+    
+    # PDF Download
+    path('generate-pdf/<str:vin>/', generate_pdf_view, name='generate_pdf'),
+
+
+
+    
 
 ]
 
