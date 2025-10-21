@@ -13,8 +13,8 @@
 {% block title %}Submit New Document{% endblock %}
 
 {% block content %}
-<div class="container my-5">
-    <h4 class="mb-4 text-primary">Submit New Document</h4>
+<div class="container my-2">
+    {% comment %} <h4 class="mb-4 text-primary">Submit New Document</h4> {% endcomment %}
     <p class="text-muted">Fill out the details below and assign users to initiate the document workflow.</p>
 
     <div class="card shadow-lg border-0 rounded-4">
@@ -24,7 +24,7 @@
                 {% csrf_token %}
 
                 <!-- Basic Document Details -->
-                <h3 class="mb-4 text-secondary border-bottom pb-2">1. Document Details</h3>
+                <h5 class="mb-4 text-secondary border-bottom pb-2"> Document Details</h5>
                 <div class="row g-3">
                     <!-- Title -->
                     <div class="col-md-8">
@@ -68,10 +68,13 @@
                 <!-- Workflow Assignment -->
                 <h3 class="mt-5 mb-4 text-secondary border-bottom pb-2">2. Workflow Assignment (Sequential Steps)</h3>
 
-                <div class="alert alert-info small rounded-3" role="alert">
-                    The workflow follows the assigned steps: **Review** $\rightarrow$ **Concurrence** $\rightarrow$ **Approval**. You must assign at least one user across these three steps.
-                </div>
-
+        <div class="alert alert-info small rounded-3 p-1 m-1" role="alert">
+  <p class="mb-0">
+    The workflow follows the assigned steps: 
+    <strong>Review</strong> &rarr; <strong>Concurrence</strong> &rarr; <strong>Approval</strong>. 
+    You must assign at least one user across these three steps.
+  </p>                 
+</div>
                 <div class="row g-3">
                     <!-- Step 1: Reviewers -->
                     <div class="col-md-4 mb-3">

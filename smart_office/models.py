@@ -6,7 +6,13 @@ from taggit.managers import TaggableManager
 from django.conf import settings
 
 from django.db import models
+from django.db import models
 from tinymce.models import HTMLField
+
+from tinymce.models import HTMLField
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 
 class TestPage(models.Model):
     title = models.CharField(max_length=100)
@@ -20,8 +26,6 @@ class TestPage(models.Model):
 #     def __str__(self):
 #         return self.name
 
-from django.db import models
-from tinymce.models import HTMLField
 
 
 STATUS_CHOICES = (
@@ -50,6 +54,7 @@ class Document1(models.Model):
     title = models.CharField(max_length=255)
     file = models.FileField(upload_to='documents/')
     submitted_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='submitted_documents')
+    
     status = models.CharField(max_length=50, choices=[
         ('pending', 'Pending'),
         ('in_review', 'In Review'),

@@ -31,11 +31,11 @@
             </a>
             <div class="d-flex align-items-center">
                 <a href="{% url 'smart_office:document_list' %}" class="btn btn-link text-secondary me-3">Dashboard</a>
-                <a href="{% url 'smart_office:submit_document' %}" class="btn btn-primary shadow-sm me-3">
-                    New Document
+                <a href="{% url 'smart_office:submit_document' %}" class="btn btn-primary btn-sm shadow-sm me-3">
+                    Create Document 
                 </a>
                 <!-- User Placeholder -->
-                <span class="text-secondary small">Welcome, {{ user.username }}</span>
+                <span class="text-secondary small">Welcome, {{ user.full_name }}</span>
             </div>
         </div>
     </nav>
@@ -61,9 +61,9 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white p-4 mt-auto">
+    <footer class="bg-dark text-white p-6 mt-auto">
         <div class="container text-center small">
-            © 2025 World-Class Document Management System. All rights reserved.
+            © 2025 Smart Office
         </div>
     </footer>
 
